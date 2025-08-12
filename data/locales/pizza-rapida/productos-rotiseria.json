@@ -1,0 +1,17 @@
+{
+  "categorias": [
+    {
+      "categoria": "Pizzas",
+      "productos": [
+        {
+          "nombre": "Muzzarella",
+          "precio": 6500
+        },
+        {
+          "nombre": "Napolitana",
+          "precio": 7200
+        }
+      ]
+    }
+  ]
+}

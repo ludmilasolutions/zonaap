@@ -1,0 +1,34 @@
+{
+  "categorias": [
+    {
+      "categoria": "Bebidas frías",
+      "productos": [
+        {
+          "nombre": "Agua 500cc",
+          "precio": 700
+        },
+        {
+          "nombre": "Agua 1.5L",
+          "precio": 1100
+        },
+        {
+          "nombre": "Coca 2.25L",
+          "precio": 4600
+        }
+      ]
+    },
+    {
+      "categoria": "Energizantes",
+      "productos": [
+        {
+          "nombre": "Speed lata",
+          "precio": 1900
+        },
+        {
+          "nombre": "Monster lata",
+          "precio": 2600
+        }
+      ]
+    }
+  ]
+}

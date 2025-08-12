@@ -1,0 +1,34 @@
+{
+  "categorias": [
+    {
+      "categoria": "Verduras",
+      "productos": [
+        {
+          "nombre": "Tomate (kg)",
+          "precio": 1800
+        },
+        {
+          "nombre": "Lechuga criolla (unidad)",
+          "precio": 900
+        },
+        {
+          "nombre": "Papa (kg)",
+          "precio": 1000
+        }
+      ]
+    },
+    {
+      "categoria": "Frutas",
+      "productos": [
+        {
+          "nombre": "Banana (kg)",
+          "precio": 1900
+        },
+        {
+          "nombre": "Manzana (kg)",
+          "precio": 2100
+        }
+      ]
+    }
+  ]
+}

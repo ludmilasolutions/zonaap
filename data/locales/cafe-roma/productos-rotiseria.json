@@ -1,0 +1,30 @@
+{
+  "categorias": [
+    {
+      "categoria": "Brunch",
+      "productos": [
+        {
+          "nombre": "Tostado de jamón y queso",
+          "precio": 3500
+        },
+        {
+          "nombre": "Avocado toast",
+          "precio": 4200
+        }
+      ]
+    },
+    {
+      "categoria": "Pastelería",
+      "productos": [
+        {
+          "nombre": "Brownie",
+          "precio": 1800
+        },
+        {
+          "nombre": "Cookie",
+          "precio": 900
+        }
+      ]
+    }
+  ]
+}

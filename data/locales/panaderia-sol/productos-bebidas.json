@@ -1,0 +1,21 @@
+{
+  "categorias": [
+    {
+      "categoria": "Bebidas",
+      "productos": [
+        {
+          "nombre": "Café 350ml",
+          "precio": 1500
+        },
+        {
+          "nombre": "Capuccino 350ml",
+          "precio": 1900
+        },
+        {
+          "nombre": "Jugo de naranja 500ml",
+          "precio": 2200
+        }
+      ]
+    }
+  ]
+}

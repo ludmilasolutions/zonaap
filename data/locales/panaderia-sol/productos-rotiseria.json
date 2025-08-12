@@ -1,0 +1,43 @@
+{
+  "categorias": [
+    {
+      "categoria": "Panadería",
+      "productos": [
+        {
+          "nombre": "Pan francés (kg)",
+          "precio": 2400
+        },
+        {
+          "nombre": "Baguette",
+          "precio": 1300
+        }
+      ]
+    },
+    {
+      "categoria": "Facturas",
+      "productos": [
+        {
+          "nombre": "Media luna dulce",
+          "precio": 500
+        },
+        {
+          "nombre": "Vigilante",
+          "precio": 500
+        }
+      ]
+    },
+    {
+      "categoria": "Tortas",
+      "productos": [
+        {
+          "nombre": "Chocotorta por porción",
+          "precio": 2300
+        },
+        {
+          "nombre": "Lemon Pie por porción",
+          "precio": 2300
+        }
+      ]
+    }
+  ]
+}

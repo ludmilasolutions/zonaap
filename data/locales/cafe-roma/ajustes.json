@@ -1,0 +1,49 @@
+{
+  "whatsapp": "3416000004",
+  "shipping": 900,
+  "brand": {
+    "nombre": "Cafetería Roma",
+    "slogan": "Café de especialidad y brunch",
+    "logo": "/uploads/logo.png"
+  },
+  "horarios": {
+    "rotiseria": {
+      "cerrado": false,
+      "dias": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "rangos": [
+        {
+          "desde": "00:00",
+          "hasta": "23:59"
+        }
+      ],
+      "mensaje_cierre": ""
+    },
+    "bebidas": {
+      "cerrado": false,
+      "dias": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "rangos": [
+        {
+          "desde": "00:00",
+          "hasta": "23:59"
+        }
+      ],
+      "mensaje_cierre": ""
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "categorias": [
+    {
+      "categoria": "Gaseosas",
+      "productos": [
+        {
+          "nombre": "Coca 1.5L",
+          "precio": 3500
+        },
+        {
+          "nombre": "Sprite 1.5L",
+          "precio": 3500
+        }
+      ]
+    },
+    {
+      "categoria": "Cervezas",
+      "productos": [
+        {
+          "nombre": "Quilmes lata",
+          "precio": 1600
+        },
+        {
+          "nombre": "Schneider lata",
+          "precio": 1700
+        }
+      ]
+    }
+  ]
+}
