@@ -43,6 +43,13 @@
   let SECCIONES_CERRADAS = { rotiseria:false, bebidas:false };
   let CIERRE_MSGS = { rotiseria:'', bebidas:'' };
   let SHIPPING = 1000;
+  const CUPONES_DEFAULT = [
+    {code:'ZONA10', type:'percent', value:10},
+    {code:'ENVIOGRATIS', type:'shipping', value:100},
+    {code:'ZONA500', type:'fixed', value:500}
+  ];
+  let CUPONES = [...CUPONES_DEFAULT];
+  const ITEM_NOTES = {}; // id -> nota
   let WSP_NUMBER = '3415923882';
   let NEG_NAME = 'Tienda';
   let NEG_LOGO = asset('assets/zonaap-wordmark-invert.svg');
@@ -233,6 +240,7 @@
   function countItems(){ return Object.values(cantidades).reduce((a,b)=>a+(b||0),0); }
 
   function actualizarResumen(){
+    const cup = typeof CUPON_APLICADO==='object'?CUPON_APLICADO:null;
     // (en esta versión starter, solo calculamos totales para el FAB simple)
     let subtotal=0,count=0;
     for(const id in cantidades){
@@ -284,6 +292,7 @@
       const bb = document.getElementById('btn-bebidas');
       if(aj.tab_rotiseria && br) br.textContent = aj.tab_rotiseria;
       if(aj.tab_bebidas && bb) bb.textContent = aj.tab_bebidas;
+      if(Array.isArray(aj.cupones)) CUPONES = aj.cupones;
       const h = aj.horarios || {};
       ['rotiseria','bebidas'].forEach(sec=>{
         const cfg = h[sec] || {};
@@ -312,6 +321,7 @@
       const bb = document.getElementById('btn-bebidas');
       if(aj.tab_rotiseria && br) br.textContent = aj.tab_rotiseria;
       if(aj.tab_bebidas && bb) bb.textContent = aj.tab_bebidas;
+      if(Array.isArray(aj.cupones)) CUPONES = aj.cupones;
       const h = aj.horarios || {};
       ['rotiseria','bebidas'].forEach(sec=>{
         const cfg = h[sec] || {};
