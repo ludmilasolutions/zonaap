@@ -1,39 +1,39 @@
 {
   "nombre": "Kiosco El Centro",
   "subtitulo": "Abierto todos los días",
-  "whatsapp": "5493415550001",
-  "shipping": 800,
+  "whatsapp": "5493415550011",
+  "shipping": 700,
   "categorias": [
     {
       "categoria": "Snacks",
       "productos": [
         {
-          "nombre": "Papas clásicas",
-          "desc": "Bolsa 90g",
+          "nombre": "Papas onduladas",
+          "desc": "Bolsa 110g",
           "precio": 1500,
           "img": "assets/placeholder.svg"
         },
         {
           "nombre": "Maní salado",
-          "desc": "Paquete 120g",
+          "desc": "Paquete 200g",
           "precio": 1300,
           "img": "assets/placeholder.svg"
         }
       ]
     },
     {
-      "categoria": "Bebidas frías",
+      "categoria": "Dulce",
       "productos": [
         {
-          "nombre": "Agua 500ml",
-          "desc": "",
-          "precio": 900,
+          "nombre": "Chocolate",
+          "desc": "Tableta 100g",
+          "precio": 1800,
           "img": "assets/placeholder.svg"
         },
         {
-          "nombre": "Cerveza lata",
-          "desc": "",
-          "precio": 1600,
+          "nombre": "Caramelos surtidos",
+          "desc": "Bolsa 250g",
+          "precio": 1200,
           "img": "assets/placeholder.svg"
         }
       ]

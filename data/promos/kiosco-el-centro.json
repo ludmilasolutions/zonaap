@@ -1,0 +1,12 @@
+{
+  "slug_local": "kiosco-el-centro",
+  "promos": [
+    {
+      "nombre": "3x2 Chocolates",
+      "desc": "Llevás 3 pagás 2",
+      "precio": 3600,
+      "precio_original": 5400,
+      "tag": "3x2"
+    }
+  ]
+}

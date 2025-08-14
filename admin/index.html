@@ -5,23 +5,15 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Zonaap CMS</title>
   <link rel="icon" href="/assets/logo.svg">
+  <style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Helvetica,Arial}#nc-root{min-height:100vh}</style>
 </head>
 <body>
-  <!-- Raíz que usa Decap para montar la UI (si falta, rompe con appendChild) -->
   <div id="nc-root"></div>
-
-  <!-- Netlify Identity (login) -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
-  <!-- Decap CMS (ex Netlify CMS) UMD -->
   <script src="https://unpkg.com/decap-cms@^3.8.3/dist/decap-cms.js"></script>
-
-  <!-- Inicialización segura (usa CMS o DecapCMS según el build) -->
   <script>
     const CMS = window.CMS || window.DecapCMS;
     CMS?.init({ config: { load_config_file: true } });
-    // Ejemplo: estilos de previsualización (opcional)
-    // CMS?.registerPreviewStyle('/admin/preview.css');
   </script>
 </body>
 </html>

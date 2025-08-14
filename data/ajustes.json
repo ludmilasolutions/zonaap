@@ -1,0 +1,24 @@
+{
+  "brand": {
+    "primary": "#0b376d",
+    "secondary": "#ffcc00"
+  },
+  "hero": {
+    "title": "Pedí online a negocios de tu barrio",
+    "subtitle": "Buscá un local o registrá el tuyo gratis.",
+    "show_register": true,
+    "badges": [
+      "100% responsive",
+      "Rápido y simple",
+      "Sin comisiones"
+    ]
+  },
+  "checkout": {
+    "default_shipping": 900,
+    "coupon_code": "OFF10",
+    "coupon_percent": 10
+  },
+  "footer": {
+    "text": "Hecho con ❤ para emprendedores. Gratis y simple."
+  }
+}

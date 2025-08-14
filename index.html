@@ -1,67 +1,86 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Zonaap</title>
-  <link rel="icon" href="assets/logo.svg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#f4f6fa; --text:#0f172a; --muted:#475569;
-      --brand:#0b376d; --brand2:#062247; --accent:#ffcc00;
-      --card:#fff; --line:#e5e7eb;
-    }
-    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text)}
-    header{padding:48px 16px;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;text-align:center}
-    .logo{display:inline-flex;gap:12px;align-items:center;justify-content:center}
-    .logo img{width:64px;height:64px}
-    .title{font-size:40px;font-weight:800;margin:8px 0 4px}
-    .sub{opacity:.85}
-    main{max-width:980px;margin:0 auto;padding:16px}
-    .search{display:flex;gap:12px;margin:18px 0}
-    .search input{flex:1;padding:14px 16px;border:1px solid var(--line);border-radius:12px;font-size:16px;outline:none}
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;gap:12px;align-items:center;transition:.15s}
-    .card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(2,6,23,.08)}
-    .card img{width:56px;height:56px}
-    .name{font-weight:800} .meta{font-size:13px;color:var(--muted)}
-    .btn{display:inline-flex;padding:8px 12px;border-radius:10px;background:var(--accent);color:#001122;font-weight:800;border:2px solid var(--accent);text-decoration:none}
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Zonaap</title>
+<link rel="icon" href="assets/logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--azul:#0b376d;--amarillo:#ffcc00;--bg:#f4f7fb}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial;background:var(--bg);color:#0f172a}
+a{color:inherit}
+.header{background:linear-gradient(135deg,#0b376d 0%,#062247 100%);color:#fff;padding:48px 20px 64px}
+.container{max-width:1000px;margin:0 auto;padding:0 16px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{width:56px;height:56px;border-radius:14px}
+h1{font-size:40px;margin:8px 0 6px}
+.sub{opacity:.9;margin:0 0 18px}
+.badges{display:flex;gap:8px;flex-wrap:wrap}
+.badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);padding:6px 10px;border-radius:999px;font-weight:700;font-size:13px}
+.searchRow{display:flex;gap:12px;margin-top:-28px;align-items:center}
+.input{flex:1;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:14px 16px;font-size:16px;box-shadow:0 6px 20px rgba(0,0,0,.06)}
+.cta{background:var(--amarillo);color:#062247;border:none;border-radius:12px;padding:14px 18px;font-weight:900;cursor:pointer;box-shadow:0 10px 24px rgba(0,0,0,.12)}
+.list{padding:28px 0 48px}
+.card{display:flex;align-items:center;gap:16px;background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:14px 16px;margin:10px 0;transition:.15s}
+.card:hover{transform:translateY(-1px);box-shadow:0 10px 22px rgba(0,0,0,.07)}
+.logo{width:56px;height:56px;border-radius:12px;background:#eef2ff;display:grid;place-items:center;border:1px solid #e5e7eb}
+.card h3{margin:0 0 2px}
+.card .meta{color:#475569;font-size:14px}
+.footer{padding:28px 16px;color:#64748b;text-align:center}
+</style>
 </head>
 <body>
-  <header>
-    <div class="logo"><img src="assets/logo.svg" alt="Zonaap"/><div class="title">zonaap</div></div>
-    <p class="sub">Pedí online a negocios de tu barrio</p>
-  </header>
-  <main>
-    <div class="search">
-      <input id="q" placeholder="Buscar por nombre, rubro o barrio…">
-      <a href="admin/cms/" class="btn">Entrar al panel</a>
+  <header class="header">
+    <div class="container">
+      <div class="brand"><img src="assets/logo.svg" alt="zonaap"><div>
+        <h1 id="heroTitle">Pedí online a negocios de tu barrio</h1>
+        <p id="heroSub" class="sub">Buscá un local o registrá el tuyo gratis.</p></div></div>
+      <div id="heroBadges" class="badges"></div>
     </div>
-    <div id="list" class="grid"></div>
-  </main>
-  <script>
-    async function loadJSON(u){try{const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);return await r.json()}catch(e){console.error('loadJSON',u,e);return null}}
-    function card(l){
-      const a=document.createElement('a');a.className='card';a.href='negocio.html?l='+encodeURIComponent(l.slug);
-      a.innerHTML = '<img src="'+(l.logo||'assets/logo.svg')+'" alt="logo"><div><div class="name">'+l.nombre+'</div><div class="meta">'+(l.rubro||'')+' • '+(l.barrio||'')+'</div></div>';
-      return a;
-    }
-    (async()=>{
-      const data = await loadJSON('data/locales.json');
-      const list = document.getElementById('list'); if(!data){ list.textContent='No se pudo cargar la lista.'; return; }
-      const locales = (data.locales||[]);
-      function render(term){
-        list.innerHTML='';
-        const t=(term||'').toLowerCase();
-        locales.filter(l=>!t || (l.nombre+l.rubro+l.barrio).toLowerCase().includes(t)).forEach(l=>list.appendChild(card(l)));
-      }
-      render('');
-      document.getElementById('q').addEventListener('input',e=>render(e.target.value));
-    })();
-  </script>
+  </header>
+
+  <div class="container">
+    <div class="searchRow">
+      <input id="q" class="input" placeholder="Buscar por nombre, rubro o barrio…">
+      <button id="btnReg" class="cta">+ Registrar mi local</button>
+    </div>
+    <section class="list" id="list"></section>
+  </div>
+
+  <footer class="footer" id="footerTxt">Hecho con ❤ para emprendedores. Gratis y simple.</footer>
+
+<script>
+async function loadJSON(p){const r=await fetch(p); if(!r.ok) throw new Error(p+' '+r.status); return r.json();}
+(async function init(){
+  try{
+    const aj = await loadJSON('data/ajustes.json').catch(()=>({}));
+    if(aj.brand){ document.documentElement.style.setProperty('--azul', aj.brand.primary||'#0b376d');
+                  document.documentElement.style.setProperty('--amarillo', aj.brand.secondary||'#ffcc00'); }
+    if(aj.hero?.title) document.getElementById('heroTitle').textContent=aj.hero.title;
+    if(aj.hero?.subtitle!=null) document.getElementById('heroSub').textContent=aj.hero.subtitle||'';
+    const badges = aj.hero?.badges||[]; const wrap=document.getElementById('heroBadges'); wrap.innerHTML='';
+    badges.forEach(b=>{const s=document.createElement('span');s.className='badge';s.textContent=b;wrap.appendChild(s)});
+    document.getElementById('btnReg').style.display = aj.hero?.show_register===false ? 'none':'inline-block';
+    if(aj.footer?.text) document.getElementById('footerTxt').textContent=aj.footer.text;
+  }catch(e){console.warn(e)}
+
+  const data = await loadJSON('data/locales.json');
+  const list = document.getElementById('list');
+  function render(filter=''){
+    list.innerHTML=''; const q=filter.trim().toLowerCase();
+    (data.locales||[]).filter(l=>!q||[l.nombre,l.rubro,l.barrio].join(' ').toLowerCase().includes(q))
+      .forEach(l=>{
+        const a=document.createElement('a'); a.href='negocio.html?l='+encodeURIComponent(l.slug); a.style.textDecoration='none';
+        a.innerHTML = `<div class="card">
+          <div class="logo"><img src="${l.logo||'assets/logo.svg'}" alt="" style="width:36px;height:36px"></div>
+          <div><h3>${l.nombre}</h3><div class="meta">${l.rubro} • ${l.barrio}</div></div>
+        </div>`; list.appendChild(a);
+      });
+  }
+  render();
+  document.getElementById('q').addEventListener('input',e=>render(e.target.value));
+})();
+</script>
 </body>
 </html>

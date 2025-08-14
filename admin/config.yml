@@ -4,8 +4,8 @@ backend:
 
 local_backend: true
 
-media_folder: "uploads"      # dónde se suben las imágenes en el repo
-public_folder: "/uploads"    # ruta pública en el sitio
+media_folder: "uploads"
+public_folder: "/uploads"
 
 collections:
   - label: "Listado (Home)"
@@ -15,8 +15,7 @@ collections:
         name: "locales"
         file: "data/locales.json"
         format: "json"
-        editor:
-          preview: false
+        editor: { preview: false }
         fields:
           - label: "Locales"
             name: "locales"
@@ -36,7 +35,7 @@ collections:
         name: "pizzeria_don_napo"
         file: "data/pizzeria-don-napo.json"
         format: "json"
-        fields:
+        fields: &catalog_fields
           - { label: "Nombre", name: "nombre", widget: "string" }
           - { label: "Subtítulo", name: "subtitulo", widget: "string", required: false }
           - { label: "WhatsApp", name: "whatsapp", widget: "string", hint: "Ej: 5493415550000" }
@@ -59,44 +58,68 @@ collections:
         name: "kiosco_el_centro"
         file: "data/kiosco-el-centro.json"
         format: "json"
-        fields:
-          - { label: "Nombre", name: "nombre", widget: "string" }
-          - { label: "Subtítulo", name: "subtitulo", widget: "string", required: false }
-          - { label: "WhatsApp", name: "whatsapp", widget: "string" }
-          - { label: "Costo de envío", name: "shipping", widget: "number", value_type: "int", default: 0 }
-          - label: "Categorías"
-            name: "categorias"
-            widget: "list"
-            fields:
-              - { label: "Nombre de la categoría", name: "categoria", widget: "string" }
-              - label: "Productos"
-                name: "productos"
-                widget: "list"
-                fields:
-                  - { label: "Nombre", name: "nombre", widget: "string" }
-                  - { label: "Descripción", name: "desc", widget: "text", required: false }
-                  - { label: "Precio", name: "precio", widget: "number", value_type: "int" }
-                  - { label: "Imagen (URL)", name: "img", widget: "string", required: false }
+        fields: *catalog_fields
 
       - label: "Ferretería Soldarte"
         name: "ferreteria_soldarte"
         file: "data/ferreteria-soldarte.json"
         format: "json"
+        fields: *catalog_fields
+
+  - label: "Promociones"
+    name: "promos"
+    folder: "data/promos"
+    create: true
+    format: "json"
+    slug: "{{slug_local}}"
+    fields:
+      - { label: "Slug del local", name: "slug_local", widget: "string", hint: "Debe coincidir con data/<slug>.json" }
+      - label: "Promos"
+        name: "promos"
+        widget: "list"
         fields:
           - { label: "Nombre", name: "nombre", widget: "string" }
-          - { label: "Subtítulo", name: "subtitulo", widget: "string", required: false }
-          - { label: "WhatsApp", name: "whatsapp", widget: "string" }
-          - { label: "Costo de envío", name: "shipping", widget: "number", value_type: "int", default: 0 }
-          - label: "Categorías"
-            name: "categorias"
-            widget: "list"
+          - { label: "Descripción", name: "desc", widget: "text", required: false }
+          - { label: "Precio", name: "precio", widget: "number", value_type: "int" }
+          - { label: "Precio original", name: "precio_original", widget: "number", value_type: "int", required: false }
+          - { label: "Tag (etiqueta)", name: "tag", widget: "string", required: false }
+          - { label: "Vigencia hasta (YYYY-MM-DD)", name: "vigencia_hasta", widget: "string", required: false, hint: "Dejar vacío para siempre vigente" }
+
+  - label: "Ajustes globales"
+    name: "ajustes"
+    files:
+      - label: "Ajustes del sitio"
+        name: "ajustes_sitio"
+        file: "data/ajustes.json"
+        format: "json"
+        fields:
+          - label: "Brand"
+            name: "brand"
+            widget: "object"
             fields:
-              - { label: "Nombre de la categoría", name: "categoria", widget: "string" }
-              - label: "Productos"
-                name: "productos"
+              - { label: "Primario (hex)", name: "primary", widget: "string", default: "#003366" }
+              - { label: "Secundario (hex)", name: "secondary", widget: "string", default: "#ffcc00" }
+          - label: "Hero"
+            name: "hero"
+            widget: "object"
+            fields:
+              - { label: "Título", name: "title", widget: "string", default: "Pedí online a negocios de tu barrio" }
+              - { label: "Subtítulo", name: "subtitle", widget: "string", required: false }
+              - { label: "Mostrar botón Registrar", name: "show_register", widget: "boolean", default: true }
+              - label: "Badges"
+                name: "badges"
                 widget: "list"
-                fields:
-                  - { label: "Nombre", name: "nombre", widget: "string" }
-                  - { label: "Descripción", name: "desc", widget: "text", required: false }
-                  - { label: "Precio", name: "precio", widget: "number", value_type: "int" }
-                  - { label: "Imagen (URL)", name: "img", widget: "string", required: false }
+                required: false
+                field: { label: "Texto", name: "badge", widget: "string" }
+          - label: "Checkout"
+            name: "checkout"
+            widget: "object"
+            fields:
+              - { label: "Costo de envío por defecto", name: "default_shipping", widget: "number", value_type: "int", default: 0 }
+              - { label: "Cupón demo", name: "coupon_code", widget: "string", default: "OFF10" }
+              - { label: "Descuento (%) cupón demo", name: "coupon_percent", widget: "number", value_type: "int", default: 10 }
+          - label: "Footer"
+            name: "footer"
+            widget: "object"
+            fields:
+              - { label: "Texto", name: "text", widget: "string", default: "Hecho con ❤ para emprendedores. Gratis y simple." }

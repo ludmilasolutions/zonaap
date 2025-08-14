@@ -1,22 +1,22 @@
 {
   "locales": [
     {
-      "slug": "pizzeria-don-napo",
       "nombre": "Pizzería Don Napo",
+      "slug": "pizzeria-don-napo",
       "rubro": "Pizzería",
       "barrio": "Rosario Centro",
       "logo": "assets/logo.svg"
     },
     {
-      "slug": "kiosco-el-centro",
       "nombre": "Kiosco El Centro",
+      "slug": "kiosco-el-centro",
       "rubro": "Kiosco",
       "barrio": "Echesortu",
       "logo": "assets/logo.svg"
     },
     {
-      "slug": "ferreteria-soldarte",
       "nombre": "Ferretería Soldarte",
+      "slug": "ferreteria-soldarte",
       "rubro": "Ferretería",
       "barrio": "Fisherton",
       "logo": "assets/logo.svg"

@@ -15,7 +15,7 @@
         },
         {
           "nombre": "Napolitana",
-          "desc": "Tomate, muzza y rodajas de tomate con ajo",
+          "desc": "Muzza, tomate, ajo y rodajas de tomate",
           "precio": 4800,
           "img": "assets/placeholder.svg"
         },
@@ -31,15 +31,15 @@
       "categoria": "Especiales",
       "productos": [
         {
-          "nombre": "Roquefort",
-          "desc": "Roque + muzza",
-          "precio": 5600,
+          "nombre": "Rúcula y crudo",
+          "desc": "Base muzza + rúcula + jamón crudo",
+          "precio": 5900,
           "img": "assets/placeholder.svg"
         },
         {
-          "nombre": "Calabresa",
-          "desc": "Longaniza",
-          "precio": 5700,
+          "nombre": "4 Quesos",
+          "desc": "Muzza, provolone, roquefort, reggianito",
+          "precio": 6100,
           "img": "assets/placeholder.svg"
         }
       ]
@@ -50,13 +50,30 @@
         {
           "nombre": "Coca 1.5L",
           "desc": "",
-          "precio": 1800,
+          "precio": 2300,
           "img": "assets/placeholder.svg"
         },
         {
           "nombre": "Sprite 1.5L",
           "desc": "",
-          "precio": 1700,
+          "precio": 2200,
+          "img": "assets/placeholder.svg"
+        }
+      ]
+    },
+    {
+      "categoria": "Aguas y otros",
+      "productos": [
+        {
+          "nombre": "Agua 1.5L",
+          "desc": "",
+          "precio": 1500,
+          "img": "assets/placeholder.svg"
+        },
+        {
+          "nombre": "Soda 1.5L",
+          "desc": "",
+          "precio": 1200,
           "img": "assets/placeholder.svg"
         }
       ]
