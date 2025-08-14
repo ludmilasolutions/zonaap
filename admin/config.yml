@@ -2,55 +2,129 @@ backend:
   name: git-gateway
   branch: main
 
+local_backend: true
+
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
+
+publish_mode: editorial_workflow
 
 collections:
   - name: "listado"
     label: "Listado (Home)"
-    editor: { preview: false }           # ⬅️ DESACTIVADO
+    editor: { preview: false }
     files:
       - file: "data/locales.json"
         name: "locales"
         label: "Locales"
         format: "json"
-        editor: { preview: false }       # ⬅️ también acá
+        editor: { preview: false }
         fields:
           - label: "Locales"
             name: "locales"
             widget: "list"
+            collapsed: true
+            summary: "{{fields.nombre}} ({{fields.slug}})"
             fields:
               - { label: "Slug", name: "slug", widget: "string" }
               - { label: "Nombre", name: "nombre", widget: "string" }
               - { label: "Rubro", name: "rubro", widget: "string" }
-              - { label: "Barrio", name: "barrio", widget: "string" }
+              - { label: "Barrio", name: "barrio", widget: "string", required: false }
               - { label: "Logo URL", name: "logo", widget: "string", required: false }
 
   - name: "catalogo"
     label: "Catálogo por local"
-    folder: "data"
+    label_singular: "Catálogo"
+    folder: "data/negocios"
+    create: true
     extension: "json"
-    create: false
     format: "json"
-    editor: { preview: false }           # ⬅️ DESACTIVADO
-    # (tus fields aquí)
+    slug: "{{slug}}"
+    editor: { preview: false }
+    fields:
+      - { label: "Nombre del local", name: "nombre", widget: "string" }
+      - { label: "WhatsApp (solo números)", name: "whatsapp", widget: "string", required: false }
+      - { label: "Costo de envío", name: "shipping", widget: "number", required: false, min: 0, step: 50 }
+      - label: "Categorías"
+        name: "categorias"
+        widget: "list"
+        collapsed: true
+        summary: "{{fields.categoria}} ({{fields.productos.length}})"
+        fields:
+          - { label: "Nombre de categoría", name: "categoria", widget: "string" }
+          - label: "Productos"
+            name: "productos"
+            widget: "list"
+            collapsed: true
+            summary: "{{fields.nombre}} — ${{fields.precio}}"
+            fields:
+              - { label: "Nombre", name: "nombre", widget: "string" }
+              - { label: "Descripción", name: "desc", widget: "text", required: false }
+              - { label: "Precio", name: "precio", widget: "number", min: 0, step: 50 }
+              - { label: "Imagen (opcional)", name: "img", widget: "string", required: false }
 
   - name: "promos"
     label: "Promociones"
     folder: "data/promos"
-    extension: "json"
     create: true
+    extension: "json"
     format: "json"
-    editor: { preview: false }           # ⬅️ DESACTIVADO
-    # (tus fields aquí)
+    slug: "{{slug}}"
+    editor: { preview: false }
+    fields:
+      - { label: "Slug del local", name: "slug", widget: "string", hint: "Debe coincidir con el del catálogo." }
+      - label: "Promos"
+        name: "promos"
+        widget: "list"
+        collapsed: true
+        summary: "{{fields.nombre}} — ${{fields.precio}}"
+        fields:
+          - { label: "Nombre", name: "nombre", widget: "string" }
+          - { label: "Descripción", name: "desc", widget: "text", required: false }
+          - { label: "Precio", name: "precio", widget: "number", min: 0, step: 50 }
+          - { label: "Precio original", name: "precio_original", widget: "number", required: false }
+          - { label: "Tag", name: "tag", widget: "string", required: false }
+          - { label: "Vigente hasta (YYYY-MM-DD)", name: "vigencia_hasta", widget: "string", required: false }
 
   - name: "ajustes"
     label: "Ajustes globales"
-    editor: { preview: false }           # ⬅️ DESACTIVADO
+    editor: { preview: false }
     files:
       - file: "data/ajustes.json"
         name: "ajustes"
         label: "Ajustes"
         format: "json"
-        editor: { preview: false }       # ⬅️ DESACTIVADO
-        # (tus fields aquí)
+        editor: { preview: false }
+        fields:
+          - label: "Brand"
+            name: "brand"
+            widget: "object"
+            fields:
+              - { label: "Primario", name: "primary", widget: "string", default: "#0b2a4a" }
+              - { label: "Secundario", name: "secondary", widget: "string", default: "#0f172a" }
+              - { label: "Acento", name: "accent", widget: "string", default: "#ffcc00" }
+          - label: "Hero"
+            name: "hero"
+            widget: "object"
+            fields:
+              - { label: "Título", name: "title", widget: "string", default: "Pedí online a negocios de tu barrio" }
+              - { label: "Subtítulo", name: "subtitle", widget: "string", required: false }
+              - label: "Badges"
+                name: "badges"
+                widget: "list"
+                required: false
+                fields:
+                  - { label: "Texto", name: "text", widget: "string" }
+                  - { label: "Icono", name: "icon", widget: "string", required: false }
+          - label: "Checkout"
+            name: "checkout"
+            widget: "object"
+            fields:
+              - { label: "Envío por defecto", name: "default_shipping", widget: "number", min: 0, default: 1200 }
+              - { label: "Cupón (código)", name: "coupon_code", widget: "string", required: false }
+              - { label: "Cupón (% descuento)", name: "coupon_percent", widget: "number", required: false, min: 1, max: 90 }
+          - label: "Footer"
+            name: "footer"
+            widget: "object"
+            fields:
+              - { label: "Texto", name: "text", widget: "string", required: false }
