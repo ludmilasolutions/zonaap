@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registrar mi local | Zonaap</title>
+  <link rel="icon" href="assets/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--b:#e5e7eb;--bg:#f8f9fa;--azul:#003366;--amarillo:#ffcc00}
+    *{box-sizing:border-box} body{font-family:Roboto,sans-serif;background:var(--bg);color:#111}
+    main{max-width:720px;margin:2rem auto;padding:1rem}
+    h1{margin:.5rem 0 1rem}
+    label{display:block;margin:.6rem 0 .3rem;font-weight:800}
+    input,textarea{width:100%;padding:.9rem 1rem;border:1px solid var(--b);border-radius:12px;font-size:1rem}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+    .btn{margin-top:1rem;display:inline-flex;gap:.5rem;align-items:center;padding:.9rem 1.2rem;border-radius:12px;font-weight:900;background:var(--azul);color:var(--amarillo);border:2px solid var(--amarillo);cursor:pointer}
+    .msg{margin-top:1rem;padding:.8rem;border-radius:10px;display:none}
+    .ok{background:#ecfdf5;border:1px solid #a7f3d0} .err{background:#fef2f2;border:1px solid #fecaca}
+    small{color:#6b7280}
+  </style>
+
+  <style>
+    .brand-header{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+    .brand-logo{max-height:140px;width:auto;display:block;margin:0 auto 0.5rem}
+    @media (min-width:900px){ .brand-logo{max-height:160px} }
+  </style>
+
+  <style>
+    .brand-header{display:grid;place-items:center;text-align:center}
+    .brand-lockup{width:min(90vw, 680px);}
+    .brand-svg{width:100%;height:auto;display:block;margin:0 auto .5rem}
+    @media (min-width:1200px){ .brand-lockup{width:680px} }
+  </style>
+
+</head>
+<body>
+  <main>
+    <h1>Registrar mi local (gratis)</h1>
+    <p>Enviás el alta y te abrimos un Pull Request con tu tienda. Al aprobarlo, tu página queda online.</p>
+    <form id="f">
+      <label>Nombre del local<input required name="nombre" placeholder="Ej: Rotisería El Tachi"></label>
+      <div class="row">
+        <div><label>Rubro<input name="rubro" placeholder="Rotisería, Kiosco, Pizzería…"></label></div>
+        <div><label>Barrio / Ciudad<input name="barrio" placeholder="Echesortu, Rosario"></label></div>
+      </div>
+      <label>WhatsApp (número)<input required name="whatsapp" placeholder="Ej: 3415923882"></label>
+      <label>Logo (URL opcional)<input name="logo" placeholder="https://.../logo.png"></label>
+      <label>Slug (si no completás lo generamos)<input name="slug" placeholder="el-tachi"></label>
+      <label>Mensaje (opcional)<textarea name="msg" rows="3" placeholder="Algo para contarnos…"></textarea></label>
+      <button class="btn" type="submit">Enviar alta</button>
+      <div id="mOk" class="msg ok"></div>
+      <div id="mErr" class="msg err"></div>
+      <p><small>Requiere que el sitio esté en Netlify con variables de entorno GitHub configuradas.</small></p>
+    </form>
+  </main>
+
+  <script>
+    function slugify(s){return (s||'').toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}
+    const f = document.getElementById('f');
+    const ok = document.getElementById('mOk');
+    const er = document.getElementById('mErr');
+    f.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      ok.style.display='none'; er.style.display='none';
+      const data = Object.fromEntries(new FormData(f).entries());
+      data.slug = data.slug ? slugify(data.slug) : slugify(data.nombre);
+      try{
+        const r = await fetch('/.netlify/functions/create-branch-pr', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) });
+        const j = await r.json();
+        if(!r.ok || j.error){ throw new Error(j.error||('HTTP '+r.status)); }
+        ok.style.display='block'; ok.textContent = 'Listo. Revisá el PR: ' + j.pr_url;
+        f.reset();
+      }catch(e){
+        er.style.display='block'; er.textContent = 'No se pudo crear el PR: ' + e.message;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Seguimiento de pedido | Zonaap</title>
+  <link rel="icon" href="assets/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--card:#fff;--b:#e5e7eb;--ok:#047857;--muted:#64748b}
+    body{font-family:Roboto,sans-serif;background:#f8fafc;color:#111}
+    main{max-width:720px;margin:2rem auto;padding:1rem}
+    .card{background:var(--card);border:1px solid var(--b);border-radius:16px;padding:1rem;box-shadow:0 10px 24px rgba(0,0,0,.06)}
+    label{display:block;margin:.6rem 0 .25rem;font-weight:800}
+    input{width:100%;padding:.9rem 1rem;border:1px solid var(--b);border-radius:12px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+    .btn{margin-top:1rem;padding:.9rem 1.2rem;border-radius:12px;border:2px solid #ffcc00;background:#003366;color:#ffcc00;font-weight:900;cursor:pointer}
+    .badge{display:inline-flex;gap:.4rem;align-items:center;border-radius:999px;padding:.2rem .6rem;border:1px solid var(--b)}
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Seguimiento de tu pedido</h1>
+    <div class="card">
+      <div class="row">
+        <div><label>Local (slug)<input id="slug" placeholder="ej: demo-tachi"></label></div>
+        <div><label>ID de pedido<input id="oid" placeholder="W2025..."></label></div>
+      </div>
+      <button class="btn" id="go">Ver estado</button>
+      <div id="rs" style="margin-top:1rem;display:none">
+        <div>Estado: <span id="st" class="badge">-</span></div>
+        <ul style="margin:.6rem 0 0; padding-left:1rem; color:#334155; display:grid; gap:.25rem">
+          <li>Total: <strong id="tot">$ 0</strong></li>
+          <li>Entrega: <span id="ent">-</span></li>
+          <li id="addrLi" style="display:none">Dirección: <span id="addr">-</span></li>
+        </ul>
+      </div>
+    </div>
+  </main>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const slugEl = document.getElementById('slug');
+    const oidEl  = document.getElementById('oid');
+    slugEl.value = params.get('l') || '';
+    oidEl.value  = params.get('o') || '';
+
+    const fmtARS=n=>new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(n);
+
+    function badge(el, estado){
+      const map = {
+        'recibido': ['Recibido'],
+        'nuevo': ['Nuevo'],
+        'en preparación': ['En preparación'],
+        'listo': ['Listo'],
+        'entregado': ['Entregado']
+      };
+      const key = String(estado||'').toLowerCase();
+      el.textContent = (map[key]||['-'])[0];
+    }
+
+    async function ajustes(slug){
+      // Intenta content.json primero
+      try{
+        const r = await fetch(`locales/${slug}/content.json`);
+        if(r.ok){
+          const j = await r.json();
+          return (j.ajustes || {});
+        }
+      }catch{}
+      try{
+        const r = await fetch(`locales/${slug}/ajustes.json`);
+        if(r.ok) return await r.json();
+      }catch{}
+      return {};
+    }
+
+    function statusJSONP(hook, orderId){
+      return new Promise((resolve,reject)=>{
+        const cb='__track_cb_'+Math.random().toString(36).slice(2);
+        window[cb]=function(payload){ resolve(payload); cleanup(); };
+        function cleanup(){ try{ delete window[cb]; }catch{}; if(s && s.parentNode){ s.parentNode.removeChild(s); } }
+        const s=document.createElement('script');
+        s.src=`${hook}?view=status&order_id=${encodeURIComponent(orderId)}&callback=${cb}`;
+        s.onerror=()=>{ reject(new Error('No se pudo consultar el estado')); cleanup(); };
+        document.body.appendChild(s);
+        setTimeout(()=>{ reject(new Error('Timeout')); cleanup(); },8000);
+      });
+    }
+
+    document.getElementById('go').addEventListener('click', async () => {
+      const slug = (slugEl.value||'').trim();
+      const oid  = (oidEl.value||'').trim();
+      if(!slug || !oid){ alert('Completá slug e ID'); return; }
+      const aj = await ajustes(slug);
+      const hook = aj.analytics_webhook || '';
+      if(!hook){ alert('El local no tiene analytics_webhook configurado.'); return; }
+      try{
+        const data = await statusJSONP(hook, oid);
+        const rs = document.getElementById('rs'); rs.style.display='block';
+        badge(document.getElementById('st'), data.estado);
+        document.getElementById('tot').textContent = fmtARS(Number(data.total||0));
+        const ent = document.getElementById('ent');
+        ent.textContent = data.method==='envio' ? 'Envío a domicilio' : 'Retiro en el local';
+        const addrLi = document.getElementById('addrLi');
+        addrLi.style.display = data.method==='envio' ? 'list-item' : 'none';
+        document.getElementById('addr').textContent = data.address || '-';
+      }catch(e){
+        alert('No pudimos obtener el estado.');
+      }
+    });
+  </script>
+</body>
+</html>

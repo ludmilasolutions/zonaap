@@ -1,0 +1,17 @@
+{
+  "categorias": [
+    {
+      "categoria": "GASEOSAS",
+      "productos": [
+        {
+          "nombre": "Coca 1.5L",
+          "precio": 3200
+        },
+        {
+          "nombre": "Sprite 1.5L",
+          "precio": 3000
+        }
+      ]
+    }
+  ]
+}

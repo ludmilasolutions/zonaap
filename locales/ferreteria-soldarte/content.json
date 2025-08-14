@@ -1,0 +1,104 @@
+{
+  "ajustes": {
+    "nombre": "Ferretería Soldarte",
+    "sub": "Herramientas & Hogar",
+    "logo": "assets/logo-ferreteria.png",
+    "whatsapp": "3415777666",
+    "shipping": 0,
+    "analytics_webhook": "",
+    "tab_rotiseria": "🔧 Herramientas",
+    "tab_bebidas": "🧰 Accesorios",
+    "horarios": {
+      "rotiseria": {
+        "dias": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "rangos": [
+          {
+            "desde": "09:00",
+            "hasta": "19:00"
+          }
+        ]
+      },
+      "bebidas": {
+        "dias": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "rangos": [
+          {
+            "desde": "09:00",
+            "hasta": "19:00"
+          }
+        ]
+      }
+    },
+    "theme": {
+      "azul": "#374151",
+      "amarillo": "#fbbf24",
+      "bg": "#f3f4f6",
+      "text": "#111827"
+    }
+  },
+  "productos": {
+    "rotiseria": {
+      "categorias": [
+        {
+          "categoria": "HERRAMIENTAS",
+          "productos": [
+            {
+              "nombre": "Martillo carpintero",
+              "precio": 9500
+            },
+            {
+              "nombre": "Alicate universal",
+              "precio": 7800
+            },
+            {
+              "nombre": "Cinta métrica 5m",
+              "precio": 4200
+            }
+          ]
+        }
+      ]
+    },
+    "bebidas": {
+      "categorias": [
+        {
+          "categoria": "ACCESORIOS",
+          "productos": [
+            {
+              "nombre": "Tornillos x100",
+              "precio": 3600
+            },
+            {
+              "nombre": "Tarugo 8mm x50",
+              "precio": 3100
+            },
+            {
+              "nombre": "Guantes de obra",
+              "precio": 2500
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "promos": {
+    "rotiseria": {
+      "promos": []
+    },
+    "bebidas": {
+      "promos": []
+    }
+  }
+}

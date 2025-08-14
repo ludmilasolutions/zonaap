@@ -1,0 +1,41 @@
+{
+  "nombre": "Rotisería El Tachi (Demo)",
+  "sub": "Hacé tu pedido desde la web",
+  "logo": "assets/logo.png",
+  "whatsapp": "3415923882",
+  "shipping": 1000,
+  "analytics_webhook": "",
+  "horarios": {
+    "rotiseria": {
+      "dias": [
+        4,
+        5,
+        6,
+        0
+      ],
+      "rangos": [
+        {
+          "desde": "19:30",
+          "hasta": "22:30"
+        }
+      ]
+    },
+    "bebidas": {
+      "dias": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "rangos": [
+        {
+          "desde": "09:00",
+          "hasta": "23:59"
+        }
+      ]
+    }
+  }
+}

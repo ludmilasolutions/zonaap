@@ -1,0 +1,111 @@
+{
+  "ajustes": {
+    "nombre": "Kiosco El Centro",
+    "sub": "Snacks, golosinas y bebidas",
+    "logo": "assets/logo-kiosco.png",
+    "whatsapp": "3415888999",
+    "shipping": 800,
+    "analytics_webhook": "",
+    "tab_rotiseria": "🍫 Almacén",
+    "tab_bebidas": "🥤 Bebidas",
+    "horarios": {
+      "rotiseria": {
+        "dias": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "rangos": [
+          {
+            "desde": "08:00",
+            "hasta": "23:59"
+          }
+        ]
+      },
+      "bebidas": {
+        "dias": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "rangos": [
+          {
+            "desde": "08:00",
+            "hasta": "23:59"
+          }
+        ]
+      }
+    },
+    "theme": {
+      "azul": "#0b7285",
+      "amarillo": "#ffd43b",
+      "bg": "#f8fbfd",
+      "text": "#1f2937"
+    }
+  },
+  "productos": {
+    "rotiseria": {
+      "categorias": [
+        {
+          "categoria": "GOLOSINAS",
+          "productos": [
+            {
+              "nombre": "Chocolate 60g",
+              "precio": 1800
+            },
+            {
+              "nombre": "Caramelos surtidos",
+              "precio": 900
+            }
+          ]
+        },
+        {
+          "categoria": "SNACKS",
+          "productos": [
+            {
+              "nombre": "Papas 95g",
+              "precio": 2200
+            },
+            {
+              "nombre": "Maní salado 150g",
+              "precio": 1600
+            }
+          ]
+        }
+      ]
+    },
+    "bebidas": {
+      "categorias": [
+        {
+          "categoria": "FRÍAS",
+          "productos": [
+            {
+              "nombre": "Coca 1.5L",
+              "precio": 3900
+            },
+            {
+              "nombre": "Agua 500ml",
+              "precio": 1200
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "promos": {
+    "rotiseria": {
+      "promos": []
+    },
+    "bebidas": {
+      "promos": []
+    }
+  }
+}
