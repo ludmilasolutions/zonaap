@@ -1,5 +1,102 @@
 backend:
-  name: test-repo
-media_folder: "assets"
-public_folder: "/assets"
-collections: []
+  name: git-gateway
+  branch: main
+
+local_backend: true
+
+media_folder: "uploads"      # dónde se suben las imágenes en el repo
+public_folder: "/uploads"    # ruta pública en el sitio
+
+collections:
+  - label: "Listado (Home)"
+    name: "listado"
+    files:
+      - label: "Locales"
+        name: "locales"
+        file: "data/locales.json"
+        format: "json"
+        editor:
+          preview: false
+        fields:
+          - label: "Locales"
+            name: "locales"
+            widget: "list"
+            summary: "{{fields.nombre}} ({{fields.rubro}} • {{fields.barrio}})"
+            fields:
+              - { label: "Nombre", name: "nombre", widget: "string" }
+              - { label: "Slug", name: "slug", widget: "string", hint: "Debe coincidir con data/<slug>.json" }
+              - { label: "Rubro", name: "rubro", widget: "string" }
+              - { label: "Barrio", name: "barrio", widget: "string" }
+              - { label: "Logo URL", name: "logo", widget: "string", required: false }
+
+  - label: "Catálogo por local"
+    name: "catalogo"
+    files:
+      - label: "Pizzería Don Napo"
+        name: "pizzeria_don_napo"
+        file: "data/pizzeria-don-napo.json"
+        format: "json"
+        fields:
+          - { label: "Nombre", name: "nombre", widget: "string" }
+          - { label: "Subtítulo", name: "subtitulo", widget: "string", required: false }
+          - { label: "WhatsApp", name: "whatsapp", widget: "string", hint: "Ej: 5493415550000" }
+          - { label: "Costo de envío", name: "shipping", widget: "number", value_type: "int", default: 0 }
+          - label: "Categorías"
+            name: "categorias"
+            widget: "list"
+            fields:
+              - { label: "Nombre de la categoría", name: "categoria", widget: "string" }
+              - label: "Productos"
+                name: "productos"
+                widget: "list"
+                fields:
+                  - { label: "Nombre", name: "nombre", widget: "string" }
+                  - { label: "Descripción", name: "desc", widget: "text", required: false }
+                  - { label: "Precio", name: "precio", widget: "number", value_type: "int" }
+                  - { label: "Imagen (URL)", name: "img", widget: "string", required: false }
+
+      - label: "Kiosco El Centro"
+        name: "kiosco_el_centro"
+        file: "data/kiosco-el-centro.json"
+        format: "json"
+        fields:
+          - { label: "Nombre", name: "nombre", widget: "string" }
+          - { label: "Subtítulo", name: "subtitulo", widget: "string", required: false }
+          - { label: "WhatsApp", name: "whatsapp", widget: "string" }
+          - { label: "Costo de envío", name: "shipping", widget: "number", value_type: "int", default: 0 }
+          - label: "Categorías"
+            name: "categorias"
+            widget: "list"
+            fields:
+              - { label: "Nombre de la categoría", name: "categoria", widget: "string" }
+              - label: "Productos"
+                name: "productos"
+                widget: "list"
+                fields:
+                  - { label: "Nombre", name: "nombre", widget: "string" }
+                  - { label: "Descripción", name: "desc", widget: "text", required: false }
+                  - { label: "Precio", name: "precio", widget: "number", value_type: "int" }
+                  - { label: "Imagen (URL)", name: "img", widget: "string", required: false }
+
+      - label: "Ferretería Soldarte"
+        name: "ferreteria_soldarte"
+        file: "data/ferreteria-soldarte.json"
+        format: "json"
+        fields:
+          - { label: "Nombre", name: "nombre", widget: "string" }
+          - { label: "Subtítulo", name: "subtitulo", widget: "string", required: false }
+          - { label: "WhatsApp", name: "whatsapp", widget: "string" }
+          - { label: "Costo de envío", name: "shipping", widget: "number", value_type: "int", default: 0 }
+          - label: "Categorías"
+            name: "categorias"
+            widget: "list"
+            fields:
+              - { label: "Nombre de la categoría", name: "categoria", widget: "string" }
+              - label: "Productos"
+                name: "productos"
+                widget: "list"
+                fields:
+                  - { label: "Nombre", name: "nombre", widget: "string" }
+                  - { label: "Descripción", name: "desc", widget: "text", required: false }
+                  - { label: "Precio", name: "precio", widget: "number", value_type: "int" }
+                  - { label: "Imagen (URL)", name: "img", widget: "string", required: false }
