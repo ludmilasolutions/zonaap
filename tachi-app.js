@@ -305,7 +305,32 @@
     }catch(e){ console.warn('Ajustes default', e); }
   }
 
-  async function cargarProductos(){
+  
+async function cargarProductos(){
+
+  function updateHero(){
+    try{
+      const c = loadClient(); // name/address not needed
+      const name = (window.AJ_NOMBRE || '').trim();
+      const sub  = (window.AJ_SUB || '').trim();
+      const logo = (window.AJ_LOGO || 'assets/zonaap-pro-wordmark-centered.svg');
+      const ship = SHIPPING;
+      const abierto = (seccion)=>!seccionCerradaAhora(seccion);
+      const elName = document.getElementById('storeName');
+      const elSub  = document.getElementById('storeSub');
+      const elLogo = document.getElementById('storeLogo');
+      const elBadges = document.getElementById('storeBadges');
+      if(elName) elName.textContent = name || 'Tu tienda en Zonaap';
+      if(elSub)  elSub.textContent  = sub  || '';
+      if(elLogo) elLogo.src = logo;
+      if(elBadges){
+        elBadges.innerHTML = '';
+        if(SHIPPING>0){ const b=document.createElement('span'); b.className='badge badge-ship'; b.textContent='🚚 Envío desde '+formatARS(SHIPPING); elBadges.appendChild(b); }
+        const b2=document.createElement('span'); b2.className='badge badge-open'; b2.textContent = (abierto('rotiseria')||abierto('bebidas'))?'🟢 Abierto ahora':'🔴 Cerrado'; elBadges.appendChild(b2);
+      }
+    }catch{}
+  }
+
     const content = await tryLoadContentJson();
     if(content && content.ajustes){
       // Ajustes desde content.json
@@ -358,6 +383,7 @@
     const bMerge = mergePromos(bOk, pbOk);
     renderProductos('menu-rotiseria', rMerge);
     renderProductos('menu-bebidas',  bMerge);
+    buildCatNav('rotiseria'); buildCatNav('bebidas'); updateHero();
     logEvent('menus_loaded',{slug,rotiseria_cats:(rMerge.categorias||[]).length,bebidas_cats:(bMerge.categorias||[]).length, mode:'split-files'});
   }
   window.addEventListener('DOMContentLoaded', ()=>{
@@ -368,3 +394,29 @@
     });
   });
 })();
+function slugifyCat(s){ return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-'); }
+function buildCatNav(sec){
+  try{
+    const cont = document.getElementById('catNav');
+    if(!cont) return;
+    if((sec==='rotiseria' && document.getElementById('menu-rotiseria').style.display==='none') ||
+       (sec==='bebidas'   && document.getElementById('menu-bebidas').style.display==='none')) return;
+    cont.innerHTML = '';
+    const parent = document.getElementById('menu-'+sec);
+    if(!parent) return;
+    const cats = parent.querySelectorAll('details');
+    cats.forEach((det,i)=>{
+      const title = det.querySelector('summary')?.textContent || 'Cat '+(i+1);
+      const id = 'cat-'+sec+'-'+slugifyCat(title);
+      det.id = id;
+      const a = document.createElement('a');
+      a.textContent = title;
+      a.href = '#'+id;
+      a.className = 'cat-chip';
+      cont.appendChild(a);
+    });
+  }catch{}
+}
+// rebuild nav when switching tabs
+const __oldMostrar = window.mostrar;
+window.mostrar = function(sec){ __oldMostrar(sec); buildCatNav(sec); };

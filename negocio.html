@@ -46,6 +46,20 @@
     })();
   </script>
 
+
+  <style>
+    .store-hero{display:flex;gap:14px;align-items:center;background:linear-gradient(90deg,#0b315f,#001a33);color:#fff;border-radius:16px;padding:14px;margin:0 0 12px}
+    .store-logo{width:72px;height:72px;border-radius:14px;object-fit:cover;border:2px solid #fff1}
+    .store-info h1{margin:0;font-size:1.35rem}
+    .store-sub{margin:.15rem 0 0;color:#d1d5db}
+    .store-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+    .badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 10px;font-weight:800;font-size:.82rem}
+    .badge-ship{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}
+    .badge-open{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0}
+    .cat-nav{position:sticky;top:8px;background:#f8fafc;padding:6px 0;display:flex;gap:8px;flex-wrap:wrap;z-index:5}
+    .cat-chip{border:1px solid #cbd5e1;border-radius:999px;padding:6px 10px;background:#fff;cursor:pointer;font-weight:800}
+    .producto{border-radius:14px;border:1px solid #e5e7eb;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  </style>
 </head>
 <body>
   <a class="back" href="index.html">← Volver</a>
@@ -55,7 +69,18 @@
     <p id="negSub">Hacé tu pedido desde la web</p>
   </header>
 
-  <main>
+  
+<main>
+  <section id="storeHero" class="store-hero" aria-labelledby="storeName">
+    <img id="storeLogo" class="store-logo" src="assets/zonaap-pro-wordmark-centered.svg" alt="" />
+    <div class="store-info">
+      <h1 id="storeName">Nombre del local</h1>
+      <p id="storeSub" class="store-sub">Subtítulo o lema</p>
+      <div id="storeBadges" class="store-badges"></div>
+    </div>
+  </section>
+  <div id="catNav" class="cat-nav" aria-label="Categorías"></div>
+
     <!-- Tabs y menús generados por tachi-app.js -->
     <div class="tabs" style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:1rem">
       <button id="btn-rotiseria" class="active" onclick="mostrar('rotiseria')">🍕 Rotisería</button>

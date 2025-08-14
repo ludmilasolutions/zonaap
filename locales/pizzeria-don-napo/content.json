@@ -1,10 +1,12 @@
 {
   "ajustes": {
     "nombre": "Pizzería Don Napo",
-    "sub": "Demo de Zonaap",
+    "sub": "Masa a la piedra desde 1998",
     "logo": "assets/logo-pizzeria.png",
     "whatsapp": "3415000000",
-    "shipping": 1000,
+    "shipping": 1200,
+    "tab_rotiseria": "🍕 Pizzas",
+    "tab_bebidas": "🥤 Bebidas",
     "horarios": {
       "rotiseria": {
         "dias": [
@@ -18,7 +20,7 @@
         ],
         "rangos": [
           {
-            "desde": "09:00",
+            "desde": "19:30",
             "hasta": "23:59"
           }
         ]
@@ -35,29 +37,88 @@
         ],
         "rangos": [
           {
-            "desde": "09:00",
+            "desde": "10:00",
             "hasta": "23:59"
           }
         ]
       }
     },
-    "tab_rotiseria": "🍕 Pizzas",
-    "tab_bebidas": "🥤 Bebidas"
+    "cupones": [
+      {
+        "code": "NAPO10",
+        "type": "percent",
+        "value": 10
+      },
+      {
+        "code": "2xENVIO",
+        "type": "shipping",
+        "value": 100
+      }
+    ]
   },
   "productos": {
     "rotiseria": {
       "categorias": [
         {
-          "categoria": "CAT 1",
+          "categoria": "Clásicas",
           "productos": [
             {
-              "nombre": "Producto A",
-              "precio": 2000,
-              "desc": "Descripción corta"
+              "nombre": "Muzzarella",
+              "precio": 4900,
+              "desc": "Salsa, muzza, aceitunas, orégano"
             },
             {
-              "nombre": "Producto B",
-              "precio": 3200
+              "nombre": "Napolitana",
+              "precio": 5400,
+              "desc": "Muzza, tomate en rodajas, ajo y perejil"
+            },
+            {
+              "nombre": "Jamón y morrones",
+              "precio": 5600
+            }
+          ]
+        },
+        {
+          "categoria": "Especiales",
+          "productos": [
+            {
+              "nombre": "4 Quesos",
+              "precio": 6200
+            },
+            {
+              "nombre": "Fugazzeta",
+              "precio": 5900,
+              "desc": "Cebolla, muzza, parmesano"
+            },
+            {
+              "nombre": "Calabresa",
+              "precio": 6100,
+              "desc": "Longaniza + picante"
+            }
+          ]
+        },
+        {
+          "categoria": "Empanadas x Uni.",
+          "productos": [
+            {
+              "nombre": "Carne",
+              "precio": 950
+            },
+            {
+              "nombre": "Pollo",
+              "precio": 950
+            },
+            {
+              "nombre": "Jamón y Queso",
+              "precio": 950
+            },
+            {
+              "nombre": "Humita",
+              "precio": 950
+            },
+            {
+              "nombre": "Verdura",
+              "precio": 950
             }
           ]
         }
@@ -66,15 +127,36 @@
     "bebidas": {
       "categorias": [
         {
-          "categoria": "BEBIDAS",
+          "categoria": "Gaseosas",
+          "productos": [
+            {
+              "nombre": "Coca 1.5L",
+              "precio": 2700
+            },
+            {
+              "nombre": "Sprite 1.5L",
+              "precio": 2600
+            },
+            {
+              "nombre": "Manaos 2.25L",
+              "precio": 2300
+            }
+          ]
+        },
+        {
+          "categoria": "Aguas y otros",
           "productos": [
             {
               "nombre": "Agua 500ml",
               "precio": 900
             },
             {
-              "nombre": "Gaseosa 1.5L",
-              "precio": 3200
+              "nombre": "Agua 1.5L",
+              "precio": 1400
+            },
+            {
+              "nombre": "Cerveza Lata 473ml",
+              "precio": 2100
             }
           ]
         }
@@ -83,7 +165,15 @@
   },
   "promos": {
     "rotiseria": {
-      "promos": []
+      "promos": [
+        {
+          "nombre": "2 Muzzas + Gaseosa 1.5L",
+          "precio": 13500,
+          "precio_original": 14900,
+          "desc": "Ideal para 4 pers.",
+          "tag": "2x1.5L"
+        }
+      ]
     },
     "bebidas": {
       "promos": []
