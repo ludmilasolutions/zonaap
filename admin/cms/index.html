@@ -5,12 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Zonaap CMS</title>
     <link rel="icon" href="../../assets/logo.png">
-    <script src="https://unpkg.com/decap-cms@^3.4.0/dist/decap-cms.js"></script>
   </head>
   <body>
+    <div id="nc-root"></div>
     <script>
-      // Opcional: preview styles
-      CMS.registerPreviewStyle('../../assets/logo.png');
+      // Esperar a que la librería cargue y el DOM exista
+      function onCmsReady(cb){
+        if (window.CMS) { cb(); return; }
+        const i = setInterval(() => {
+          if (window.CMS) { clearInterval(i); cb(); }
+        }, 50);
+      }
+    </script>
+    <script src="https://unpkg.com/decap-cms@^3.8.0/dist/decap-cms.js"></script>
+    <script>
+      onCmsReady(function(){
+        try{
+          // Opcional: estilos de preview
+          CMS.registerPreviewStyle('../../assets/logo.png');
+        }catch(e){ /* no-op */ }
+      });
     </script>
   </body>
 </html>
