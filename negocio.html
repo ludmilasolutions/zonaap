@@ -60,6 +60,23 @@
     .cat-chip{border:1px solid #cbd5e1;border-radius:999px;padding:6px 10px;background:#fff;cursor:pointer;font-weight:800}
     .producto{border-radius:14px;border:1px solid #e5e7eb;box-shadow:0 1px 3px rgba(0,0,0,.04)}
   </style>
+
+  <style>
+    /* Cart FAB always on top */
+    .cart-fab{ z-index: 9999 !important; right: 16px; bottom: calc(18px + env(safe-area-inset-bottom)); position: fixed; }
+    /* Improve product rows */
+    .producto{ background:#fff; border:1px solid #e5e7eb; border-radius:14px; margin:.5rem 0; padding:.7rem 1rem; }
+    .producto:hover{ background:#f8fafc }
+    .prod-thumb{ width:72px; height:72px; border-radius:14px; border:1px solid #e5e7eb; overflow:hidden; background:#eef2f7 }
+    .producto-info h3{ font-size:1.05rem; margin:0 0 .15rem }
+    .producto-info p{ color:#475569 }
+    .price-new{ font-weight:900; color:#0b376d }
+    /* Bottom sheet: slightly larger on desktop */
+    @media (min-width: 900px){
+      .sheet{ width:760px }
+    }
+  </style>
+
 </head>
 <body>
   <a class="back" href="index.html">← Volver</a>
@@ -91,7 +108,15 @@
 
     <!-- Seguimiento -->
     <section id="track" class="track track-hide" aria-labelledby="track-title"></section>
-  </main>
+  
+  <!-- FAB -->
+  <button id="cartFab" type="button" class="cart-fab" hidden title="Ver pedido" aria-label="Ver pedido">
+    <span class="cart-icon">🛒</span>
+    <span class="cart-total" id="fabTotal">$ 0</span>
+    <span class="cart-count" id="fabCount">0</span>
+  </button>
+
+</main>
 
   <!-- FAB + Sheet + Modal + Toasts se inyectan desde tachi-app.js (reusa UI El Tachi) -->
   <script>
@@ -100,5 +125,60 @@
     window.ZONAAP_SLUG = params.get('l') || 'demo-tachi';
   </script>
   <script src="tachi-app.js"></script>
+
+  <!-- Backdrop + Bottom-sheet del carrito (El Tachi style) -->
+  <div id="sheetBackdrop" class="sheet-backdrop" aria-hidden="true"></div>
+  <div id="cartSheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" aria-hidden="true">
+    <div class="sheet-header">
+      <span class="sheet-handle" aria-hidden="true"></span>
+      <h3 id="sheetTitle" class="sheet-title">Tu pedido</h3>
+      <div class="steps" id="checkoutSteps" aria-label="Progreso">
+        <div class="step" data-step="1"><span class="dot"></span><span>Datos</span></div>
+        <span>→</span>
+        <div class="step" data-step="2"><span class="dot"></span><span>Resumen</span></div>
+        <span>→</span>
+        <div class="step" data-step="3"><span class="dot"></span><span>WhatsApp</span></div>
+      </div>
+      <button id="sheetClose" type="button" class="sheet-close" aria-label="Cerrar">✕</button>
+    </div>
+    <div id="sheetBody" class="sheet-body" tabindex="0">
+      <section id="checkout">
+        <div class="segmented" role="tablist" aria-label="Entrega">
+          <input id="opt-ret" type="radio" name="envio" value="retiro">
+          <label for="opt-ret">Retiro</label>
+          <input id="opt-env" type="radio" name="envio" value="envio">
+          <label for="opt-env">Envío</label>
+        </div>
+
+        <label>Nombre:
+          <input type="text" id="nombre" placeholder="Tu nombre">
+        </label>
+
+        <label>Dirección:
+          <input type="text" id="direccion" placeholder="Calle, número, piso/depto">
+        </label>
+
+        <div id="resumen">
+          <h3>Resumen del pedido</h3>
+          <p id="emptyMsg" class="resumen-empty">Aún no agregaste productos.</p>
+          <ul id="lista" class="resumen-list"></ul>
+
+          <div class="totales" aria-live="polite">
+            <div class="tot-line"><span>Subtotal</span><span id="subtotal">$ 0</span></div>
+            <div id="envioLine" class="tot-line" hidden><span>Envío</span><span id="envioCosto"></span></div>
+            <div class="tot-line"><span>Descuento</span><span id="descMonto">$ 0</span></div>
+            <div class="tot-line"><span>Propina</span><span id="propMonto">$ 0</span></div>
+            <div class="tot-line total"><span>Total</span><span id="total">$ 0</span></div>
+          </div>
+
+          <div class="acciones">
+            <button id="btn-whatsapp" onclick="enviarPedido()">Hacer pedido por WhatsApp</button>
+            <button id="btn-vaciar"   type="button" onclick="vaciarCarrito()">Vaciar carrito</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
 </body>
 </html>
