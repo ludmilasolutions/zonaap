@@ -420,3 +420,17 @@ function buildCatNav(sec){
 // rebuild nav when switching tabs
 const __oldMostrar = window.mostrar;
 window.mostrar = function(sec){ __oldMostrar(sec); buildCatNav(sec); };
+
+
+function applyAjustesToHeader(aj){
+  try{
+    const name = aj?.nombre || aj?.ajustes?.nombre || '';
+    const sub  = aj?.sub || aj?.ajustes?.sub || '';
+    const logo = aj?.logo || aj?.ajustes?.logo || '';
+    const h1 = document.getElementById('storeTitle');
+    const img = document.getElementById('storeLogo');
+    if(h1 && name) h1.textContent = name;
+    if(img && logo) img.src = logo;
+    if(name) document.title = name + ' | Pedidos';
+  }catch(e){}
+}
