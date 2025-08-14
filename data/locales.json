@@ -1,29 +1,31 @@
-[
-  {
-    "slug": "pizzeria-don-napo",
-    "nombre": "Pizzería Don Napo",
-    "rubro": "Pizzería",
-    "barrio": "Rosario Centro",
-    "logo": "assets/logo-pizzeria.png",
-    "envio": true,
-    "abierto": true
-  },
-  {
-    "slug": "kiosco-el-centro",
-    "nombre": "Kiosco El Centro",
-    "rubro": "Kiosco",
-    "barrio": "Echesortu",
-    "logo": "assets/logo-kiosco.png",
-    "envio": true,
-    "abierto": true
-  },
-  {
-    "slug": "ferreteria-soldarte",
-    "nombre": "Ferretería Soldarte",
-    "rubro": "Ferretería",
-    "barrio": "Fisherton",
-    "logo": "assets/logo-ferreteria.png",
-    "envio": true,
-    "abierto": true
-  }
-]
+{
+  "locales": [
+    {
+      "slug": "pizzeria-don-napo",
+      "nombre": "Pizzería Don Napo",
+      "rubro": "Pizzería",
+      "barrio": "Rosario Centro",
+      "logo": "assets/logo-pizzeria.png",
+      "envio": true,
+      "abierto": true
+    },
+    {
+      "slug": "kiosco-el-centro",
+      "nombre": "Kiosco El Centro",
+      "rubro": "Kiosco",
+      "barrio": "Echesortu",
+      "logo": "assets/logo-kiosco.png",
+      "envio": true,
+      "abierto": true
+    },
+    {
+      "slug": "ferreteria-soldarte",
+      "nombre": "Ferretería Soldarte",
+      "rubro": "Ferretería",
+      "barrio": "Fisherton",
+      "logo": "assets/logo-ferreteria.png",
+      "envio": true,
+      "abierto": true
+    }
+  ]
+}
