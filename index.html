@@ -53,21 +53,34 @@
 
 
   <!-- Netlify Identity widget (necesario para aceptar invitaciones y login del CMS) -->
+  
+
+
+  <!-- Netlify Identity widget -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script>
-    (function ensureIdentity(){
-      function ready(){
+    (function() {
+      function setup(){
         var ni = window.netlifyIdentity;
-        if(!ni){ return setTimeout(ready, 50); }
-        // Si venís de un mail de invitación (#invite_token=...),
-        // abrimos el modal de "Sign up" automáticamente.
+        if(!ni) return setTimeout(setup, 50);
+
+        // Abrir "Sign up" solo si venís con invite_token en la URL
         if (window.location.hash && window.location.hash.indexOf('invite_token') !== -1) {
           ni.on('init', function(){ ni.open('signup'); });
         }
-        // Después de loguearte, te llevo al CMS (/admin/)
-        ni.on('login', function(){ document.location.href = '/admin/'; });
+
+        // Hook para enlaces con data-admin-link (no redirigimos solos)
+        function goAdmin(){
+          var user = ni.currentUser();
+          if (user) { window.location.href = '/admin/'; return; }
+          ni.open('login');
+          ni.once('login', function(){ window.location.href = '/admin/'; });
+        }
+        document.querySelectorAll('[data-admin-link]').forEach(function(el){
+          el.addEventListener('click', function(e){ e.preventDefault(); goAdmin(); });
+        });
       }
-      ready();
+      setup();
     })();
   </script>
 
