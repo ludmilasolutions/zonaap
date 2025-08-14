@@ -59,6 +59,16 @@
   <!-- Netlify Identity widget -->
   
 
+
+<script>
+  function getLocales(payload){
+    try{
+      if (Array.isArray(payload)) return payload;
+      if (payload && Array.isArray(payload.locales)) return payload.locales;
+    }catch(e){}
+    return [];
+  }
+</script>
 </head>
 <body>
   <header class="brand-header"><div class="brand-lockup" aria-label="zonaap">
