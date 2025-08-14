@@ -1,168 +1,368 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Local | Zonaap</title>
-  <link rel="icon" href="assets/za-icon.svg">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
-  <style>
-    :root{
-      --blue-900:#081f33; --blue-800:#0d355b; --blue-700:#0f3a66; --blue-100:#edf4fb;
-      --ink:#0b1324; --muted:#5a6a85; --bg:#f3f6fb; --card:#fff; --border:#dee6ef;
-      --yellow:#ffcc00; --ok:#16a34a; --err:#dc2626;
-    }
-    *{box-sizing:border-box}
-    body{margin:0; font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, 'Helvetica Neue', Arial, sans-serif; background:var(--bg); color:var(--ink);}
-    .wrap{max-width:980px;margin:0 auto;padding:0 16px;}
-    .hero{background:linear-gradient(135deg,var(--blue-800),var(--blue-900)); color:#fff; padding:20px 0 28px;}
-    .back{color:#cfe2ff; text-decoration:none; font-weight:800; display:inline-block; margin:6px 0 12px;}
-    .top{display:flex; align-items:center; gap:16px;}
-    .logo{width:64px; height:64px; border-radius:14px; border:1px solid #123d64; background:#0a2a46; display:grid; place-items:center;}
-    .logo img{width:44px;height:44px}
-    .h1{margin:0; font-size:34px; font-weight:900;}
-    .sub{margin:2px 0 0; opacity:.85;}
-    /* Acordeón */
-    .acc{display:grid; gap:14px; margin:16px 0 120px;}
-    .acc-item{border:1px solid var(--border); border-radius:16px; overflow:hidden; background:#fff; box-shadow:0 8px 18px rgba(0,0,0,.05)}
-    .acc-item[open]{box-shadow:0 12px 24px rgba(0,0,0,.07)}
-    .acc-summary{list-style:none; cursor:pointer; padding:14px 16px; background:linear-gradient(90deg,#0d355b,#0a2845); color:#fff; display:flex; align-items:center; justify-content:space-between; gap:12px; font-weight:800;}
-    .acc-summary::-webkit-details-marker{display:none}
-    .acc-title{font-size:1.05rem; letter-spacing:.2px;}
-    .acc-right{display:flex; align-items:center; gap:10px;}
-    .acc-badge{background:#fff; color:#0a2845; font-weight:900; min-width:28px; height:28px; border-radius:999px; display:grid; place-items:center; padding:0 8px;}
-    .chev{transition:transform .18s ease}
-    .acc-item[open] .chev{transform:rotate(180deg)}
-    .acc-content{background:#f6f8fb; padding:8px 8px 12px;}
-    /* Producto */
-    .prod{display:grid; grid-template-columns:56px 1fr auto; gap:12px; align-items:center; background:#fff; border:1px solid #e7edf4; border-radius:12px; padding:8px 10px;}
-    .prod + .prod{margin-top:8px}
-    .prod-thumb{width:56px; height:56px; border-radius:10px; overflow:hidden; background:#eef2f7; display:grid; place-items:center; border:1px solid #e5e7eb;}
-    .prod-thumb img{width:100%; height:100%; object-fit:cover}
-    .prod-info h4{margin:0; font-size:1rem; color:#0f3a66}
-    .prod-info p{margin:2px 0 0; color:#52607a; font-size:.92rem}
-    .prod-price{margin-top:4px; font-weight:900; color:#0b376d}
-    .qty{display:flex; align-items:center; gap:.6rem}
-    .qty button{width:36px; height:36px; border-radius:12px; border:2px solid #0f3a66; background:#fff; font-size:1.1rem; font-weight:900; cursor:pointer;}
-    .qty .q{min-width:24px; text-align:center; font-weight:800}
-    /* FAB */
-    .fab{position:fixed; right:16px; bottom:calc(18px + env(safe-area-inset-bottom)); z-index:50; background:#11263f; color:#fff; border:2px solid #ffcc00; display:flex; align-items:center; gap:.6rem; padding:.7rem 1rem; border-radius:9999px; font-weight:900; box-shadow:0 12px 28px rgba(0,0,0,.35); cursor:pointer;}
-    .fab .count{background:#ffcc00; color:#08223b; width:28px; height:28px; display:grid; place-items:center; border-radius:999px; font-weight:900}
-    .fab.hide{opacity:0; transform:translateY(8px); filter:blur(2px); pointer-events:none; transition:all .18s ease}
-    /* Sheet */
-    .backdrop{position:fixed; inset:0; background:rgba(0,0,0,.32); opacity:0; pointer-events:none; transition:opacity .22s ease; z-index:60}
-    .backdrop.open{opacity:1; pointer-events:auto}
-    .sheet{position:fixed; left:0; right:0; bottom:0; transform:translateY(100%); background:#fff; border-top-left-radius:16px; border-top-right-radius:16px; box-shadow:0 22px 56px rgba(0,0,0,.45); transition:transform .28s ease-out; max-height:92vh; display:grid; grid-template-rows:auto 1fr; z-index:70}
-    .sheet.open{transform:translateY(0)}
-    .sheet-header{position:sticky; top:0; background:#fff; border-bottom:1px solid #e8e8e8; padding:.6rem .8rem .4rem; padding-right:56px; border-top-left-radius:16px; border-top-right-radius:16px;}
-    .sheet-title{margin:0 0 .35rem; font-size:1.05rem; font-weight:900; color:#0b376d}
-    .close{position:absolute; right:8px; top:6px; width:44px; height:44px; display:grid; place-items:center; background:#ffffffcc; backdrop-filter:saturate(1.2) blur(2px); border:1px solid #d7d7d7; border-radius:12px; font-size:22px; color:#0d355b; cursor:pointer}
-    .body{overflow:auto; padding:.8rem .9rem 1rem}
-    .steps{display:flex; gap:.5rem; align-items:center; font-weight:900; font-size:.9rem; color:#64748b;}
-    .step{display:flex; align-items:center; gap:.4rem}
-    .dot{width:10px; height:10px; border-radius:999px; background:#cbd5e1}
-    .step.active{color:#0b376d}
-    .step.active .dot{background:#ffcc00}
-    .seg{display:flex; gap:.5rem; margin:.6rem 0}
-    .seg input{display:none}
-    .seg label{flex:1; text-align:center; padding:.7rem 1rem; border:1px solid #cfd3dc; border-radius:12px; cursor:pointer; font-weight:900; background:#fff; transition:.15s}
-    .seg input:checked + label{background:#0d355b; color:#ffcc00; border-color:#0d355b; box-shadow:0 6px 16px rgba(0,0,0,.12)}
-    label{display:block; font-weight:900; margin-top:10px}
-    input[type="text"]{width:100%; padding:12px 12px; border-radius:12px; border:1px solid #cfd3dc; font-size:16px}
-    .resume{background:#fff9da; border:1px solid #ffe79c; border-radius:12px; padding:10px}
-    .line{display:flex; justify-content:space-between; padding:4px 0}
-    .line.total{border-top:1px dashed #e0cc77; margin-top:6px; padding-top:8px; font-size:18px; font-weight:900}
-    .btns{display:flex; gap:.6rem; flex-wrap:wrap; margin-top:10px}
-    .btn{background:#0d355b; color:#ffcc00; border:2px solid #ffcc00; border-radius:12px; padding:10px 14px; font-weight:900; cursor:pointer}
-    .btn.alt{background:#fff; color:#0d355b; border-color:#0d355b}
-    .muted{color:#64748b; font-size:.9rem}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zonaap | Negocio</title>
+<link rel="icon" href="assets/logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --az:#0b2a4a; --az2:#081a2f; --am:#ffcc00; --bg:#f5f7fb; --card:#fff; --text:#0f172a;
+  --muted:#6b7280; --bord:#e5e7eb; --ring:rgba(255,204,0,.35);
+  --ok:#16a34a; --err:#ef4444;
+}
+*{box-sizing:border-box} body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;color:var(--text);background:var(--bg);margin:0}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+.hero{background:linear-gradient(120deg,var(--az) 0%,var(--az2) 100%);color:#fff;padding:18px 0 28px;margin-bottom:18px}
+.back{color:#c7d2fe;text-decoration:none;display:inline-flex;gap:8px;align-items:center;margin:0 0 12px 0}
+.hbox{display:flex;gap:14px;align-items:center}
+.logo{width:64px;height:64px;border-radius:14px;background:#0b2a4a22;display:grid;place-items:center}
+.logo img{width:64px;height:64px;border-radius:14px}
+h1{margin:0;font-size:36px;letter-spacing:.2px}
+.sub{opacity:.9;margin:4px 0 0}
+/* categories as accordion */
+.accordion{display:grid;gap:12px;margin:10px 0 80px}
+details{background:var(--card);border:1px solid var(--bord);border-radius:16px;overflow:hidden}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:16px 16px;background:#0b2a4a;color:#e2e8f0;font-weight:900}
+summary::-webkit-details-marker{display:none}
+.chev{width:26px;height:26px;border-radius:9px;background:#0b2a4a33;display:grid;place-items:center}
+.prod{display:grid;grid-template-columns:72px 1fr auto;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid var(--bord);background:#fff}
+.prod:hover{background:#fafafa}
+.prod img{width:64px;height:64px;border-radius:12px;border:1px solid var(--bord);background:#eef2f7}
+.prod h3{margin:0 0 2px 0;font-size:18px}
+.pdesc{margin:0;color:var(--muted);font-size:14px}
+.price{font-weight:900;margin-top:6px}
+.qty{display:flex;align-items:center;gap:8px}
+.btnc{width:38px;height:38px;border-radius:10px;border:2px solid #0b2a4a33;background:#fff;cursor:pointer;font-size:18px}
+/* FAB Cart */
+.fab{position:fixed;right:16px;bottom:18px;z-index:40;background:#0b2a4a;color:#e0f2fe;border:2px solid var(--am);
+  display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:9999px;font-weight:900;box-shadow:0 12px 28px rgba(0,0,0,.22);cursor:pointer}
+.fab .pill{background:var(--am);color:#0b1325;border-radius:999px;padding:6px 10px}
+/* Sheet */
+.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:.2s;z-index:49}
+.backdrop.open{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;transform:translateY(100%);background:#fff;border-top-left-radius:18px;border-top-right-radius:18px;
+  box-shadow:0 -12px 40px rgba(0,0,0,.22);transition:.28s;max-height:92vh;display:grid;grid-template-rows:auto 1fr;z-index:50}
+.sheet.open{transform:translateY(0)}
+.shead{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--bord);padding:10px 16px 6px}
+.sgrid{padding:12px 16px;overflow:auto}
+.steps{display:flex;gap:8px;color:#64748b;font-weight:900;font-size:13px}
+.step.active{color:#0b2a4a}
+.segmented{display:flex;gap:8px;margin:10px 0}
+.segmented input{display:none}
+.segmented label{flex:1;text-align:center;padding:10px;border:1px solid var(--bord);border-radius:12px;cursor:pointer;font-weight:900;background:#fff}
+.segmented input:checked + label{background:#0b2a4a;color:#ffcc00;border-color:#0b2a4a}
+label.txt{display:block;margin:10px 0 0;font-weight:900}
+input[type="text"]{width:100%;padding:12px 14px;border:1px solid var(--bord);border-radius:12px;outline:none}
+input[type="text"]:focus{box-shadow:0 0 0 4px var(--ring)}
+.summary{background:#fff8db;border:1px solid #ffe69c;border-radius:14px;padding:12px;margin-top:8px}
+.row{display:flex;justify-content:space-between;gap:12px;padding:6px 0}
+.total{border-top:1px dashed #d7d7d7;margin-top:6px;padding-top:8px;font-weight:900}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.btn{background:#0b2a4a;color:#ffcc00;border:2px solid #0b2a4a;border-radius:12px;padding:12px 16px;font-weight:900;cursor:pointer}
+.btn.ghost{background:#fff;color:#0b2a4a}
+.small{font-size:13px;color:#64748b}
+.badge{background:#0b2a4a1a;color:#0b2a4a;border:1px solid #0b2a4a33;border-radius:999px;font-size:12px;padding:4px 8px}
+.note{width:100%;padding:10px;border:1px solid var(--bord);border-radius:12px}
+</style>
 </head>
 <body>
-  <div class="hero">
+  <section class="hero">
     <div class="wrap">
-      <a href="index.html" class="back">← Volver</a>
-      <div class="top">
-        <div class="logo"><img src="assets/za-icon.svg" alt=""></div>
+      <a class="back" href="index.html">← Volver</a>
+      <div class="hbox">
+        <div class="logo"><img id="bizLogo" src="assets/logo.svg" alt=""></div>
         <div>
-          <h1 id="shopName" class="h1">Local</h1>
-          <p id="shopSub" class="sub">Hecha como en casa</p>
+          <h1 id="bizName">Negocio</h1>
+          <p class="sub" id="bizSub">Subtítulo</p>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
   <main class="wrap">
-    <section id="categorias" class="acc"></section>
+    <div id="accordion" class="accordion"></div>
   </main>
 
-  <!-- FAB -->
-  <button id="fab" class="fab hide" aria-label="Ver pedido">
+  <button id="fab" class="fab" style="display:none">
     <span>🛒</span>
     <span id="fabTotal">$ 0</span>
-    <span class="count" id="fabCount">0</span>
+    <span class="pill" id="fabCount">0</span>
   </button>
 
-  <!-- Sheet -->
-  <div id="backdrop" class="backdrop"></div>
-  <div id="sheet" class="sheet" aria-modal="true" aria-hidden="true">
-    <div class="sheet-header">
-      <h3 class="sheet-title">Tu pedido</h3>
-      <div class="steps">
-        <div class="step" data-step="1"><span class="dot"></span><span>Datos</span></div>
-        <span>→</span>
-        <div class="step" data-step="2"><span class="dot"></span><span>Resumen</span></div>
-        <span>→</span>
-        <div class="step" data-step="3"><span class="dot"></span><span>WhatsApp</span></div>
+  <div id="bd" class="backdrop"></div>
+  <section id="sheet" class="sheet" aria-hidden="true">
+    <header class="shead">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <strong>Tu pedido</strong>
+        <button id="closeSheet" class="btn ghost">✕</button>
       </div>
-      <button id="close" class="close">✕</button>
-    </div>
-    <div class="body">
-      <div class="seg" role="tablist" aria-label="Entrega">
-        <input id="ret" type="radio" name="envio" value="retiro"><label for="ret">Retiro</label>
-        <input id="env" type="radio" name="envio" value="envio"><label id="envLbl" for="env">Envío</label>
+      <div class="steps small"><span class="step" data-step="1">Datos</span> → <span class="step" data-step="2">Resumen</span> → <span class="step" data-step="3">WhatsApp</span></div>
+    </header>
+    <div class="sgrid">
+      <div class="segmented" role="tablist" aria-label="Entrega">
+        <input id="opt-ret" type="radio" name="envio" value="retiro"><label for="opt-ret">Retiro</label>
+        <input id="opt-env" type="radio" name="envio" value="envio"><label for="opt-env">Envío</label>
       </div>
-      <label>Nombre
-        <input id="name" type="text" placeholder="Tu nombre">
+      <label class="txt">Nombre
+        <input type="text" id="nombre" placeholder="Tu nombre">
       </label>
-      <label id="addrWrap" style="display:none">Dirección
-        <input id="addr" type="text" placeholder="Calle, número, piso/depto">
+      <label class="txt" id="addrWrap" style="display:none">Dirección
+        <input type="text" id="direccion" placeholder="Calle, número, piso/depto">
       </label>
 
-      <div class="resume" style="margin-top:10px">
-        <h3 style="margin:0 0 6px">Resumen del pedido</h3>
-        <div id="lines"></div>
+      <div class="summary">
+        <div class="row"><strong>Resumen del pedido</strong><span id="sumSub"></span></div>
+        <div id="sumLines" class="small"></div>
 
-        <div style="display:grid; gap:8px; margin:8px 0">
-          <label>Nota (opcional)
-            <input id="note" type="text" placeholder="Ej: sin sal, dejar en portería">
-          </label>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px">
-            <label>Cupón (opcional)
-              <input id="coupon" type="text" placeholder="Código">
-            </label>
-            <label>Propina (opcional %)
-              <input id="tip" type="text" inputmode="numeric" placeholder="0, 5, 10…">
-            </label>
-          </div>
+        <div class="row small"><span>📝 Nota (opcional)</span></div>
+        <textarea id="nota" class="note" rows="2" placeholder="Ej: sin sal, dejar en portería"></textarea>
+
+        <div class="row"><span class="small">🎟️ Cupón (opcional)</span><input id="cupon" type="text" placeholder="Código de descuento" style="max-width:220px;padding:10px;border:1px solid #e5e7eb;border-radius:10px"></div>
+
+        <div class="row small"><span>Propina (opcional)</span>
+          <input id="propina" type="text" placeholder="% o $ (ej: 10% / 300)" style="max-width:160px;padding:10px;border:1px solid #e5e7eb;border-radius:10px">
         </div>
 
-        <div id="totals">
-          <div class="line"><span>Subtotal</span><span id="sub">$ 0</span></div>
-          <div class="line" id="shipLine" style="display:none"><span>Envío</span><span id="ship">$ 0</span></div>
-          <div class="line" id="discLine" style="display:none"><span>Descuento</span><span id="disc">-$ 0</span></div>
-          <div class="line" id="tipLine" style="display:none"><span>Propina</span><span id="tipAmt">$ 0</span></div>
-          <div class="line total"><span>Total</span><span id="total">$ 0</span></div>
+        <div class="row"><span>Subtotal</span><strong id="subt">$ 0</strong></div>
+        <div class="row" id="envRow" style="display:none"><span>Envío</span><strong id="env">$ 0</strong></div>
+        <div class="row" id="descRow" style="display:none"><span>Descuento</span><strong id="desc">− $ 0</strong></div>
+        <div class="row" id="tipRow" style="display:none"><span>Propina</span><strong id="tip">$ 0</strong></div>
+        <div class="row total"><span>Total</span><strong id="tot">$ 0</strong></div>
+
+        <div class="actions">
+          <button class="btn" id="btnWsp">Hacer pedido por WhatsApp</button>
+          <button class="btn ghost" id="btnVaciar">Vaciar carrito</button>
         </div>
-        <div class="btns">
-          <button id="wa" class="btn">Hacer pedido por WhatsApp</button>
-          <button id="clear" class="btn alt">Vaciar carrito</button>
-        </div>
-        <p class="muted" id="warn"></p>
       </div>
     </div>
-  </div>
+  </section>
 
-  <script src="js/store.js"></script>
+<script>
+const $ = s=>document.querySelector(s);
+const params = new URLSearchParams(location.search);
+const slug = params.get('l') || '';
+const accord = $("#accordion");
+const fab = $("#fab");
+const bd = $("#bd");
+const sheet = $("#sheet");
+const steps = document.querySelectorAll('.step');
+let WSP='';
+let SHIPPING=0;
+let catalog = null;
+
+// Estado del carrito
+const cantidades = new Map(); // key -> qty
+function keyFor(catIdx, pIdx){ return catIdx+':'+pIdx; }
+
+// Cargar JSON del negocio
+async function load(){
+  try{
+    const r = await fetch(`data/${slug}.json`);
+    if(!r.ok) throw new Error('No encontrado');
+    catalog = await r.json();
+    $("#bizName").textContent = catalog.nombre || 'Negocio';
+    $("#bizSub").textContent = catalog.subtitulo || '';
+    $("#bizLogo").src = (catalog.logo || 'assets/logo.svg');
+    WSP = (catalog.whatsapp||'').replace(/\D/g,'');
+    SHIPPING = Number(catalog.shipping||0);
+    renderCats(catalog.categorias||[]);
+  }catch(e){
+    accord.innerHTML = '<p>No encontramos este negocio.</p>';
+  }
+}
+load();
+
+function renderCats(cats){
+  accord.innerHTML = '';
+  cats.forEach((c,ci)=>{
+    const det = document.createElement('details'); // cerradas por defecto
+    const sum = document.createElement('summary');
+    sum.innerHTML = `<span>${c.categoria}</span><span class="chev">▾</span>`;
+    det.appendChild(sum);
+
+    (c.productos||[]).forEach((p,pi)=>{
+      const id = keyFor(ci,pi);
+      const row = document.createElement('div');
+      row.className='prod';
+      row.innerHTML = \`
+        <img src="\${p.img||'assets/placeholder.svg'}" alt="\${p.nombre}">
+        <div>
+          <h3>\${p.nombre}</h3>
+          <p class="pdesc">\${p.desc||''}</p>
+          <div class="price">\${format(p.precio||0)}</div>
+        </div>
+        <div class="qty">
+          <button class="btnc" aria-label="Quitar">−</button>
+          <span id="q-\${id}">0</span>
+          <button class="btnc" aria-label="Agregar">＋</button>
+        </div>\`;
+      const btns = row.querySelectorAll('.btnc');
+      btns[0].addEventListener('click',()=>chg(id,p,-1));
+      btns[1].addEventListener('click',()=>chg(id,p, 1));
+      det.appendChild(row);
+    });
+    // Acordeón: solo uno abierto
+    det.addEventListener('toggle', e=>{
+      if(det.open){
+        document.querySelectorAll('details').forEach(d=>{ if(d!==det) d.removeAttribute('open'); });
+      }
+    });
+    accord.appendChild(det);
+  });
+}
+
+function chg(id, p, delta){
+  const q = (cantidades.get(id)||0) + delta;
+  cantidades.set(id, Math.max(0,q));
+  const span = document.getElementById('q-'+id); if(span) span.textContent = Math.max(0,q);
+  saveCart(); updateFab(); updateSummary();
+}
+function countItems(){ let n=0; cantidades.forEach(v=>n+=v); return n; }
+function updateFab(){
+  const n = countItems();
+  const t = calcTotals().total;
+  if(n>0){ fab.style.display='flex'; $("#fabCount").textContent=n; $("#fabTotal").textContent=format(t); }
+  else{ fab.style.display='none'; }
+}
+fab.addEventListener('click', openSheet);
+$("#closeSheet").addEventListener('click', closeSheet);
+bd.addEventListener('click', closeSheet);
+
+function openSheet(){ bd.classList.add('open'); sheet.classList.add('open'); updateSteps(); }
+function closeSheet(){ bd.classList.remove('open'); sheet.classList.remove('open'); updateFab(); }
+
+// Persistencia básica por pestaña
+function saveCart(){
+  sessionStorage.setItem('za_cart_'+slug, JSON.stringify(Array.from(cantidades.entries())));
+}
+function loadCart(){
+  try{
+    const raw = JSON.parse(sessionStorage.getItem('za_cart_'+slug)||'[]');
+    raw.forEach(([k,v])=>cantidades.set(k,v));
+  }catch{}
+}
+loadCart();
+
+// Entrga/Retiro + dirección visible solo si Envío
+document.querySelectorAll('input[name=envio]').forEach(r=>r.addEventListener('change',()=>{
+  $("#addrWrap").style.display = (getEntrega()==='envio') ? 'block' : 'none';
+  updateSummary(); updateSteps();
+}));
+
+function getEntrega(){
+  const c = document.querySelector('input[name=envio]:checked'); return c?c.value:null;
+}
+function format(n){ return new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(n||0); }
+
+function listItems(){
+  const out=[];
+  if(!catalog) return out;
+  (catalog.categorias||[]).forEach((c,ci)=>{
+    (c.productos||[]).forEach((p,pi)=>{
+      const id = keyFor(ci,pi);
+      const q = (cantidades.get(id)||0);
+      if(q>0) out.push({ id, nombre:p.nombre, desc:p.desc||'', precio:Number(p.precio||0), qty:q });
+    });
+  });
+  return out;
+}
+
+function parseTip(v){
+  v = String(v||'').trim();
+  if(!v) return 0;
+  if(v.endsWith('%')){
+    const pct = Number(v.replace('%','').replace(',','.'))||0;
+    return {pct};
+  }
+  const fixed = Number(v.replace(/[^\d.]/g,''))||0;
+  return {fixed};
+}
+
+function applyCoupon(code, subtotal, shipping){
+  const c = String(code||'').trim().toUpperCase();
+  if(!c) return {desc:0, shippingOverride:null};
+  if(c==='PIZZA10'){ return {desc: Math.round(subtotal*0.10), shippingOverride:null}; }
+  if(c==='NAPO200'){ return {desc: 200, shippingOverride:null}; }
+  if(c==='ENVIOFREE'){ return {desc: 0, shippingOverride: 0}; }
+  return {desc:0, shippingOverride:null};
+}
+
+function calcTotals(){
+  const items=listItems();
+  let subtotal = items.reduce((a,i)=>a + i.precio*i.qty, 0);
+  const entrega = getEntrega();
+  let envio = entrega==='envio' ? SHIPPING : 0;
+
+  const cupon = $("#cupon").value;
+  const cup = applyCoupon(cupon, subtotal, envio);
+  let descuento = cup.desc||0;
+  if(cup.shippingOverride!==null) envio = cup.shippingOverride;
+
+  // propina
+  const tipRaw = parseTip($("#propina").value);
+  let tip = 0;
+  if('pct' in tipRaw){ tip = Math.round(subtotal * (tipRaw.pct/100)); }
+  if('fixed' in tipRaw){ tip = tipRaw.fixed; }
+
+  const total = Math.max(0, subtotal + envio - descuento + tip);
+  return {items, subtotal, envio, descuento, tip, total};
+}
+
+function updateSummary(){
+  const {items, subtotal, envio, descuento, tip, total} = calcTotals();
+  $("#sumLines").innerHTML = items.length? items.map(i=>`<div class="row small"><span>${i.nombre} × ${i.qty}</span><span><strong>${format(i.precio*i.qty)}</strong></span></div>`).join('') : '<div class="row small">Aún no agregaste productos.</div>';
+  $("#subt").textContent = format(subtotal);
+  $("#envRow").style.display = envio>0 ? 'flex':'none'; $("#env").textContent = format(envio);
+  $("#descRow").style.display = descuento>0 ? 'flex':'none'; $("#desc").textContent = '− '+format(descuento);
+  $("#tipRow").style.display = tip>0 ? 'flex':'none'; $("#tip").textContent = format(tip);
+  $("#tot").textContent = format(total);
+  $("#sumSub").textContent = items.length? '' : '';
+  // FAB reflect
+  $("#fabTotal").textContent = format(total); $("#fabCount").textContent = String(items.reduce((a,i)=>a+i.qty,0));
+}
+
+function updateSteps(){
+  const datosOk = $("#nombre").value.trim().length>0 && !!getEntrega() && (getEntrega()==='retiro' || $("#direccion").value.trim().length>0);
+  const hay = listItems().length>0;
+  steps.forEach(el=>el.classList.remove('active'));
+  if(!datosOk){ steps[0].classList.add('active'); }
+  else if(datosOk && !hay){ steps[1].classList.add('active'); }
+  else { steps[2].classList.add('active'); }
+}
+
+["nombre","direccion","nota","cupon","propina"].forEach(id=>{
+  const el = document.getElementById(id);
+  el.addEventListener('input', ()=>{ updateSummary(); updateSteps(); });
+});
+
+document.getElementById('btnVaciar').addEventListener('click',()=>{
+  cantidades.clear(); document.querySelectorAll('[id^="q-"]').forEach(s=>s.textContent='0');
+  saveCart(); updateSummary(); updateFab();
+});
+
+document.getElementById('btnWsp').addEventListener('click',()=>{
+  const {items, subtotal, envio, descuento, tip, total} = calcTotals();
+  const entrega = getEntrega();
+  const name = $("#nombre").value.trim();
+  const addr = $("#direccion").value.trim();
+  const nota = $("#nota").value.trim();
+  if(!name || !entrega || (entrega==='envio' && !addr) || !items.length){ alert('Completá los datos y agregá productos.'); return; }
+  let msg = `Hola, soy ${name}. Quiero hacer un pedido:\n`;
+  items.forEach(i=>{ msg += `- ${i.nombre} x${i.qty} - ${format(i.precio*i.qty)}\n`; });
+  if(descuento>0) msg += `Descuento: -${format(descuento)}\n`;
+  if(entrega==='envio'){ msg += `Envío a domicilio: ${format(envio)}\nDirección: ${addr}\n`; } else { msg += `Retiro en el local\n`; }
+  if(tip>0) msg += `Propina: ${format(tip)}\n`;
+  if(nota) msg += `Nota: ${nota}\n`;
+  msg += `Total: ${format(total)}`;
+  const num = WSP || '5493416000000';
+  window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`,'_blank');
+});
+
+// Al iniciar, marcar "Retiro" por defecto y actualizar resumen
+document.getElementById('opt-ret').checked = true;
+updateSummary(); updateFab(); updateSteps();
+</script>
 </body>
 </html>
