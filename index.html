@@ -1,312 +1,74 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Zonaap</title>
-  <link rel="icon" href="assets/favicon-32.png">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet"/>
-  <style>
-    :root{--azul:#0b315f;--amarillo:#ffc400}
-    body{font-family:Roboto,system-ui,Arial,sans-serif;margin:0;background:#f3f4f6;color:#0f172a}
-    header{background:linear-gradient(90deg,#0b315f,#001a33);padding:40px 16px 28px;text-align:center}
-    .brand{display:grid;place-items:center}
-    .brand svg{width:min(88vw,680px);height:auto;display:block}
-    main{max-width:980px;margin:0 auto;padding:16px}
-    .hero-title{color:#fff;font-size:28px;font-weight:900;margin:8px 0 4px}
-    .hero-sub{color:#cbd5e1;margin:0 0 22px}
-    .search-row{display:flex;gap:12px;align-items:center}
-    .search{flex:1;border:1px solid #e2e8f0;border-radius:14px;padding:14px 16px;font-size:16px}
-    .btn{background:var(--azul);color:#fff;border:2px solid var(--amarillo);padding:12px 16px;border-radius:12px;font-weight:800;cursor:pointer}
-    .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:20px}
-    .card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:12px;display:flex;gap:10px;align-items:center}
-    .card img{width:56px;height:56px;border-radius:12px;object-fit:cover;border:1px solid #e5e7eb}
-    .card .name{font-weight:900}
-    .muted{color:#64748b}
-    footer{padding:36px 16px;text-align:center;color:#64748b}
-    @media (min-width:960px){ .hero-title{font-size:34px} }
-  
-.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:2px 8px;font-weight:800;font-size:12px}
-.badge-open{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46}
-.badge-ship{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412}
-.badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zonaap · Pedí online a negocios de tu barrio</title>
+<link rel="icon" href="assets/zonaap-logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{--azul:#0b315f;--azul2:#001a33;--amarillo:#ffcc00;--muted:#64748b}
+  *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;background:#f5f7fb;color:#0f172a}
+  header{background:linear-gradient(90deg,var(--azul),var(--azul2));color:#fff;padding:28px 16px 40px;text-align:center}
+  .brand{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:6px}
+  .brand img{width:54px;height:54px;border-radius:12px}
+  h1{margin:0;font-size:clamp(26px,4vw,44px)}
+  .sub{opacity:.9;margin-top:6px}
+  main{max-width:980px;margin:auto;padding:20px 16px 120px}
+  .topbar{display:flex;gap:10px;align-items:center}
+  #q{flex:1;padding:14px 16px;border-radius:12px;border:1px solid #dbe1ec;font-size:1rem}
+  .btn{background:var(--amarillo);color:#0b172a;border:2px solid var(--amarillo);border-radius:12px;padding:12px 16px;font-weight:800;cursor:pointer}
+  .list{margin-top:18px;display:grid;gap:12px}
+  .card{display:grid;grid-template-columns:62px 1fr auto;gap:12px;align-items:center;background:#fff;border:1px solid #e8eef7;border-radius:14px;padding:12px 14px;box-shadow:0 5px 16px rgba(2,6,23,.04)}
+  .card img{width:62px;height:62px;border-radius:12px;border:1px solid #eef2f7;object-fit:cover}
+  .card h3{margin:0 0 4px;font-size:1.1rem}
+  .pill{font-weight:800;color:#0b315f;border:1px solid #bfd3ff;background:#f2f7ff;border-radius:999px;padding:6px 10px;font-size:.85rem;white-space:nowrap}
+  .meta{color:#475569;font-size:.95rem}
+  a{
+    text-decoration:none;color:inherit
+  }
 </style>
 </head>
 <body>
-  <header>
-    <div class="brand" aria-label="zonaap">
-      <svg viewBox="0 0 1000 240" role="img" aria-label="zonaap" preserveAspectRatio="xMidYMid meet">
-        <defs>
-          <style>
-            .t{font-family:'Roboto',sans-serif;font-weight:900;font-size:164px;letter-spacing:-0.8px;text-anchor:middle}
-            .w{fill:#ffffff}.y{fill:var(--amarillo)}
-            .s{fill:none;stroke:#0006;stroke-width:10;stroke-linejoin:round}
-          
-.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:2px 8px;font-weight:800;font-size:12px}
-.badge-open{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46}
-.badge-ship{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412}
-.badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
-
-</style>
-        </defs>
-        <text class="t s" x="500" y="172">zonaap</text>
-        <text class="t" x="500" y="172"><tspan class="w">zon</tspan><tspan class="y">aa</tspan><tspan class="w">p</tspan></text>
-      </svg>
-    </div>
-    <h1 class="hero-title">Pedí online a negocios de tu barrio</h1>
-    <p class="hero-sub">Buscá un local o registrá el tuyo gratis.</p>
-    <div class="search-row" style="max-width:980px;margin:0 auto;">
-      <input id="q" class="search" placeholder="Buscar por nombre, rubro o barrio…"/>
-      <button class="btn" onclick="location.href='registro.html'">+ Registrar mi local</button>
-      <a href="/admin/" data-admin-link style="margin-left:6px;color:#fff;text-decoration:underline;font-weight:800">Entrar al panel</a>
-    </div>
-  </header>
-
-  
-<main>
-  <div class="filters" style="display:grid; gap:10px; grid-template-columns:1fr; margin-bottom:10px">
-    <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center">
-      <select id="fRubro" class="search" style="max-width:220px">
-        <option value="">Todos los rubros</option>
-      </select>
-      <select id="fBarrio" class="search" style="max-width:220px">
-        <option value="">Todos los barrios</option>
-      </select>
-      <label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="fAbierto"> Abierto ahora</label>
-      <label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="fEnvio"> Con envío</label>
-      <select id="fSort" class="search" style="max-width:180px">
-        <option value="relevancia">Orden: Relevancia</option>
-        <option value="abiertos">Abiertos primero</option>
-        <option value="az">A → Z</option>
-      </select>
-    </div>
+<header>
+  <div class="brand">
+    <img src="assets/zonaap-logo.svg" alt="Zonaap">
+    <img src="assets/zonaap-wordmark.svg" alt="Zonaap">
   </div>
-  <div id="cards" class="cards" aria-live="polite"></div>
+  <h1>Pedí online a negocios de tu barrio</h1>
+  <p class="sub">Buscá un local o registrá el tuyo gratis.</p>
+</header>
+<main>
+  <div class="topbar">
+    <input id="q" placeholder="Buscar por nombre, rubro o barrio…">
+    <a class="btn" href="admin/">+ Registrar mi local</a>
+  </div>
+  <div id="list" class="list" aria-live="polite"></div>
 </main>
-
-
-  <footer>
-    Hecho con ❤️ para emprendedores. Gratis y simple.
-  </footer>
-
-  <script>
-    // Helper: soportar {locales:[...]} o array plano
-    function getLocales(payload){ try{ if(Array.isArray(payload)) return payload; if(payload && Array.isArray(payload.locales)) return payload.locales; }catch(e){} return []; }
-
-    async function load(){
-      const raw = await (await fetch('data/locales.json', {cache:'no-store'})).json();
-      const locales = getLocales(raw);
-      const q = document.getElementById('q');
-      const cards = document.getElementById('cards');
-
-      function render(list){
-        cards.innerHTML = '';
-        list.forEach(l => {
-          const a = document.createElement('a');
-          a.href = `negocio.html?l=${encodeURIComponent(l.slug)}`;
-          a.className = 'card';
-          a.innerHTML = `<img src="${l.logo || 'assets/zonaap-pro-wordmark-centered.svg'}" alt="${l.nombre}"><div><div class="name">${l.nombre}</div><div class="muted">${[l.rubro,l.barrio].filter(Boolean).join(' • ')}</div></div>`;
-          cards.appendChild(a);
-        });
-      }
-
-      render(locales);
-
-      q.addEventListener('input', () => {
-        const s = q.value.trim().toLowerCase();
-        const filtered = locales.filter(l => [l.nombre,l.rubro,l.barrio].join(' ').toLowerCase().includes(s));
-        render(filtered);
-      });
-    }
-    load();
-  </script>
-
-  <!-- Identity (seguro, sin auto-redirect) -->
-  <script defer src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script>
-    (function(){
-      function ready(fn){ if(document.readyState!=='loading'){ fn(); } else { document.addEventListener('DOMContentLoaded', fn); } }
-      ready(function(){
-        var ni = window.netlifyIdentity;
-        if (window.location.hash && window.location.hash.indexOf('invite_token') !== -1 && ni) {
-          ni.on('init', function(){ ni.open('signup'); });
-        }
-        document.querySelectorAll('[data-admin-link]').forEach(function(a){
-          a.addEventListener('click', function(e){
-            e.preventDefault();
-            if (!ni) { window.location.href = '/admin/'; return; }
-            if (ni.currentUser()) { window.location.href = '/admin/'; }
-            else { ni.open('login'); ni.once('login', function(){ window.location.href = '/admin/'; }); }
-          });
-        });
-      });
-    })();
-  </script>
-
 <script>
-  // Helpers
-  function getLocales(payload){ try{ if(Array.isArray(payload)) return payload; if(payload && Array.isArray(payload.locales)) return payload.locales; }catch(e){} return []; }
-  const Q = new URLSearchParams(location.search);
-  const $ = sel => document.querySelector(sel);
-
-  function hmToMin(hm){ const [h,m]=hm.split(':').map(Number); return h*60+(m||0); }
-  function nowMin(){ const n=new Date(); return n.getHours()*60 + n.getMinutes(); }
-  function today(){ return new Date().getDay(); }
-
-  async function fetchOpen(slug){
-    try{
-      const r = await fetch(`locales/${slug}/content.json`, {cache:'no-store'});
-      const j = await r.json();
-      const H = j?.ajustes?.horarios;
-      if(!H) return false;
-      // Consideramos abierto si alguna sección (rotiseria o bebidas) está abierta
-      const secs = ['rotiseria','bebidas'];
-      for(const sec of secs){
-        const cfg = H[sec]; if(!cfg) continue;
-        if(!cfg.dias || !cfg.rangos) continue;
-        if(!cfg.dias.includes(today())) continue;
-        const now = nowMin();
-        if(cfg.rangos.some(r => now >= hmToMin(r.desde) && now <= hmToMin(r.hasta))) return true;
-      }
-      return false;
-    }catch(e){ return false; }
-  }
-
-  function setURLState(state){
-    const url = new URL(location.href);
-    Object.entries(state).forEach(([k,v]) => {
-      if(v===undefined || v==='' || v===false || v===null) url.searchParams.delete(k);
-      else url.searchParams.set(k, String(v));
-    });
-    history.replaceState(null,'', url.toString());
-  }
-
-  async function loadHome(){
-    // Elements
-    const qEl = document.getElementById('q');
-    const cards = document.getElementById('cards');
-    const fR = document.getElementById('fRubro');
-    const fB = document.getElementById('fBarrio');
-    const fA = document.getElementById('fAbierto');
-    const fE = document.getElementById('fEnvio');
-    const fS = document.getElementById('fSort');
-
-    // Read data
-    const raw = await (await fetch('data/locales.json', {cache:'no-store'})).json();
-    const locales = getLocales(raw);
-
-    // Populate filters
-    const rubros = [...new Set(locales.map(l=>l.rubro).filter(Boolean))].sort();
-    const barrios = [...new Set(locales.map(l=>l.barrio).filter(Boolean))].sort();
-    rubros.forEach(r=>{ const o=document.createElement('option'); o.value=r; o.textContent=r; fR.appendChild(o); });
-    barrios.forEach(b=>{ const o=document.createElement('option'); o.value=b; o.textContent=b; fB.appendChild(o); });
-
-    // URL -> UI
-    qEl.value = Q.get('q') || '';
-    fR.value = Q.get('rubro') || '';
-    fB.value = Q.get('barrio') || '';
-    fA.checked = Q.get('abierto') === '1';
-    fE.checked = Q.get('envio') === '1';
-    fS.value = Q.get('sort') || 'relevancia';
-
-    // Preload open state lazily
-    const openCache = {};
-    function ensureOpen(slug){
-      if(openCache[slug] !== undefined) return;
-      openCache[slug] = null; // loading
-      fetchOpen(slug).then(v=>{ openCache[slug]=v; render(current()); });
-    }
-
-    function score(l, s){
-      if(!s) return 0;
-      const hay = [l.nombre,l.rubro,l.barrio].filter(Boolean).join(' ').toLowerCase();
-      s = s.toLowerCase();
-      if(hay.startsWith(s)) return 3;
-      if(hay.includes(' '+s)) return 2;
-      if(hay.includes(s)) return 1;
-      return 0;
-    }
-
-    function current(){
-      let list = locales.slice();
-      const s = qEl.value.trim();
-      const r = fR.value;
-      const b = fB.value;
-      const needOpen = fA.checked;
-      const needShip = fE.checked;
-      // Filter
-      list = list.filter(l => {
-        if(r && l.rubro !== r) return false;
-        if(b && l.barrio !== b) return false;
-        if(needShip && !l.envio) return false;
-        if(needOpen){
-          ensureOpen(l.slug);
-          const v = openCache[l.slug];
-          if(v === null) return true; // loading -> no filtrar aún
-          if(v !== true) return false;
-        }
-        return true;
-      });
-      // Sort
-      const sort = fS.value;
-      if(sort === 'az'){
-        list.sort((a,b)=>a.nombre.localeCompare(b.nombre));
-      }else if(sort === 'abiertos'){
-        list.sort((a,b)=>{
-          const ao = openCache[a.slug]===true ? 0 : 1;
-          const bo = openCache[b.slug]===true ? 0 : 1;
-          if(ao!==bo) return ao-bo;
-          return a.nombre.localeCompare(b.nombre);
-        });
-      }else{
-        // relevancia
-        list.sort((a,b)=> (score(b,s)-score(a,s)) || a.nombre.localeCompare(b.nombre) );
-      }
-      return list;
-    }
-
-    function render(list){
-      cards.innerHTML = '';
-      list.forEach(l => {
-        const a = document.createElement('a');
-        a.href = `negocio.html?l=${encodeURIComponent(l.slug)}`;
-        a.className = 'card';
-        a.innerHTML = `
-          <img src="${l.logo || 'assets/zonaap-pro-wordmark-centered.svg'}" alt="${l.nombre}">
-          <div>
-            <div class="name">${l.nombre}</div>
-            <div class="muted">${[l.rubro,l.barrio].filter(Boolean).join(' • ')}</div>
-            <div class="badges">
-              ${l.envio ? '<span class="badge badge-ship">🚚 Envío</span>' : ''}
-              ${openCache[l.slug]===true ? '<span class="badge badge-open">🟢 Abierto</span>' : ''}
-            </div>
-          </div>`;
-        cards.appendChild(a);
-        // Start open state fetch if needed
-        ensureOpen(l.slug);
-      });
-    }
-
-    function onChange(){
-      setURLState({
-        q: qEl.value.trim() || undefined,
-        rubro: fR.value || undefined,
-        barrio: fB.value || undefined,
-        abierto: fA.checked ? 1 : undefined,
-        envio: fE.checked ? 1 : undefined,
-        sort: fS.value !== 'relevancia' ? fS.value : undefined,
-      });
-      render(current());
-    }
-
-    [qEl,fR,fB,fA,fE,fS].forEach(el => el.addEventListener('input', onChange));
-    [fR,fB,fA,fE,fS].forEach(el => el.addEventListener('change', onChange));
-
-    render(current());
-  }
-  document.addEventListener('DOMContentLoaded', loadHome);
+async function loadLocales(){
+  const r = await fetch('locales/index.json'); const data = await r.json(); return data.locales||[];
+}
+function row(l){
+  return `<a class="card" href="negocio.html?l=${l.slug}">
+    <img src="${l.logo}" alt="${l.nombre}">
+    <div>
+      <h3>${l.nombre}</h3>
+      <div class="meta">${l.rubro} · ${l.barrio}</div>
+    </div>
+    <span class="pill">Entrar →</span>
+  </a>`;
+}
+function render(list, items){ list.innerHTML = items.map(row).join(''); }
+(async ()=>{
+  const list = document.getElementById('list');
+  const locales = await loadLocales(); render(list, locales);
+  const q = document.getElementById('q');
+  q.addEventListener('input', ()=>{
+    const t = q.value.toLowerCase();
+    render(list, locales.filter(l=>[l.nombre,l.rubro,l.barrio].join(' ').toLowerCase().includes(t)));
+  });
+})();
 </script>
-
 </body>
 </html>

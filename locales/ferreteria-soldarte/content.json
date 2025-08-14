@@ -1,14 +1,16 @@
 {
   "ajustes": {
     "nombre": "Ferretería Soldarte",
-    "sub": "Herramientas y hogar",
-    "logo": "assets/logo-ferreteria.png",
-    "whatsapp": "3415000000",
-    "shipping": 1500,
-    "tab_rotiseria": "🧰 Herramientas",
-    "tab_bebidas": "🔌 Electricidad & Pintura",
+    "sub": "Todo para tu hogar",
+    "logo": "assets/zonaap-logo.svg",
+    "shipping": 1000,
+    "whatsapp": "3415923882",
+    "secciones": [
+      "Herramientas",
+      "Electricidad & Pintura"
+    ],
     "horarios": {
-      "rotiseria": {
+      "sec1": {
         "dias": [
           1,
           2,
@@ -24,7 +26,7 @@
           }
         ]
       },
-      "bebidas": {
+      "sec2": {
         "dias": [
           1,
           2,
@@ -40,92 +42,77 @@
           }
         ]
       }
-    }
-  },
-  "productos": {
-    "rotiseria": {
-      "categorias": [
-        {
-          "categoria": "Mano",
-          "productos": [
-            {
-              "nombre": "Martillo carpintero",
-              "precio": 4500
-            },
-            {
-              "nombre": "Pinza universal",
-              "precio": 4200
-            },
-            {
-              "nombre": "Juego destornilladores x6",
-              "precio": 6900
-            }
-          ]
-        },
-        {
-          "categoria": "Accesorios",
-          "productos": [
-            {
-              "nombre": "Tornillos 4x30 (x10)",
-              "precio": 600
-            },
-            {
-              "nombre": "Tarugos 6mm (x10)",
-              "precio": 700
-            },
-            {
-              "nombre": "Cinta teflón",
-              "precio": 550
-            }
-          ]
-        }
-      ]
     },
-    "bebidas": {
-      "categorias": [
-        {
-          "categoria": "Electricidad",
-          "productos": [
-            {
-              "nombre": "Lámpara LED 9W",
-              "precio": 1800
-            },
-            {
-              "nombre": "Lámpara LED 12W",
-              "precio": 2200
-            },
-            {
-              "nombre": "Cinta aisladora",
-              "precio": 850
-            }
-          ]
-        },
-        {
-          "categoria": "Pintura",
-          "productos": [
-            {
-              "nombre": "Pincel 1”",
-              "precio": 1300
-            },
-            {
-              "nombre": "Rodillo 22cm",
-              "precio": 2600
-            },
-            {
-              "nombre": "Bandeja para rodillo",
-              "precio": 1100
-            }
-          ]
-        }
-      ]
-    }
+    "cupones": [
+      {
+        "code": "HERRA10",
+        "type": "percent",
+        "value": 10,
+        "desc": "10% OFF herramientas"
+      }
+    ]
   },
-  "promos": {
-    "rotiseria": {
-      "promos": []
-    },
-    "bebidas": {
-      "promos": []
-    }
+  "sec1": {
+    "categorias": [
+      {
+        "categoria": "Herramientas de mano",
+        "productos": [
+          {
+            "nombre": "Martillo carpintero",
+            "precio": 6500,
+            "img": "assets/placeholder.png"
+          },
+          {
+            "nombre": "Llave francesa",
+            "precio": 5400,
+            "img": "assets/placeholder.png"
+          }
+        ]
+      },
+      {
+        "categoria": "Accesorios",
+        "productos": [
+          {
+            "nombre": "Cinta métrica 3m",
+            "precio": 1800,
+            "img": "assets/placeholder.png"
+          }
+        ]
+      }
+    ]
+  },
+  "sec2": {
+    "categorias": [
+      {
+        "categoria": "Electricidad",
+        "productos": [
+          {
+            "nombre": "Lámpara LED 9W",
+            "precio": 1600,
+            "img": "assets/placeholder.png"
+          },
+          {
+            "nombre": "Cinta aisladora",
+            "precio": 700,
+            "img": "assets/placeholder.png"
+          }
+        ]
+      },
+      {
+        "categoria": "Pintura",
+        "productos": [
+          {
+            "nombre": "Pincel 2\"",
+            "precio": 2000,
+            "img": "assets/placeholder.png"
+          },
+          {
+            "nombre": "Rodillo 9\"",
+            "precio": 3700,
+            "img": "assets/placeholder.png"
+          }
+        ]
+      }
+    ]
   }
 }

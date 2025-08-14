@@ -1,31 +1,15 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Zonaap CMS</title>
-    <link rel="icon" href="../assets/logo.png">
-    <style>
-      body{background:#0b1220;color:#fff;font-family:system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, sans-serif}
-      .wrap{max-width:760px;margin:10vh auto;padding:2rem;background:#0f172a;border-radius:18px;border:1px solid #1e293b;box-shadow:0 24px 80px rgba(0,0,0,.45)}
-      h1{margin-top:0}
-      p{opacity:.85}
-      a.btn{display:inline-block;margin-top:1rem;padding:.8rem 1.2rem;border-radius:12px;background:#ffcc00;color:#001122;font-weight:900;text-decoration:none}
-    </style>
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  </head>
-  <body>
-    <div class="wrap">
-      <h1>Zonaap – Panel de edición</h1>
-      <p>Iniciá sesión para editar locales y productos. Cada cambio crea un Pull Request.</p>
-      <a class="btn" href="cms/">Abrir CMS</a>
-    </div>
-    <script>
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on('init', user => {
-          if (!user) { window.netlifyIdentity.on('login', () => { document.location.href = '/admin/cms/'; }); }
-        });
-      }
-    </script>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Zonaap CMS</title>
+  <link rel="icon" href="../assets/zonaap-logo.svg">
+  <style>html,body{height:100%}body{margin:0;font-family:system-ui,Segoe UI,Arial}#cms{height:100%}</style>
+</head>
+<body>
+  <script src="https://unpkg.com/decap-cms@3.8.3/dist/decap-cms.js"></script>
+  <script>window.CMS_MANUAL_INIT=true;</script>
+  <script>CMS.init({ config: { load_config_file: true, backend: { name: 'git-gateway' }, media_folder: 'assets/uploads', public_folder: 'assets/uploads' }});</script>
+</body>
 </html>
