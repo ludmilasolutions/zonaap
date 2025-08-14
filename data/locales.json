@@ -1,19 +1,10 @@
 [
   {
-    "slug": "demo-tachi",
-    "nombre": "Rotisería El Tachi (Demo)",
-    "rubro": "Rotisería",
-    "barrio": "Rosario",
-    "logo": "assets/logo.png",
-    "envio": true,
-    "abierto": true
-  },
-  {
-    "slug": "ferreteria-soldarte",
-    "nombre": "Ferretería Soldarte",
-    "rubro": "Ferretería",
-    "barrio": "Fisherton",
-    "logo": "assets/logo-ferreteria.png",
+    "slug": "pizzeria-don-napo",
+    "nombre": "Pizzería Don Napo",
+    "rubro": "Pizzería",
+    "barrio": "Rosario Centro",
+    "logo": "assets/logo-pizzeria.png",
     "envio": true,
     "abierto": true
   },
@@ -27,11 +18,11 @@
     "abierto": true
   },
   {
-    "slug": "pizzeria-don-napo",
-    "nombre": "Pizzería Don Napo",
-    "rubro": "Pizzería",
-    "barrio": "Rosario Centro",
-    "logo": "assets/logo-pizzeria.png",
+    "slug": "ferreteria-soldarte",
+    "nombre": "Ferretería Soldarte",
+    "rubro": "Ferretería",
+    "barrio": "Fisherton",
+    "logo": "assets/logo-ferreteria.png",
     "envio": true,
     "abierto": true
   }

@@ -1,24 +1,24 @@
 {
   "ajustes": {
     "nombre": "Pizzería Don Napo",
-    "sub": "Masa finita, horno a leña",
+    "sub": "Demo de Zonaap",
     "logo": "assets/logo-pizzeria.png",
-    "whatsapp": "3415112233",
-    "shipping": 1200,
-    "analytics_webhook": "",
-    "tab_rotiseria": "🍕 Pizzas",
-    "tab_bebidas": "🥤 Bebidas",
+    "whatsapp": "3415000000",
+    "shipping": 1000,
     "horarios": {
       "rotiseria": {
         "dias": [
+          0,
+          1,
+          2,
+          3,
           4,
           5,
-          6,
-          0
+          6
         ],
         "rangos": [
           {
-            "desde": "20:00",
+            "desde": "09:00",
             "hasta": "23:59"
           }
         ]
@@ -35,53 +35,29 @@
         ],
         "rangos": [
           {
-            "desde": "10:00",
+            "desde": "09:00",
             "hasta": "23:59"
           }
         ]
       }
     },
-    "theme": {
-      "azul": "#052f5f",
-      "amarillo": "#ffcc00",
-      "bg": "#f7f8fb",
-      "text": "#1f2937"
-    }
+    "tab_rotiseria": "🍕 Pizzas",
+    "tab_bebidas": "🥤 Bebidas"
   },
   "productos": {
     "rotiseria": {
       "categorias": [
         {
-          "categoria": "PIZZAS",
+          "categoria": "CAT 1",
           "productos": [
             {
-              "nombre": "Muzzarella",
-              "precio": 4500,
-              "desc": "Clásica con aceitunas"
+              "nombre": "Producto A",
+              "precio": 2000,
+              "desc": "Descripción corta"
             },
             {
-              "nombre": "Napolitana",
-              "precio": 5200,
-              "desc": "Tomate en rodajas y ajo"
-            },
-            {
-              "nombre": "Calabresa",
-              "precio": 5600,
-              "desc": "Longaniza y morrones"
-            }
-          ]
-        },
-        {
-          "categoria": "CALZONES",
-          "productos": [
-            {
-              "nombre": "Jamón y queso",
-              "precio": 6000
-            },
-            {
-              "nombre": "Caprese",
-              "precio": 6200,
-              "desc": "Tomate, albahaca, muzza"
+              "nombre": "Producto B",
+              "precio": 3200
             }
           ]
         }
@@ -90,24 +66,15 @@
     "bebidas": {
       "categorias": [
         {
-          "categoria": "GASEOSAS",
+          "categoria": "BEBIDAS",
           "productos": [
             {
-              "nombre": "Coca 1.5L",
-              "precio": 3900
+              "nombre": "Agua 500ml",
+              "precio": 900
             },
             {
-              "nombre": "Sprite 1.5L",
-              "precio": 3700
-            }
-          ]
-        },
-        {
-          "categoria": "AGUAS",
-          "productos": [
-            {
-              "nombre": "Agua sin gas 1.5L",
-              "precio": 2500
+              "nombre": "Gaseosa 1.5L",
+              "precio": 3200
             }
           ]
         }
@@ -116,15 +83,7 @@
   },
   "promos": {
     "rotiseria": {
-      "promos": [
-        {
-          "nombre": "2x Muzzarella",
-          "precio": 8200,
-          "precio_original": 9000,
-          "tag": "-9%",
-          "vigencia_hasta": ""
-        }
-      ]
+      "promos": []
     },
     "bebidas": {
       "promos": []

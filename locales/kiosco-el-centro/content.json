@@ -1,13 +1,10 @@
 {
   "ajustes": {
     "nombre": "Kiosco El Centro",
-    "sub": "Snacks, golosinas y bebidas",
+    "sub": "Demo de Zonaap",
     "logo": "assets/logo-kiosco.png",
-    "whatsapp": "3415888999",
-    "shipping": 800,
-    "analytics_webhook": "",
-    "tab_rotiseria": "🍫 Almacén",
-    "tab_bebidas": "🥤 Bebidas",
+    "whatsapp": "3415000000",
+    "shipping": 1000,
     "horarios": {
       "rotiseria": {
         "dias": [
@@ -21,7 +18,7 @@
         ],
         "rangos": [
           {
-            "desde": "08:00",
+            "desde": "09:00",
             "hasta": "23:59"
           }
         ]
@@ -38,45 +35,29 @@
         ],
         "rangos": [
           {
-            "desde": "08:00",
+            "desde": "09:00",
             "hasta": "23:59"
           }
         ]
       }
     },
-    "theme": {
-      "azul": "#0b7285",
-      "amarillo": "#ffd43b",
-      "bg": "#f8fbfd",
-      "text": "#1f2937"
-    }
+    "tab_rotiseria": "🍕 Almacén",
+    "tab_bebidas": "🥤 Bebidas"
   },
   "productos": {
     "rotiseria": {
       "categorias": [
         {
-          "categoria": "GOLOSINAS",
+          "categoria": "CAT 1",
           "productos": [
             {
-              "nombre": "Chocolate 60g",
-              "precio": 1800
+              "nombre": "Producto A",
+              "precio": 2000,
+              "desc": "Descripción corta"
             },
             {
-              "nombre": "Caramelos surtidos",
-              "precio": 900
-            }
-          ]
-        },
-        {
-          "categoria": "SNACKS",
-          "productos": [
-            {
-              "nombre": "Papas 95g",
-              "precio": 2200
-            },
-            {
-              "nombre": "Maní salado 150g",
-              "precio": 1600
+              "nombre": "Producto B",
+              "precio": 3200
             }
           ]
         }
@@ -85,15 +66,15 @@
     "bebidas": {
       "categorias": [
         {
-          "categoria": "FRÍAS",
+          "categoria": "BEBIDAS",
           "productos": [
             {
-              "nombre": "Coca 1.5L",
-              "precio": 3900
+              "nombre": "Agua 500ml",
+              "precio": 900
             },
             {
-              "nombre": "Agua 500ml",
-              "precio": 1200
+              "nombre": "Gaseosa 1.5L",
+              "precio": 3200
             }
           ]
         }

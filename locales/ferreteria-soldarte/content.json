@@ -1,16 +1,14 @@
 {
   "ajustes": {
     "nombre": "Ferretería Soldarte",
-    "sub": "Herramientas & Hogar",
+    "sub": "Demo de Zonaap",
     "logo": "assets/logo-ferreteria.png",
-    "whatsapp": "3415777666",
-    "shipping": 0,
-    "analytics_webhook": "",
-    "tab_rotiseria": "🔧 Herramientas",
-    "tab_bebidas": "🧰 Accesorios",
+    "whatsapp": "3415000000",
+    "shipping": 1000,
     "horarios": {
       "rotiseria": {
         "dias": [
+          0,
           1,
           2,
           3,
@@ -21,12 +19,13 @@
         "rangos": [
           {
             "desde": "09:00",
-            "hasta": "19:00"
+            "hasta": "23:59"
           }
         ]
       },
       "bebidas": {
         "dias": [
+          0,
           1,
           2,
           3,
@@ -37,35 +36,28 @@
         "rangos": [
           {
             "desde": "09:00",
-            "hasta": "19:00"
+            "hasta": "23:59"
           }
         ]
       }
     },
-    "theme": {
-      "azul": "#374151",
-      "amarillo": "#fbbf24",
-      "bg": "#f3f4f6",
-      "text": "#111827"
-    }
+    "tab_rotiseria": "🍕 Herramientas",
+    "tab_bebidas": "🥤 Accesorios"
   },
   "productos": {
     "rotiseria": {
       "categorias": [
         {
-          "categoria": "HERRAMIENTAS",
+          "categoria": "CAT 1",
           "productos": [
             {
-              "nombre": "Martillo carpintero",
-              "precio": 9500
+              "nombre": "Producto A",
+              "precio": 2000,
+              "desc": "Descripción corta"
             },
             {
-              "nombre": "Alicate universal",
-              "precio": 7800
-            },
-            {
-              "nombre": "Cinta métrica 5m",
-              "precio": 4200
+              "nombre": "Producto B",
+              "precio": 3200
             }
           ]
         }
@@ -74,19 +66,15 @@
     "bebidas": {
       "categorias": [
         {
-          "categoria": "ACCESORIOS",
+          "categoria": "BEBIDAS",
           "productos": [
             {
-              "nombre": "Tornillos x100",
-              "precio": 3600
+              "nombre": "Agua 500ml",
+              "precio": 900
             },
             {
-              "nombre": "Tarugo 8mm x50",
-              "precio": 3100
-            },
-            {
-              "nombre": "Guantes de obra",
-              "precio": 2500
+              "nombre": "Gaseosa 1.5L",
+              "precio": 3200
             }
           ]
         }
