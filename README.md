@@ -1,52 +1,39 @@
-# Zonaap – Opción A (100% estático + PR automático)
+# Zonaap — Demo full con carrito estilo Tachi + categorías en acordeón
 
-Plataforma multi-tienda gratis: cada local tiene su carpeta `locales/<slug>/` con sus JSON. Registro crea un **Pull Request** al repo.
+Abrí `index.html` para ver el listado de locales. Al entrar a un local (`negocio.html?l=<slug>`) vas a ver:
 
-## Deploy rápido (Netlify)
-1) Subí estos archivos a un repo GitHub (o importá directo en Netlify).
-2) En Netlify → *Site settings* → *Environment variables*:
-   - `GITHUB_OWNER` = tu usuario/org
-   - `GITHUB_REPO` = nombre del repo
-   - `GITHUB_DEFAULT_BRANCH` = `main` (o la que uses)
-   - `GITHUB_TOKEN` = un PAT con permiso `repo` (fine-grained o classic)
-3) Deploy. Abrí `/registro.html`, enviá un alta. Al aprobar el PR, el local aparece en la home.
+- Categorías **una debajo de la otra** en **acordeón** (solo una abierta a la vez).
+- Carrito con **FAB flotante** y **bottom-sheet** de 3 pasos (Datos → Resumen → WhatsApp).
+- **Retiro / Envío** con costo dinámico por local, **cupón** (porcentaje, monto o envío gratis), **propina** (%), **nota** y **totales**.
 
 ## Estructura
-- `data/locales.json` → listado para la home
-- `locales/<slug>/ajustes.json` → whatsapp, shipping, horarios, logo, etc.
-- `locales/<slug>/productos-*.json`, `promos-*.json`
-- `negocio.html` → plantilla por slug
-- `tachi-app.js` → lógica de tienda (adaptada de El Tachi)
-- `netlify/functions/create-branch-pr.js` → crea rama + PR
-- `netlify.toml` → funciones y redirect `/tienda/:slug`
+- `index.html` • Home con buscador y tarjetas de locales.
+- `negocio.html` • Página del local (acordeón + carrito).
+- `js/app.js` • Lógica del home.
+- `js/store.js` • Lógica del local y del carrito.
+- `locales/index.json` • Listado de locales (slug, nombre, rubro, barrio, logo).
+- `locales/<slug>/content.json` • Configuración y productos del local.
 
-## Apps Script (analytics/seguimiento)
-En `locales/<slug>/ajustes.json` podés setear `analytics_webhook` con tu Web App de Apps Script. El payload incluye `slug`.
+## Configuración por local (`content.json`)
+```jsonc
+{
+  "subtitulo": "Hecha como en casa",
+  "ajustes": {
+    "whatsapp": "+5493415550000",
+    "envio_costo": 1200,
+    "cupones": [
+      { "code": "NAPO10", "type": "percent", "value": 10 },
+      { "code": "ENVIOFREE", "type": "shipping_free" }
+    ]
+  },
+  "secciones": [
+    { "nombre": "Pizzas", "categorias": [ { "categoria":"Clásicas", "productos":[ ... ] } ] }
+  ]
+}
+```
 
-## Rutas útiles
-- `/` → home con buscador
-- `/registro.html` → alta de locales
-- `/negocio.html?l=<slug>` → tienda
-- `/tienda/<slug>` → redirect a lo mismo
+**Tipos de cupón**: `percent` (porcentaje), `amount` (monto fijo en ARS), `shipping_free` (envío gratis).
 
 ---
-Hecho para replicar el flujo de El Tachi de forma multi-tenant y sin costos.
 
-
-## Add-ons incluidos
-### Decap/Netlify CMS por carpeta
-- Panel en **/admin/** → hace login con *Netlify Identity* y edita contenido por local en `locales/<slug>/content.json` (crea PRs).
-- Activa en Netlify: **Identity** (Enable Identity) → **Git Gateway** (Enable).
-- Usuarios: invita dueños de locales por email (free tier). Cada cambio va por PR.
-
-### Temas por local
-- En `ajustes.theme` podés definir variables CSS: `azul`, `amarillo`, `bg`, `text`. El runtime las aplica.
-
-### Pantalla de seguimiento
-- `/track.html?l=<slug>&o=<order_id>` consulta el `analytics_webhook` del local vía JSONP y muestra el estado.
-
-### Compatibilidad
-- La tienda ahora soporta **dos modos** de datos:
-  1) `locales/<slug>/content.json` (preferido por CMS)
-  2) Archivos separados `ajustes.json`, `productos-*.json`, `promos-*.json` (fallback)
-
+> Sugerencia: subí la carpeta a Netlify (drag & drop) y listo. Si querés conectar hoja de Google/Apps Script para analíticas y tracking, se puede agregar en otra iteración.

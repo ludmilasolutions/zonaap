@@ -1,13 +1,11 @@
 {
-  "nombre": "Kiosco El Centro",
-  "sub": "Abierto todos los días",
-  "logo": "../assets/za-icon.svg",
+  "subtitulo": "Abierto todos los días",
   "ajustes": {
-    "whatsapp": "+54 341 555 2222",
+    "whatsapp": "+5493415551111",
     "envio_costo": 800,
     "cupones": [
       {
-        "code": "DULCE5",
+        "code": "KIOSCO5",
         "type": "percent",
         "value": 5
       }
@@ -15,49 +13,44 @@
   },
   "secciones": [
     {
-      "nombre": "Snacks & Dulce",
+      "nombre": "Kiosco",
       "categorias": [
         {
-          "nombre": "Snacks",
+          "categoria": "Snacks",
           "productos": [
             {
-              "nombre": "Papas clásicas 90g",
-              "precio": 1500
+              "nombre": "Papas clásicas",
+              "precio": 1200
             },
             {
-              "nombre": "Doritos 90g",
-              "precio": 1600
+              "nombre": "Maní salado",
+              "precio": 900
             }
           ]
         },
         {
-          "nombre": "Dulce",
+          "categoria": "Dulce",
           "productos": [
             {
               "nombre": "Chocolate 90g",
-              "precio": 1900
+              "precio": 1300
             },
             {
-              "nombre": "Alfajor triple",
-              "precio": 1200
+              "nombre": "Caramelos surtidos",
+              "precio": 700
             }
           ]
-        }
-      ]
-    },
-    {
-      "nombre": "Bebidas frías",
-      "categorias": [
+        },
         {
-          "nombre": "Bebidas frías",
+          "categoria": "Bebidas frías",
           "productos": [
             {
-              "nombre": "Gatorade 500ml",
-              "precio": 1700
+              "nombre": "Gaseosa 500ml",
+              "precio": 900
             },
             {
-              "nombre": "Coca 500ml",
-              "precio": 1500
+              "nombre": "Agua 500ml",
+              "precio": 600
             }
           ]
         }

@@ -1,9 +1,7 @@
 {
-  "nombre": "Ferretería Soldarte",
-  "sub": "Todo para tu obra",
-  "logo": "../assets/za-icon.svg",
+  "subtitulo": "Todo para tu proyecto",
   "ajustes": {
-    "whatsapp": "+54 341 555 3333",
+    "whatsapp": "+5493415552222",
     "envio_costo": 1500,
     "cupones": [
       {
@@ -15,62 +13,31 @@
   },
   "secciones": [
     {
-      "nombre": "Herramientas",
+      "nombre": "Ferretería",
       "categorias": [
         {
-          "nombre": "Manuales",
+          "categoria": "Mano de obra",
           "productos": [
             {
-              "nombre": "Martillo",
+              "nombre": "Cambio cuerito canilla",
               "precio": 4500
+            },
+            {
+              "nombre": "Colocación lámpara",
+              "precio": 2500
+            }
+          ]
+        },
+        {
+          "categoria": "Herramientas",
+          "productos": [
+            {
+              "nombre": "Llave francesa",
+              "precio": 8500
             },
             {
               "nombre": "Destornillador Philips",
               "precio": 2200
-            }
-          ]
-        },
-        {
-          "nombre": "Eléctricas",
-          "productos": [
-            {
-              "nombre": "Taladro 650W",
-              "precio": 35000
-            },
-            {
-              "nombre": "Amoladora 4½''",
-              "precio": 42000
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "nombre": "Electricidad & Pintura",
-      "categorias": [
-        {
-          "nombre": "Electricidad",
-          "productos": [
-            {
-              "nombre": "Lamparita LED 10W",
-              "precio": 1900
-            },
-            {
-              "nombre": "Cinta aisladora",
-              "precio": 900
-            }
-          ]
-        },
-        {
-          "nombre": "Pintura",
-          "productos": [
-            {
-              "nombre": "Latex 4L",
-              "precio": 19000
-            },
-            {
-              "nombre": "Rodillo mediano",
-              "precio": 3800
             }
           ]
         }

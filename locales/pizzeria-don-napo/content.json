@@ -1,9 +1,7 @@
 {
-  "nombre": "Pizzería Don Napo",
-  "sub": "Hecha como en casa",
-  "logo": "../assets/za-icon.svg",
+  "subtitulo": "Hecha como en casa",
   "ajustes": {
-    "whatsapp": "+54 341 555 1111",
+    "whatsapp": "+5493415550000",
     "envio_costo": 1200,
     "cupones": [
       {
@@ -22,12 +20,13 @@
       "nombre": "Pizzas",
       "categorias": [
         {
-          "nombre": "Clásicas",
+          "categoria": "Clásicas",
           "productos": [
             {
               "nombre": "Muzzarella",
               "desc": "Tomate, muzza y orégano",
-              "precio": 4200
+              "precio": 4200,
+              "img": "assets/placeholder.svg"
             },
             {
               "nombre": "Napolitana",
@@ -42,17 +41,17 @@
           ]
         },
         {
-          "nombre": "Especiales",
+          "categoria": "Especiales",
           "productos": [
             {
               "nombre": "Calabresa",
-              "desc": "Panceta y longaniza calabresa",
+              "desc": "Longaniza calabresa y muzza",
               "precio": 5600
             },
             {
-              "nombre": "Cuatro Quesos",
-              "desc": "Muzza, roquefort, gouda, parmesano",
-              "precio": 6000
+              "nombre": "4 Quesos",
+              "desc": "Muzza, provolone, roquefort, parmesano",
+              "precio": 6100
             }
           ]
         }
@@ -62,28 +61,28 @@
       "nombre": "Bebidas",
       "categorias": [
         {
-          "nombre": "Gaseosas",
+          "categoria": "Gaseosas",
           "productos": [
             {
-              "nombre": "Coca 1.5L",
-              "precio": 2400
+              "nombre": "Coca-Cola 1.5L",
+              "precio": 1800
             },
             {
               "nombre": "Sprite 1.5L",
-              "precio": 2300
+              "precio": 1700
             }
           ]
         },
         {
-          "nombre": "Aguas y otros",
+          "categoria": "Aguas y otros",
           "productos": [
             {
               "nombre": "Agua 1.5L",
-              "precio": 1600
+              "precio": 1200
             },
             {
-              "nombre": "Cerveza 1L",
-              "precio": 2600
+              "nombre": "Cerveza lata",
+              "precio": 1500
             }
           ]
         }

@@ -1,202 +1,259 @@
+// Helpers
+const $ = sel => document.querySelector(sel);
+const fmt = n => new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(n||0);
+const slug = new URLSearchParams(location.search).get('l') || '';
 
-(function(){
-  const $ = s=>document.querySelector(s);
-  const fmt = n => new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(n||0);
-  const params = new URLSearchParams(location.search);
-  const slug = params.get('l') || '';
+let SHOP = null;
+let CART = {}; // {key: qty}
 
-  const state = {
-    items: {}, // id -> qty
-    catalog: {}, // id -> {nombre, precio}
-    ajustes: { whatsapp:'', envio_costo: 0, cupones:[] }
-  };
+async function loadShop(){
+  const resIdx = await fetch('locales/index.json');
+  const idx = await resIdx.json();
+  const meta = (idx.locales||[]).find(x => x.slug===slug) || idx.locales?.[0];
+  const res = await fetch(`locales/${meta.slug}/content.json`);
+  const data = await res.json();
+  return {...meta, ...data};
+}
 
-  const TTL_MS = 2*60*60*1000;
-  function setWithTTL(k,v,ttl){ localStorage.setItem(k, JSON.stringify({v, exp: Date.now()+ttl})); }
-  function getWithTTL(k, fallback){ try{ const raw = JSON.parse(localStorage.getItem(k)); if(!raw) return fallback; if(raw.exp && Date.now()>raw.exp){ localStorage.removeItem(k); return fallback; } return raw.v ?? fallback; }catch{return fallback} }
+function buildProductRow(catName, p, i){
+  const key = `${catName}::${p.nombre}::${i}`;
+  const q = CART[key]||0;
+  const row = document.createElement('div');
+  row.className = 'prod';
+  row.innerHTML = `
+    <div class="prod-thumb"><img src="${p.img||'assets/placeholder.svg'}" alt=""></div>
+    <div class="prod-info">
+      <h4>${p.nombre}</h4>
+      ${p.desc?`<p>${p.desc}</p>`:''}
+      <div class="prod-price">${fmt(p.precio)}</div>
+    </div>
+    <div class="qty">
+      <button aria-label="Quitar">−</button>
+      <span class="q" id="q-${btoa(key)}">${q}</span>
+      <button aria-label="Agregar">+</button>
+    </div>
+  `;
+  const [btnMinus, , btnPlus] = row.querySelectorAll('button,span');
+  btnPlus.addEventListener('click', ()=> changeQty(key, +1, p.precio));
+  btnMinus.addEventListener('click', ()=> changeQty(key, -1, p.precio));
+  row.dataset.key = key;
+  row.dataset.price = p.precio;
+  row.dataset.name = p.nombre;
+  row.dataset.cat = catName;
+  return row;
+}
 
-  const CART_KEY = 'za_cart_'+slug;
-  const CLIENT_KEY = 'za_client';
-
-  function saveCart(){ setWithTTL(CART_KEY, state.items, TTL_MS); }
-  function loadCart(){ state.items = getWithTTL(CART_KEY, {}); }
-  function saveClient(){ const c={name:$('#nombre')?.value||'', addr:$('#direccion')?.value||'', entrega:document.querySelector('input[name=envio]:checked')?.value||''}; setWithTTL(CLIENT_KEY,c,TTL_MS); }
-  function loadClient(){ const c = getWithTTL(CLIENT_KEY, {}); if(c.name) $('#nombre').value=c.name; if(c.addr) $('#direccion').value=c.addr; if(c.entrega){ document.getElementById('opt-'+(c.entrega==='envio'?'env':'ret')).checked=true; } }
-
-  async function loadData(){
-    const res = await fetch('locales/'+slug+'/content.json'); const data = await res.json();
-    // Header
-    $('#title').textContent = data.nombre || 'Local';
-    $('#sub').textContent = data.sub || '';
-    $('#logo').src = data.logo || 'assets/za-icon.svg';
-
-    state.ajustes.whatsapp = (data.ajustes?.whatsapp||'').replace(/\D/g,'');
-    state.ajustes.envio_costo = Number(data.ajustes?.envio_costo||0);
-    state.ajustes.cupones = Array.isArray(data.ajustes?.cupones)?data.ajustes.cupones:[];
-    $('#envioLabel').textContent = 'Envío (+'+fmt(state.ajustes.envio_costo)+')';
-
-    // Categories collected from all sections (no section tabs)
-    const chips = $('#chips'); chips.innerHTML='';
-    const content = $('#content'); content.innerHTML='';
-
-    const sections = Array.isArray(data.secciones)?data.secciones:[];
-    let anchorIndex = 0;
-    sections.forEach(sec => {
-      const categorias = Array.isArray(sec.categorias)?sec.categorias:[];
-      categorias.forEach(cat => {
-        anchorIndex++;
-        const anchor = 'cat-'+anchorIndex;
-        // chip
-        const a = document.createElement('a');
-        a.href = '#'+anchor; a.textContent = `${cat.nombre} (${(cat.productos||[]).length})`;
-        chips.appendChild(a);
-        // section block
-        const box = document.createElement('div'); box.className='section'; box.id = anchor;
-        box.innerHTML = `<h2>${cat.nombre}</h2>`;
-        (cat.productos||[]).forEach((p,i)=>{
-          // id
-          const id = `${anchor}-${i}`;
-          state.catalog[id] = {nombre:p.nombre, precio:Number(p.precio||0)};
-          const row = document.createElement('div'); row.className='prod';
-          const img = p.img || 'assets/za-icon.svg';
-          row.innerHTML = `
-            <div class="thumb"><img src="${img}" alt="${p.nombre}"></div>
-            <div>
-              <h3>${p.nombre}</h3>
-              ${p.desc?`<p>${p.desc}</p>`:''}
-              <div class="price">${fmt(p.precio)}</div>
-            </div>
-            <div class="qty">
-              <button aria-label="Quitar" data-id="${id}" data-d="-1">−</button>
-              <span id="q-${id}">${state.items[id]||0}</span>
-              <button aria-label="Agregar" data-id="${id}" data-d="1">+</button>
-            </div>`;
-          content.appendChild(box); box.appendChild(row);
-        });
-      });
+function renderCategoriasAccordion(categorias){
+  const root = document.getElementById('categorias');
+  root.innerHTML = '';
+  categorias.forEach((cat, idx) => {
+    const det = document.createElement('details');
+    det.className = 'acc-item';
+    det.open = idx === 0;
+    det.innerHTML = `
+      <summary class="acc-summary">
+        <span class="acc-title">${cat.categoria}</span>
+        <span class="acc-right">
+          <span class="acc-badge">${(cat.productos||[]).length}</span>
+          <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </summary>
+      <div class="acc-content"></div>
+    `;
+    const content = det.querySelector('.acc-content');
+    (cat.productos||[]).forEach((p, i) => content.appendChild(buildProductRow(cat.categoria, p, i)));
+    det.addEventListener('toggle', () => {
+      if (det.open) document.querySelectorAll('.acc-item').forEach(o => { if (o!==det) o.open=false; });
+      sessionStorage.setItem('za_last_open', det.querySelector('.acc-title').textContent);
     });
-    // qty handlers
-    content.addEventListener('click', ev=>{
-      const b = ev.target.closest('button[data-id]'); if(!b) return;
-      const id = b.getAttribute('data-id'); const d = Number(b.getAttribute('data-d'));
-      const q = Math.max(0, (state.items[id]||0)+d); state.items[id]=q; saveCart();
-      $('#q-'+id).textContent=q; refresh();
-    });
+    root.appendChild(det);
+  });
+  // restore last open
+  const last = sessionStorage.getItem('za_last_open');
+  if(last){
+    const el = [...document.querySelectorAll('.acc-title')].find(e=>e.textContent===last);
+    if(el) el.closest('details').open = true;
   }
+}
 
-  function refresh(){
-    // FAB
-    const count = Object.values(state.items).reduce((a,b)=>a+(b||0),0);
-    const subtotal = Object.entries(state.items).reduce((s,[id,q])=> s + (state.catalog[id]?.precio||0)*q, 0);
-    $('#fabCount').textContent = count; $('#fabTotal').textContent = fmt(subtotal);
-    $('#fab').classList.toggle('hidden', count<=0);
+function changeQty(key, delta, price){
+  const q = Math.max(0, (CART[key]||0) + delta);
+  CART[key] = q;
+  const span = document.getElementById(`q-${btoa(key)}`);
+  if(span) span.textContent = q;
+  persist();
+  refreshFab();
+}
 
-    // Sheet summary
-    const ul = $('#items'); ul.innerHTML='';
-    Object.entries(state.items).forEach(([id,q])=>{
-      if(q<=0) return;
-      const p = state.catalog[id]; if(!p) return;
-      const li = document.createElement('li');
-      li.className='line'; li.innerHTML = `<span>${p.nombre} <span class="small">x${q}</span></span><strong>${fmt(p.precio*q)}</strong>`;
-      ul.appendChild(li);
-    });
+function persist(){
+  const k = `za_cart_${slug}`;
+  localStorage.setItem(k, JSON.stringify(CART));
+}
 
-    // envio
-    const entrega = document.querySelector('input[name=envio]:checked')?.value||'';
-    const envio = entrega==='envio' ? state.ajustes.envio_costo : 0;
-    $('#env').textContent = fmt(envio);
-    $('#envioLine').textContent = entrega==='envio' ? 'Envío' : 'Entrega';
-    // descuento por cupón
-    const code = ($('#cupon')?.value||'').trim().toUpperCase();
-    let desc = 0;
-    const c = state.ajustes.cupones.find(x => x.code?.toUpperCase()===code);
+function hydrate(){
+  try{
+    const raw = localStorage.getItem(`za_cart_${slug}`);
+    if(raw) CART = JSON.parse(raw)||{};
+  }catch{}
+}
+
+function refreshFab(){
+  const items = Object.entries(CART).filter(([k,q])=>q>0);
+  const total = items.reduce((a,[k,q])=>{
+    const el = [...document.querySelectorAll('.prod')].find(n=>n.dataset.key===k);
+    const price = el ? Number(el.dataset.price) : 0;
+    return a + price*q;
+  },0);
+  $('#fabTotal').textContent = fmt(total);
+  $('#fabCount').textContent = items.reduce((a, [,q])=>a+q, 0);
+  $('#fab').classList.toggle('hide', items.length===0);
+  renderSheetLines();
+}
+
+function renderSheetLines(){
+  const lines = $('#lines'); lines.innerHTML='';
+  const items = Object.entries(CART).filter(([k,q])=>q>0);
+  items.forEach(([k,q])=>{
+    const el = [...document.querySelectorAll('.prod')].find(n=>n.dataset.key===k);
+    if(!el) return;
+    const name = el.dataset.name;
+    const price = Number(el.dataset.price);
+    const row = document.createElement('div');
+    row.className = 'line';
+    row.innerHTML = `<span>${name} <span class="muted">x${q}</span></span><span>${fmt(price*q)}</span>`;
+    lines.appendChild(row);
+  });
+
+  // totals
+  const sub = items.reduce((a,[k,q])=>{
+    const el = [...document.querySelectorAll('.prod')].find(n=>n.dataset.key===k);
+    return a + (Number(el?.dataset.price)||0)*q;
+  },0);
+
+  // shipping
+  const envioSel = document.querySelector('input[name=envio]:checked')?.value;
+  const shipCost = (envioSel==='envio') ? Number(SHOP.ajustes?.envio_costo||0) : 0;
+  const couponCode = ($('#coupon').value||'').trim().toUpperCase();
+  let disc = 0;
+  if(couponCode){
+    const c = (SHOP.ajustes?.cupones||[]).find(x => x.code.toUpperCase()===couponCode);
     if(c){
-      if(c.type==='percent') desc = Math.round(subtotal * (Number(c.value||0)/100));
-      if(c.type==='amount') desc = Number(c.value||0);
-      if(c.type==='shipping_free') desc = envio;
+      if(c.type==='percent') disc = Math.round(sub*(Number(c.value||0)/100));
+      else if(c.type==='amount') disc = Number(c.value||0);
+      else if(c.type==='shipping_free') disc = shipCost;
     }
-    const propPct = parseFloat(($('#propina')?.value||'').replace(',','.'))||0;
-    const tip = Math.round(subtotal * Math.max(0, Math.min(propPct, 99))/100);
-    $('#subtot').textContent = fmt(subtotal);
-    $('#desc').textContent = '- '+fmt(desc);
-    $('#tip').textContent = fmt(tip);
-    const total = Math.max(0, subtotal - desc) + envio + tip;
-    $('#total').textContent = fmt(total);
-
-    // steps active
-    const datosOk = ($('#nombre')?.value.trim().length>0) && (!!entrega) && (entrega==='retiro' || $('#direccion')?.value.trim().length>0);
-    document.querySelectorAll('.step').forEach(s=>{
-      const n = Number(s.getAttribute('data-step'));
-      s.classList.toggle('active', (n===1 && !datosOk) || (n===2 && datosOk && count>0) || (n===3 && datosOk && count>0));
-    });
   }
+  const tipPct = Number($('#tip').value||0);
+  const tipAmt = tipPct>0 ? Math.round(sub*(tipPct/100)) : 0;
+  const total = Math.max(0, sub + shipCost - disc + tipAmt);
 
-  function openSheet(){ $('#backdrop').classList.add('open'); $('#sheet').classList.add('open'); refresh(); }
-  function closeSheet(){ $('#backdrop').classList.remove('open'); $('#sheet').classList.remove('open'); }
+  $('#sub').textContent = fmt(sub);
+  $('#ship').textContent = fmt(shipCost);
+  $('#shipLine').style.display = shipCost>0 ? '' : 'none';
+  $('#disc').textContent = '-'+fmt(disc);
+  $('#discLine').style.display = disc>0 ? '' : 'none';
+  $('#tipAmt').textContent = fmt(tipAmt);
+  $('#tipLine').style.display = tipAmt>0 ? '' : 'none';
+  $('#total').textContent = fmt(total);
 
-  // Events
-  document.addEventListener('click', e=>{
-    if(e.target.id==='fab'){ openSheet(); }
-    if(e.target.id==='close' || e.target.id==='backdrop'){ closeSheet(); }
-    if(e.target.id==='btnClear'){ state.items={}; saveCart(); document.querySelectorAll('[id^="q-"]').forEach(el=>el.textContent='0'); refresh(); }
-    if(e.target.id==='btnWA'){ sendWA(); }
+  // warning
+  const nameOk = ($('#name').value||'').trim().length>0;
+  const addrOk = (envioSel!=='envio') || ($('#addr').value||'').trim().length>0;
+  const warn = [];
+  if(!nameOk) warn.push('Ingresá tu nombre.');
+  if(envioSel==='envio' && !addrOk) warn.push('Ingresá la dirección para el envío.');
+  $('#warn').textContent = warn.join(' ');
+  $('#wa').disabled = !(items.length && nameOk && addrOk);
+}
+
+function openSheet(){ $('#sheet').classList.add('open'); $('#backdrop').classList.add('open'); }
+function closeSheet(){ $('#sheet').classList.remove('open'); $('#backdrop').classList.remove('open'); }
+
+async function init(){
+  SHOP = await loadShop();
+  // header
+  $('#shopName').textContent = SHOP.nombre || 'Local';
+  $('#shopSub').textContent = SHOP.subtitulo || SHOP.slogan || 'Abierto todos los días';
+  document.title = `${SHOP.nombre} | Zonaap`;
+
+  // label envío
+  const ship = Number(SHOP.ajustes?.envio_costo||0);
+  $('#envLbl').textContent = ship>0 ? `Envío (+${fmt(ship)})` : 'Envío';
+
+  // data → acordeón
+  const categorias = (SHOP.secciones||[]).flatMap(s => s.categorias||[]);
+  hydrate();
+  renderCategoriasAccordion(categorias);
+
+  // hydrate quantities
+  document.querySelectorAll('.prod').forEach(el => {
+    const key = el.dataset.key;
+    const q = CART[key]||0;
+    const span = el.querySelector('.q');
+    if(span) span.textContent = q;
   });
-  ['nombre','direccion','cupon','propina','nota'].forEach(id=>{
-    document.addEventListener('input', e=>{ if(e.target.id===id){ if(id==='nombre'||id==='direccion') saveClient(); refresh(); } });
-  });
-  document.addEventListener('change', e=>{
-    if(e.target.name==='envio'){ const entrega = e.target.value; saveClient();
-      document.getElementById('addrWrap').classList.toggle('hidden', entrega!=='envio'); refresh(); }
-  });
 
-  function sendWA(){
-    const entrega = document.querySelector('input[name=envio]:checked')?.value||'';
-    const name = $('#nombre')?.value.trim()||'';
-    const addr = $('#direccion')?.value.trim()||'';
-    const count = Object.values(state.items).reduce((a,b)=>a+(b||0),0);
-    if(!entrega){ alert('Elegí Retiro o Envío'); return; }
-    if(!name){ alert('Ingresá tu nombre'); return; }
-    if(count<=0){ alert('Agregá al menos un producto'); return; }
-    if(entrega==='envio' && !addr){ alert('Ingresá tu dirección'); return; }
+  // events
+  $('#fab').addEventListener('click', openSheet);
+  $('#close').addEventListener('click', closeSheet);
+  $('#backdrop').addEventListener('click', closeSheet);
+  document.querySelectorAll('input[name=envio]').forEach(i=> i.addEventListener('change', ()=>{
+    const v = document.querySelector('input[name=envio]:checked')?.value;
+    $('#addrWrap').style.display = (v==='envio')? 'block' : 'none';
+    refreshFab();
+  }));
+  ['name','addr','coupon','tip','note'].forEach(id => $('#'+id).addEventListener('input', refreshFab));
+  $('#clear').addEventListener('click', ()=>{ CART={}; persist(); document.querySelectorAll('.q').forEach(e=>e.textContent='0'); refreshFab(); });
 
-    const subtotal = Object.entries(state.items).reduce((s,[id,q])=> s + (state.catalog[id]?.precio||0)*q, 0);
-    const envio = entrega==='envio' ? state.ajustes.envio_costo : 0;
-    const code = ($('#cupon')?.value||'').trim().toUpperCase();
-    let desc = 0; const c = state.ajustes.cupones.find(x => x.code?.toUpperCase()===code);
-    if(c){ if(c.type==='percent') desc = Math.round(subtotal * (Number(c.value||0)/100));
-      if(c.type==='amount') desc = Number(c.value||0); if(c.type==='shipping_free') desc = envio; }
-    const propPct = parseFloat(($('#propina')?.value||'').replace(',','.'))||0;
-    const tip = Math.round(subtotal * Math.max(0, Math.min(propPct, 99))/100);
-    const total = Math.max(0, subtotal - desc) + envio + tip;
+  $('#wa').addEventListener('click', ()=>{
+    const items = Object.entries(CART).filter(([k,q])=>q>0);
+    const envioSel = document.querySelector('input[name=envio]:checked')?.value || 'retiro';
+    const name = ($('#name').value||'').trim();
+    const addr = ($('#addr').value||'').trim();
+    const note = ($('#note').value||'').trim();
+    const couponCode = ($('#coupon').value||'').trim().toUpperCase();
+    // recompute totals
+    const sub = items.reduce((a,[k,q])=>{
+      const el = [...document.querySelectorAll('.prod')].find(n=>n.dataset.key===k);
+      return a + (Number(el?.dataset.price)||0)*q;
+    },0);
+    const shipCost = envioSel==='envio' ? Number(SHOP.ajustes?.envio_costo||0) : 0;
+    let disc = 0;
+    if(couponCode){
+      const c = (SHOP.ajustes?.cupones||[]).find(x => x.code.toUpperCase()===couponCode);
+      if(c){
+        if(c.type==='percent') disc = Math.round(sub*(Number(c.value||0)/100));
+        else if(c.type==='amount') disc = Number(c.value||0);
+        else if(c.type==='shipping_free') disc = shipCost;
+      }
+    }
+    const tipPct = Number($('#tip').value||0);
+    const tipAmt = tipPct>0 ? Math.round(sub*(tipPct/100)) : 0;
+    const total = Math.max(0, sub + shipCost - disc + tipAmt);
 
-    let msg = `Hola, soy ${name}. Quiero hacer un pedido:\\n`;
-    Object.entries(state.items).forEach(([id,q])=>{
-      if(q>0){ const p = state.catalog[id]; msg+=`- ${p.nombre} x${q} - ${fmt(p.precio*q)}\\n`; }
+    let msg = `Hola, soy ${name}. Quiero hacer un pedido en ${SHOP.nombre}:\n`;
+    items.forEach(([k,q])=>{
+      const el = [...document.querySelectorAll('.prod')].find(n=>n.dataset.key===k);
+      msg += `- ${el?.dataset.name} x${q} - ${fmt(Number(el?.dataset.price||0)*q)}\n`;
     });
-    if($('#nota')?.value.trim()) msg+=`Nota: ${$('#nota').value.trim()}\\n`;
-    if(code) msg+=`Cupón: ${code}\\n`;
-    msg+= entrega==='envio' ? `Envío a: ${addr} (+${fmt(state.ajustes.envio_costo)})\\n` : 'Retiro en el local\\n';
-    msg+= `Subtotal: ${fmt(subtotal)}\\n`;
-    if(desc) msg+= `Descuento: -${fmt(desc)}\\n`;
-    if(tip) msg+= `Propina: ${fmt(tip)}\\n`;
-    msg+= `Total: ${fmt(total)}`;
+    if(note) msg += `Nota: ${note}\n`;
+    if(couponCode) msg += `Cupón: ${couponCode}\n`;
+    msg += (envioSel==='envio') ? `Envío a: ${addr} (+${fmt(shipCost)})\n` : 'Retiro en el local\n';
+    if(tipAmt>0) msg += `Propina: ${fmt(tipAmt)}\n`;
+    msg += `Total: ${fmt(total)}`;
 
-    const wsp = state.ajustes.whatsapp || '';
+    const wsp = (SHOP.ajustes?.whatsapp||'').replace(/\D/g,'');
     const url = `https://wa.me/${wsp}?text=${encodeURIComponent(msg)}`;
-    window.open(url, '_blank');
+    window.open(url,'_blank');
+  });
 
-    // reset cart
-    state.items={}; saveCart(); closeSheet(); refresh();
-  }
+  // default selection
+  document.getElementById('ret').checked = true;
+  refreshFab();
+}
 
-  // Init
-  (async function(){
-    if(!slug){ document.body.innerHTML = '<div class="wrap" style="padding:40px">Falta el parámetro ?l=</div>'; return; }
-    loadCart(); await loadData(); loadClient(); refresh();
-
-    // defaults for entrega
-    const entrega = document.querySelector('input[name=envio]:checked')?.value || '';
-    if(!entrega){ document.getElementById('opt-ret').checked = true; }
-    document.getElementById('addrWrap').classList.toggle('hidden', document.getElementById('opt-env').checked!==true);
-  })();
-})();
+// init
+init();
