@@ -1,104 +1,97 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zonaap | Pedí online a negocios de tu barrio</title>
-<link rel="icon" href="assets/logo.svg">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
-<style>
-:root{
-  --az:#0b2a4a; --az2:#081a2f; --am:#ffcc00; --bg:#f5f7fb; --card:#fff; --text:#0f172a;
-  --muted:#6b7280; --bord:#e5e7eb; --ring:rgba(255,204,0,.35);
-}
-*{box-sizing:border-box} body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;color:var(--text);background:var(--bg);margin:0}
-.header{background:linear-gradient(120deg,var(--az) 0%,var(--az2) 100%);color:#fff;padding:56px 16px 42px}
-.wrap{max-width:1040px;margin:0 auto}
-.brand{display:flex;gap:14px;align-items:center}
-.brand img{width:56px;height:56px;border-radius:14px}
-.brand h1{margin:0;font-size:44px;letter-spacing:.4px}
-.sub{opacity:.9;margin:6px 0 0}
-.searchbar{display:flex;gap:12px;margin:22px 0 0}
-input[type="search"]{flex:1;padding:16px;border:1px solid var(--bord);border-radius:14px;font-size:16px;outline:none}
-input[type="search"]:focus{box-shadow:0 0 0 4px var(--ring);border-color:#9bb5ff}
-.btn{background:var(--am);color:#0b1325;font-weight:900;border:2px solid #f3c200;border-radius:12px;padding:12px 16px;cursor:pointer}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin:24px 0}
-.card{background:var(--card);border:1px solid var(--bord);border-radius:16px;padding:14px;display:flex;gap:12px;align-items:center;transition:transform .12s,box-shadow .12s}
-.card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.08)}
-.card img{width:56px;height:56px;border-radius:12px}
-.card .meta{font-size:13px;color:var(--muted)}
-.link{display:block;text-decoration:none;color:inherit}
-.topbar{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
-.topbar a{color:#fff;text-decoration:none;opacity:.9}
-.footer{color:#475569;text-align:center;padding:42px 16px}
-.badge{background:#0b2a4a1a;color:#e2e8f0;border:1px solid #0b2a4a33;border-radius:999px;font-size:12px;padding:4px 8px;margin-left:auto}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Zonaap | Pedí online</title>
+  <link rel="icon" href="assets/logo.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --azul:#0b2c4d; --azul-2:#09243e; --amarillo:#ffcc00;
+      --bg:#f5f7fb; --text:#1f2a37; --card:#fff;
+      --borde:#e5e7eb; --shadow:0 10px 24px rgba(0,0,0,.08);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    header{background:linear-gradient(90deg,var(--azul),var(--azul-2));color:#fff;padding:56px 16px;text-align:center}
+    header .logo{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:10px}
+    header img{height:56px;border-radius:14px}
+    header h1{font-weight:800;letter-spacing:.4px}
+    header p{opacity:.92}
+    main{max-width:980px;margin:16px auto;padding:0 16px}
+    .row{display:flex;gap:12px;align-items:center;justify-content:center;margin:18px auto}
+    input[type=search]{flex:1;max-width:720px;border:1px solid var(--borde);border-radius:14px;padding:16px 14px;font-size:1.05rem;background:#fff}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--amarillo);color:#0b1f2a;border:2px solid var(--amarillo);padding:12px 14px;border-radius:12px;font-weight:800;text-decoration:none}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:14px}
+    .card{background:var(--card);border:1px solid var(--borde);border-radius:16px;padding:14px;box-shadow:var(--shadow);display:flex;gap:12px;align-items:center}
+    .card img{width:56px;height:56px;border-radius:12px}
+    .card h3{margin:0 0 4px;font-size:1.05rem}
+    .card small{opacity:.8}
+    .card a{display:block;margin-left:auto;background:#0b2c4d;color:#fff;padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:800}
+    .muted{opacity:.7;font-size:.95rem;text-align:center;margin:26px 0}
+  </style>
 </head>
 <body>
-<header class="header">
-  <div class="wrap">
-    <div class="topbar">
-      <a href="admin/">Entrar al panel</a>
+  <header>
+    <div class="logo">
+      <img src="assets/logo.svg" alt="zonaap"/>
+      <h1>zonaap</h1>
     </div>
-    <div class="brand">
-      <img src="assets/logo.svg" alt="Zonaap">
-      <div>
-        <h1>zonaap</h1>
-        <p class="sub">Pedí online a negocios de tu barrio</p>
-      </div>
-    </div>
-    <div class="searchbar">
-      <input id="q" type="search" placeholder="Buscar por nombre, rubro o barrio…">
-      <button class="btn" id="btnReg">+ Registrar mi local</button>
-    </div>
-  </div>
-</header>
+    <p>Pedí online a negocios de tu barrio</p>
+  </header>
 
-<main class="wrap">
-  <div id="grid" class="grid" aria-live="polite"></div>
-</main>
+  <main>
+    <div class="row">
+      <input id="q" type="search" placeholder="Buscar por nombre, rubro o barrio…"/>
+      <a class="btn" href="admin/cms/">Entrar al panel</a>
+    </div>
 
-<footer class="footer">
-  Hecho con ❤ para emprendedores. Gratis y simple.
-</footer>
+    <section id="list" class="grid"></section>
+    <p class="muted">Hecho con ♥ para emprendedores. Gratis y simple.</p>
+  </main>
 
 <script>
-const $ = s => document.querySelector(s);
-const grid = $("#grid");
-const q = $("#q");
-document.getElementById('btnReg').addEventListener('click',()=>{
-  window.location.href='mailto:contacto@zonaap.app?subject=Alta%20de%20local&body=Hola,%20quiero%20registrar%20mi%20local%20en%20Zonaap.';
-});
+const by = (sel, ctx=document) => ctx.querySelector(sel);
+const listEl = by('#list');
+const qEl = by('#q');
 
-let data = [];
-fetch('data/locales.json')
-  .then(r => r.json())
-  .then(json => { data = json.locales || []; render(data); });
+async function loadLocales(){
+  try{
+    const res = await fetch('data/locales.json');
+    if(!res.ok) throw new Error('No se pudo cargar locales');
+    const data = await res.json();
+    render(data.locales||[]);
+  }catch(e){
+    listEl.innerHTML = '<p>Error cargando locales.</p>';
+    console.error(e);
+  }
+}
 
-function card(l){
-  return `<a class="link" href="negocio.html?l=${encodeURIComponent(l.slug)}">
-    <div class="card">
+function render(locales){
+  const html = locales.map(l=>`
+    <article class="card">
       <img src="${l.logo||'assets/logo.svg'}" alt="${l.nombre}">
-      <div style="flex:1">
-        <div style="display:flex;gap:8px;align-items:center">
-          <strong>${l.nombre}</strong>
-          <span class="badge">${l.rubro} • ${l.barrio}</span>
-        </div>
-        <div class="meta">${l.subtitulo||''}</div>
+      <div>
+        <h3>${l.nombre}</h3>
+        <small>${l.rubro} • ${l.barrio||''}</small>
       </div>
-    </div>
-  </a>`;
+      <a href="negocio.html?l=${encodeURIComponent(l.slug)}">Ver</a>
+    </article>
+  `).join('');
+  listEl.innerHTML = html;
 }
-function render(list){
-  if(!list.length){ grid.innerHTML = '<p>No hay locales.</p>'; return; }
-  grid.innerHTML = list.map(card).join('');
+
+function filtrar(){
+  const term = (qEl.value||'').toLowerCase();
+  fetch('data/locales.json').then(r=>r.json()).then(d=>{
+    const arr = (d.locales||[]).filter(x=>[x.nombre,x.rubro,x.barrio].join(' ').toLowerCase().includes(term));
+    render(arr);
+  });
 }
-q.addEventListener('input', e => {
-  const t = e.target.value.toLowerCase().trim();
-  if(!t){ render(data); return; }
-  const f = data.filter(l => [l.nombre,l.rubro,l.barrio,l.subtitulo].join(' ').toLowerCase().includes(t));
-  render(f);
-});
+qEl.addEventListener('input', filtrar);
+
+loadLocales();
 </script>
 </body>
 </html>

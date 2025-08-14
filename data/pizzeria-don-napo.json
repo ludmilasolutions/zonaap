@@ -1,0 +1,82 @@
+{
+  "nombre": "Pizzería Don Napo",
+  "subtitulo": "Hecha como en casa",
+  "whatsapp": "5493411111111",
+  "shipping": 1200,
+  "categorias": [
+    {
+      "categoria": "Clásicas",
+      "productos": [
+        {
+          "nombre": "Muzzarella",
+          "desc": "Tomate, muzza y orégano",
+          "precio": 4200,
+          "img": "assets/placeholder.svg"
+        },
+        {
+          "nombre": "Napolitana",
+          "desc": "Tomate, muzza y rodajas de tomate con ajo",
+          "precio": 4800,
+          "img": "assets/placeholder.svg"
+        },
+        {
+          "nombre": "Fugazzeta",
+          "desc": "Cebolla y mucho queso",
+          "precio": 5200,
+          "img": "assets/placeholder.svg"
+        }
+      ]
+    },
+    {
+      "categoria": "Especiales",
+      "productos": [
+        {
+          "nombre": "Calabresa",
+          "desc": "Salsa, muzza y longaniza",
+          "precio": 5600,
+          "img": "assets/placeholder.svg"
+        },
+        {
+          "nombre": "4 Quesos",
+          "desc": "Muzza, roque, provolone, reggianito",
+          "precio": 5900,
+          "img": "assets/placeholder.svg"
+        }
+      ]
+    },
+    {
+      "categoria": "Gaseosas",
+      "productos": [
+        {
+          "nombre": "Coca 1.5L",
+          "desc": "",
+          "precio": 2200,
+          "img": "assets/placeholder.svg"
+        },
+        {
+          "nombre": "Sprite 1.5L",
+          "desc": "",
+          "precio": 2000,
+          "img": "assets/placeholder.svg"
+        }
+      ]
+    },
+    {
+      "categoria": "Aguas y otros",
+      "productos": [
+        {
+          "nombre": "Agua 1.5L",
+          "desc": "",
+          "precio": 1500,
+          "img": "assets/placeholder.svg"
+        },
+        {
+          "nombre": "Salsa extra",
+          "desc": "Vaso 250cc",
+          "precio": 600,
+          "img": "assets/placeholder.svg"
+        }
+      ]
+    }
+  ]
+}

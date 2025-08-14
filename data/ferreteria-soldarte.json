@@ -1,0 +1,42 @@
+{
+  "nombre": "Ferretería Soldarte",
+  "subtitulo": "Materiales y herramientas",
+  "whatsapp": "5493413333333",
+  "shipping": 1500,
+  "categorias": [
+    {
+      "categoria": "Herramientas",
+      "productos": [
+        {
+          "nombre": "Martillo",
+          "desc": "Cabo de madera",
+          "precio": 3900,
+          "img": "assets/placeholder.svg"
+        },
+        {
+          "nombre": "Destornillador Phillips",
+          "desc": "Nº2",
+          "precio": 1400,
+          "img": "assets/placeholder.svg"
+        }
+      ]
+    },
+    {
+      "categoria": "Pintura",
+      "productos": [
+        {
+          "nombre": "Latex interior 1L",
+          "desc": "Blanco",
+          "precio": 6500,
+          "img": "assets/placeholder.svg"
+        },
+        {
+          "nombre": "Rodillo mediano",
+          "desc": "",
+          "precio": 2100,
+          "img": "assets/placeholder.svg"
+        }
+      ]
+    }
+  ]
+}
