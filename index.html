@@ -57,32 +57,7 @@
 
 
   <!-- Netlify Identity widget -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script>
-    (function() {
-      function setup(){
-        var ni = window.netlifyIdentity;
-        if(!ni) return setTimeout(setup, 50);
-
-        // Abrir "Sign up" solo si venís con invite_token en la URL
-        if (window.location.hash && window.location.hash.indexOf('invite_token') !== -1) {
-          ni.on('init', function(){ ni.open('signup'); });
-        }
-
-        // Hook para enlaces con data-admin-link (no redirigimos solos)
-        function goAdmin(){
-          var user = ni.currentUser();
-          if (user) { window.location.href = '/admin/'; return; }
-          ni.open('login');
-          ni.once('login', function(){ window.location.href = '/admin/'; });
-        }
-        document.querySelectorAll('[data-admin-link]').forEach(function(el){
-          el.addEventListener('click', function(e){ e.preventDefault(); goAdmin(); });
-        });
-      }
-      setup();
-    })();
-  </script>
+  
 
 </head>
 <body>
@@ -153,5 +128,31 @@
     });
     load();
   </script>
+
+  <!-- Netlify Identity widget -->
+  <script defer src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    (function(){
+      function ready(fn){ if(document.readyState!=='loading'){ fn(); } else { document.addEventListener('DOMContentLoaded', fn); } }
+      ready(function(){
+        var ni = window.netlifyIdentity;
+        // Si venís de invitación, abrí el modal de signup apenas inicializa
+        if (window.location.hash && window.location.hash.indexOf('invite_token') !== -1 && ni) {
+          ni.on('init', function(){ ni.open('signup'); });
+        }
+        // Link manual al panel (no redirige solo)
+        var links = document.querySelectorAll('[data-admin-link]');
+        links.forEach(function(a){
+          a.addEventListener('click', function(e){
+            e.preventDefault();
+            if (!ni) { window.location.href = '/admin/'; return; }
+            if (ni.currentUser()) { window.location.href = '/admin/'; }
+            else { ni.open('login'); ni.once('login', function(){ window.location.href = '/admin/'; }); }
+          });
+        });
+      });
+    })();
+  </script>
+
 </body>
 </html>
