@@ -2,124 +2,55 @@ backend:
   name: git-gateway
   branch: main
 
-local_backend: true
-
-media_folder: "uploads"
-public_folder: "/uploads"
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
 
 collections:
-  - label: "Listado (Home)"
-    name: "listado"
+  - name: "listado"
+    label: "Listado (Home)"
+    editor: { preview: false }           # ⬅️ DESACTIVADO
     files:
-      - label: "Locales"
+      - file: "data/locales.json"
         name: "locales"
-        file: "data/locales.json"
+        label: "Locales"
         format: "json"
-        editor: { preview: false }
+        editor: { preview: false }       # ⬅️ también acá
         fields:
           - label: "Locales"
             name: "locales"
             widget: "list"
-            summary: "{{fields.nombre}} ({{fields.rubro}} • {{fields.barrio}})"
             fields:
+              - { label: "Slug", name: "slug", widget: "string" }
               - { label: "Nombre", name: "nombre", widget: "string" }
-              - { label: "Slug", name: "slug", widget: "string", hint: "Debe coincidir con data/<slug>.json" }
               - { label: "Rubro", name: "rubro", widget: "string" }
               - { label: "Barrio", name: "barrio", widget: "string" }
               - { label: "Logo URL", name: "logo", widget: "string", required: false }
 
-  - label: "Catálogo por local"
-    name: "catalogo"
-    files:
-      - label: "Pizzería Don Napo"
-        name: "pizzeria_don_napo"
-        file: "data/pizzeria-don-napo.json"
-        format: "json"
-        fields: &catalog_fields
-          - { label: "Nombre", name: "nombre", widget: "string" }
-          - { label: "Subtítulo", name: "subtitulo", widget: "string", required: false }
-          - { label: "WhatsApp", name: "whatsapp", widget: "string", hint: "Ej: 5493415550000" }
-          - { label: "Costo de envío", name: "shipping", widget: "number", value_type: "int", default: 0 }
-          - label: "Categorías"
-            name: "categorias"
-            widget: "list"
-            fields:
-              - { label: "Nombre de la categoría", name: "categoria", widget: "string" }
-              - label: "Productos"
-                name: "productos"
-                widget: "list"
-                fields:
-                  - { label: "Nombre", name: "nombre", widget: "string" }
-                  - { label: "Descripción", name: "desc", widget: "text", required: false }
-                  - { label: "Precio", name: "precio", widget: "number", value_type: "int" }
-                  - { label: "Imagen (URL)", name: "img", widget: "string", required: false }
+  - name: "catalogo"
+    label: "Catálogo por local"
+    folder: "data"
+    extension: "json"
+    create: false
+    format: "json"
+    editor: { preview: false }           # ⬅️ DESACTIVADO
+    # (tus fields aquí)
 
-      - label: "Kiosco El Centro"
-        name: "kiosco_el_centro"
-        file: "data/kiosco-el-centro.json"
-        format: "json"
-        fields: *catalog_fields
-
-      - label: "Ferretería Soldarte"
-        name: "ferreteria_soldarte"
-        file: "data/ferreteria-soldarte.json"
-        format: "json"
-        fields: *catalog_fields
-
-  - label: "Promociones"
-    name: "promos"
+  - name: "promos"
+    label: "Promociones"
     folder: "data/promos"
+    extension: "json"
     create: true
     format: "json"
-    slug: "{{slug_local}}"
-    fields:
-      - { label: "Slug del local", name: "slug_local", widget: "string", hint: "Debe coincidir con data/<slug>.json" }
-      - label: "Promos"
-        name: "promos"
-        widget: "list"
-        fields:
-          - { label: "Nombre", name: "nombre", widget: "string" }
-          - { label: "Descripción", name: "desc", widget: "text", required: false }
-          - { label: "Precio", name: "precio", widget: "number", value_type: "int" }
-          - { label: "Precio original", name: "precio_original", widget: "number", value_type: "int", required: false }
-          - { label: "Tag (etiqueta)", name: "tag", widget: "string", required: false }
-          - { label: "Vigencia hasta (YYYY-MM-DD)", name: "vigencia_hasta", widget: "string", required: false, hint: "Dejar vacío para siempre vigente" }
+    editor: { preview: false }           # ⬅️ DESACTIVADO
+    # (tus fields aquí)
 
-  - label: "Ajustes globales"
-    name: "ajustes"
+  - name: "ajustes"
+    label: "Ajustes globales"
+    editor: { preview: false }           # ⬅️ DESACTIVADO
     files:
-      - label: "Ajustes del sitio"
-        name: "ajustes_sitio"
-        file: "data/ajustes.json"
+      - file: "data/ajustes.json"
+        name: "ajustes"
+        label: "Ajustes"
         format: "json"
-        fields:
-          - label: "Brand"
-            name: "brand"
-            widget: "object"
-            fields:
-              - { label: "Primario (hex)", name: "primary", widget: "string", default: "#003366" }
-              - { label: "Secundario (hex)", name: "secondary", widget: "string", default: "#ffcc00" }
-          - label: "Hero"
-            name: "hero"
-            widget: "object"
-            fields:
-              - { label: "Título", name: "title", widget: "string", default: "Pedí online a negocios de tu barrio" }
-              - { label: "Subtítulo", name: "subtitle", widget: "string", required: false }
-              - { label: "Mostrar botón Registrar", name: "show_register", widget: "boolean", default: true }
-              - label: "Badges"
-                name: "badges"
-                widget: "list"
-                required: false
-                field: { label: "Texto", name: "badge", widget: "string" }
-          - label: "Checkout"
-            name: "checkout"
-            widget: "object"
-            fields:
-              - { label: "Costo de envío por defecto", name: "default_shipping", widget: "number", value_type: "int", default: 0 }
-              - { label: "Cupón demo", name: "coupon_code", widget: "string", default: "OFF10" }
-              - { label: "Descuento (%) cupón demo", name: "coupon_percent", widget: "number", value_type: "int", default: 10 }
-          - label: "Footer"
-            name: "footer"
-            widget: "object"
-            fields:
-              - { label: "Texto", name: "text", widget: "string", default: "Hecho con ❤ para emprendedores. Gratis y simple." }
+        editor: { preview: false }       # ⬅️ DESACTIVADO
+        # (tus fields aquí)
