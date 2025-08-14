@@ -1,12 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160">
   <defs>
-    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0" stop-color="#0b2c4d"/>
-      <stop offset="1" stop-color="#09243e"/>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b2b4a"/><stop offset="1" stop-color="#071c30"/>
     </linearGradient>
   </defs>
   <rect width="160" height="160" rx="28" fill="url(#g)"/>
-  <g fill="#ffcc00" font-family="Arial Black, Arial" font-size="84" font-weight="800">
-    <text x="30" y="108">za</text>
+  <g font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto" font-weight="800">
+    <text x="36" y="95" font-size="84" fill="#ffcc00">za</text>
   </g>
 </svg>

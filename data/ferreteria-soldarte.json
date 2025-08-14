@@ -1,39 +1,33 @@
 {
   "nombre": "Ferretería Soldarte",
-  "subtitulo": "Materiales y herramientas",
-  "whatsapp": "5493413333333",
-  "shipping": 1500,
+  "subtitulo": "Todo para tu hogar",
+  "whatsapp": "5493415550002",
+  "shipping": 1000,
   "categorias": [
     {
-      "categoria": "Herramientas",
+      "categoria": "Electricidad",
       "productos": [
         {
-          "nombre": "Martillo",
-          "desc": "Cabo de madera",
-          "precio": 3900,
+          "nombre": "Lámpara LED 9W",
+          "desc": "Rosca E27",
+          "precio": 2200,
           "img": "assets/placeholder.svg"
         },
         {
-          "nombre": "Destornillador Phillips",
-          "desc": "Nº2",
-          "precio": 1400,
+          "nombre": "Cinta aisladora",
+          "desc": "PVC 18mm",
+          "precio": 700,
           "img": "assets/placeholder.svg"
         }
       ]
     },
     {
-      "categoria": "Pintura",
+      "categoria": "Pinturas",
       "productos": [
         {
           "nombre": "Latex interior 1L",
           "desc": "Blanco",
-          "precio": 6500,
-          "img": "assets/placeholder.svg"
-        },
-        {
-          "nombre": "Rodillo mediano",
-          "desc": "",
-          "precio": 2100,
+          "precio": 6800,
           "img": "assets/placeholder.svg"
         }
       ]

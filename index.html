@@ -1,97 +1,67 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Zonaap | Pedí online</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Zonaap</title>
   <link rel="icon" href="assets/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --azul:#0b2c4d; --azul-2:#09243e; --amarillo:#ffcc00;
-      --bg:#f5f7fb; --text:#1f2a37; --card:#fff;
-      --borde:#e5e7eb; --shadow:0 10px 24px rgba(0,0,0,.08);
+      --bg:#f4f6fa; --text:#0f172a; --muted:#475569;
+      --brand:#0b376d; --brand2:#062247; --accent:#ffcc00;
+      --card:#fff; --line:#e5e7eb;
     }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
-    header{background:linear-gradient(90deg,var(--azul),var(--azul-2));color:#fff;padding:56px 16px;text-align:center}
-    header .logo{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:10px}
-    header img{height:56px;border-radius:14px}
-    header h1{font-weight:800;letter-spacing:.4px}
-    header p{opacity:.92}
-    main{max-width:980px;margin:16px auto;padding:0 16px}
-    .row{display:flex;gap:12px;align-items:center;justify-content:center;margin:18px auto}
-    input[type=search]{flex:1;max-width:720px;border:1px solid var(--borde);border-radius:14px;padding:16px 14px;font-size:1.05rem;background:#fff}
-    .btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--amarillo);color:#0b1f2a;border:2px solid var(--amarillo);padding:12px 14px;border-radius:12px;font-weight:800;text-decoration:none}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:14px}
-    .card{background:var(--card);border:1px solid var(--borde);border-radius:16px;padding:14px;box-shadow:var(--shadow);display:flex;gap:12px;align-items:center}
-    .card img{width:56px;height:56px;border-radius:12px}
-    .card h3{margin:0 0 4px;font-size:1.05rem}
-    .card small{opacity:.8}
-    .card a{display:block;margin-left:auto;background:#0b2c4d;color:#fff;padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:800}
-    .muted{opacity:.7;font-size:.95rem;text-align:center;margin:26px 0}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text)}
+    header{padding:48px 16px;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;text-align:center}
+    .logo{display:inline-flex;gap:12px;align-items:center;justify-content:center}
+    .logo img{width:64px;height:64px}
+    .title{font-size:40px;font-weight:800;margin:8px 0 4px}
+    .sub{opacity:.85}
+    main{max-width:980px;margin:0 auto;padding:16px}
+    .search{display:flex;gap:12px;margin:18px 0}
+    .search input{flex:1;padding:14px 16px;border:1px solid var(--line);border-radius:12px;font-size:16px;outline:none}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;gap:12px;align-items:center;transition:.15s}
+    .card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(2,6,23,.08)}
+    .card img{width:56px;height:56px}
+    .name{font-weight:800} .meta{font-size:13px;color:var(--muted)}
+    .btn{display:inline-flex;padding:8px 12px;border-radius:10px;background:var(--accent);color:#001122;font-weight:800;border:2px solid var(--accent);text-decoration:none}
   </style>
 </head>
 <body>
   <header>
-    <div class="logo">
-      <img src="assets/logo.svg" alt="zonaap"/>
-      <h1>zonaap</h1>
-    </div>
-    <p>Pedí online a negocios de tu barrio</p>
+    <div class="logo"><img src="assets/logo.svg" alt="Zonaap"/><div class="title">zonaap</div></div>
+    <p class="sub">Pedí online a negocios de tu barrio</p>
   </header>
-
   <main>
-    <div class="row">
-      <input id="q" type="search" placeholder="Buscar por nombre, rubro o barrio…"/>
-      <a class="btn" href="admin/cms/">Entrar al panel</a>
+    <div class="search">
+      <input id="q" placeholder="Buscar por nombre, rubro o barrio…">
+      <a href="admin/cms/" class="btn">Entrar al panel</a>
     </div>
-
-    <section id="list" class="grid"></section>
-    <p class="muted">Hecho con ♥ para emprendedores. Gratis y simple.</p>
+    <div id="list" class="grid"></div>
   </main>
-
-<script>
-const by = (sel, ctx=document) => ctx.querySelector(sel);
-const listEl = by('#list');
-const qEl = by('#q');
-
-async function loadLocales(){
-  try{
-    const res = await fetch('data/locales.json');
-    if(!res.ok) throw new Error('No se pudo cargar locales');
-    const data = await res.json();
-    render(data.locales||[]);
-  }catch(e){
-    listEl.innerHTML = '<p>Error cargando locales.</p>';
-    console.error(e);
-  }
-}
-
-function render(locales){
-  const html = locales.map(l=>`
-    <article class="card">
-      <img src="${l.logo||'assets/logo.svg'}" alt="${l.nombre}">
-      <div>
-        <h3>${l.nombre}</h3>
-        <small>${l.rubro} • ${l.barrio||''}</small>
-      </div>
-      <a href="negocio.html?l=${encodeURIComponent(l.slug)}">Ver</a>
-    </article>
-  `).join('');
-  listEl.innerHTML = html;
-}
-
-function filtrar(){
-  const term = (qEl.value||'').toLowerCase();
-  fetch('data/locales.json').then(r=>r.json()).then(d=>{
-    const arr = (d.locales||[]).filter(x=>[x.nombre,x.rubro,x.barrio].join(' ').toLowerCase().includes(term));
-    render(arr);
-  });
-}
-qEl.addEventListener('input', filtrar);
-
-loadLocales();
-</script>
+  <script>
+    async function loadJSON(u){try{const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);return await r.json()}catch(e){console.error('loadJSON',u,e);return null}}
+    function card(l){
+      const a=document.createElement('a');a.className='card';a.href='negocio.html?l='+encodeURIComponent(l.slug);
+      a.innerHTML = '<img src="'+(l.logo||'assets/logo.svg')+'" alt="logo"><div><div class="name">'+l.nombre+'</div><div class="meta">'+(l.rubro||'')+' • '+(l.barrio||'')+'</div></div>';
+      return a;
+    }
+    (async()=>{
+      const data = await loadJSON('data/locales.json');
+      const list = document.getElementById('list'); if(!data){ list.textContent='No se pudo cargar la lista.'; return; }
+      const locales = (data.locales||[]);
+      function render(term){
+        list.innerHTML='';
+        const t=(term||'').toLowerCase();
+        locales.filter(l=>!t || (l.nombre+l.rubro+l.barrio).toLowerCase().includes(t)).forEach(l=>list.appendChild(card(l)));
+      }
+      render('');
+      document.getElementById('q').addEventListener('input',e=>render(e.target.value));
+    })();
+  </script>
 </body>
 </html>
