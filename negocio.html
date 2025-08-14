@@ -1,172 +1,155 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tienda | Zonaap</title>
-<link rel="icon" href="assets/zonaap-logo.svg">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Local | Zonaap</title>
+<link rel="icon" href="assets/za-icon.svg"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --azul:#003366; --azul-2:#001122; --azul-3:#004080; --amarillo:#ffcc00;
-  --bg:#f6f7fb; --text:#0f172a; --card:#fff; --muted:#64748b; --ring:#9ec3ff;
-  --shadow:0 10px 24px rgba(0,0,0,.12);
+  --bg:#f6f7fb; --text:#0f172a; --muted:#475569; --azul:#0b376d;
+  --azul2:#062247; --amarillo:#ffcc00; --card:#fff; --ring:rgba(122,162,255,.25);
+  --border:#e5eaf2; --chip:#eef2ff;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
-
-/* Header / hero */
-header{background:linear-gradient(90deg,var(--azul) 0%,var(--azul-2) 100%);color:#fff;text-align:center;padding:22px 14px 34px}
-.hero{max-width:980px;margin:auto;display:grid;grid-template-columns:82px 1fr;gap:12px;align-items:center}
-.hero-logo{width:82px;height:82px;border-radius:18px;overflow:hidden;border:2px solid #ffffff33;background:#ffffff10;display:grid;place-items:center}
-.hero-logo img{width:100%;height:100%;object-fit:cover}
-.hero h1{font-size:clamp(22px,3.3vw,36px);margin:0}
-.hero-sub{color:#dbeafe}
-
-/* Container */
-main{padding:14px 14px 120px;max-width:980px;margin:auto}
-
-/* Tabs (dynamic names) */
-.tabs{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:10px 0 12px}
-.tabs button{padding:.7rem 1.1rem;border:none;border-radius:999px;background:#0b315f;color:#ffcc00;font-weight:900;border:2px solid #2a4a7a;cursor:pointer}
-.tabs button.active{background:#001f3d;border-color:#ffcc00}
-
-/* Chip nav */
-.cat-wrap{position:sticky;top:8px;z-index:6}
-.cat-scroll{display:flex;gap:8px;overflow:auto;padding:6px 2px}
-.cat-chip{white-space:nowrap;background:#fff;border:1px solid #dbe1ec;color:#0f172a;border-radius:999px;padding:8px 12px;font-weight:800;cursor:pointer}
-.cat-chip.active{background:#e6f2ff;border-color:#9ec3ff;color:#0b315f}
-
-/* Product list (El-Tachi look) */
-details{border:1px solid #e8eef7;border-radius:12px;margin-bottom:12px;overflow:hidden;background:var(--card)}
-summary{background:#0b315f;color:#ffcc00;padding:12px 14px;font-weight:900;cursor:pointer;list-style:none}
-.producto{display:grid;grid-template-columns:72px 1fr auto;align-items:center;gap:12px;padding:10px 14px;border-top:1px solid #eef2f7;background:#fff}
-.producto:hover{background:#f8fafc}
-.prod-thumb{width:72px;height:72px;border-radius:14px;overflow:hidden;background:#eef2f7;border:1px solid #e5e7eb;display:grid;place-items:center}
-.prod-thumb img{width:100%;height:100%;object-fit:cover}
-.producto-info{display:flex;flex-direction:column;gap:6px}
-.producto h3{margin:0;color:#0b315f;font-size:1.05rem}
-.producto p{margin:0;color:#475569;font-size:.95rem}
-.price-wrap{margin-top:auto}
-.price-new{font-weight:900;color:#0b376d}
-.contador{display:flex;align-items:center;gap:.5rem}
-.contador button{background:#0b315f;color:#ffcc00;border:none;padding:.35rem .6rem;border-radius:8px;font-size:1.15rem;cursor:pointer}
-
-/* Cart FAB */
-.cart-fab{
-  position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:9999;
-  background:#0b315f;color:#ffcc00;border:2px solid #ffcc00;display:flex;align-items:center;gap:.6rem;
-  padding:.7rem 1.1rem;border-radius:9999px;font-size:1.05rem;box-shadow:0 8px 20px rgba(0,0,0,.25);cursor:pointer
-}
-.cart-fab.hide{opacity:0;transform:translateY(8px);filter:blur(2px);pointer-events:none}
-.cart-fab[hidden]{display:none}
-.cart-count{background:#ffcc00;color:#001122;min-width:26px;height:26px;border-radius:999px;display:grid;place-items:center;font-weight:900}
-
-/* Bottom sheet (El-Tachi) */
-.sheet-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.32);opacity:0;pointer-events:none;transition:opacity .22s ease;z-index:9998}
+*{box-sizing:border-box} html,body{margin:0}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Arial;background:var(--bg);color:var(--text)}
+.hero{background:linear-gradient(135deg,var(--azul),var(--azul2)); color:#fff; padding:28px 16px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 16px}
+.back{display:inline-flex;align-items:center;gap:8px;color:#dbe2f1;text-decoration:none;font-weight:700;margin:8px 0 10px}
+.header{display:grid; grid-template-columns:auto 1fr; gap:14px; align-items:center}
+.header img{width:74px;height:74px;border-radius:16px;border:1px solid #ffffff1a;background:#ffffff18}
+h1{margin:0 0 6px;font-size:34px}
+.sub{margin:0;font-size:15px;opacity:.9}
+/* Category chips */
+.chips{display:flex; gap:10px; flex-wrap:wrap; margin:14px 0 22px}
+.chips a{background:#fff;border:1px solid var(--border); border-radius:999px;padding:8px 12px; text-decoration:none; color:#1e293b; font-weight:700; box-shadow:0 2px 8px rgba(0,0,0,.06)}
+/* Products */
+.section{margin:16px 0 22px; background:var(--card); border:1px solid var(--border); border-radius:18px; overflow:hidden}
+.section h2{margin:0; background:#102a4b; color:#fff; font-size:18px; padding:12px 16px}
+.prod{display:grid; grid-template-columns:64px 1fr auto; gap:12px; align-items:center; padding:12px 14px; border-top:1px solid var(--border); background:#fff}
+.thumb{width:64px;height:64px;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:#f1f5f9;display:grid;place-items:center}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.prod h3{margin:0 0 4px;font-size:17px;color:#0b376d}
+.prod p{margin:0;color:#475569;font-size:14px}
+.price{margin-top:6px;font-weight:800;color:#0b376d}
+.qty{display:flex; align-items:center; gap:8px}
+.qty button{width:36px;height:36px;border:2px solid #0b376d;border-radius:10px;background:#fff;font-weight:900;cursor:pointer}
+.qty span{min-width:18px;text-align:center;font-weight:800}
+/* FAB */
+.fab{position:fixed; right:18px; bottom:18px; z-index:80; display:flex; align-items:center; gap:10px;
+     background:#0b376d; color:#ffcc00; border:2px solid #ffcc00; border-radius:999px; padding:10px 14px; font-weight:800;
+     box-shadow:0 12px 28px rgba(0,0,0,.25)}
+/* Sheet */
+.sheet-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:.2s;z-index:90}
+.sheet{position:fixed;left:50%;transform:translate(-50%,100%);bottom:0;background:#fff;border-radius:16px 16px 0 0;
+  width:min(760px,100vw); max-height:92vh; display:grid; grid-template-rows:auto 1fr; box-shadow:0 16px 40px rgba(0,0,0,.28); z-index:91}
+.sheet.open{transform:translate(-50%,0)}
 .sheet-backdrop.open{opacity:1;pointer-events:auto}
-.sheet{position:fixed;left:0;right:0;bottom:0;transform:translateY(100%);background:#fff;border-top-left-radius:16px;border-top-right-radius:16px;box-shadow:var(--shadow);transition:transform .28s ease-out;max-height:92vh;display:grid;grid-template-rows:auto 1fr;z-index:9999}
-.sheet.open{transform:translateY(0)}
-.sheet-header{position:sticky;top:0;background:#fff;border-bottom:1px solid #e8e8e8;border-top-left-radius:16px;border-top-right-radius:16px;z-index:5;padding:.6rem .8rem .4rem;padding-right:56px}
-.sheet-handle{width:36px;height:4px;border-radius:999px;background:#d7d7d7;margin:.2rem auto;position:absolute;left:50%;transform:translateX(-50%);top:6px}
-.sheet-title{margin:0 0 .35rem;font-size:1.05rem;font-weight:900;color:#0b376d}
-.sheet-close{position:absolute;right:8px;top:6px;width:44px;height:44px;display:grid;place-items:center;background:#ffffffcc;backdrop-filter:saturate(1.2) blur(2px);border:1px solid #d7d7d7;border-radius:12px;font-size:28px;line-height:1;color:#0b315f;cursor:pointer}
-.sheet-body{overflow:auto;padding:.8rem .9rem 1rem}
-@media(min-width:900px){.sheet{left:50%;right:auto;transform:translate(-50%,100%);width:780px;border-radius:16px}.sheet.open{transform:translate(-50%,0)}}
-
-/* Steps */
-.steps{display:flex;gap:.5rem;align-items:center;font-weight:900;font-size:.9rem;color:#64748b;white-space:nowrap}
-.step{display:flex;align-items:center;gap:.4rem}.step .dot{width:10px;height:10px;border-radius:999px;background:#cbd5e1}.step.active{color:#0b376d}.step.active .dot{background:#ffcc00}
-
+.sheet-header{position:sticky;top:0;background:#fff;border-bottom:1px solid #e5e7eb;padding:10px 14px 8px}
+.sheet-title{margin:0 0 6px;font-weight:900;color:#0b376d}
+.steps{display:flex;gap:6px;align-items:center;color:#64748b;font-weight:800;font-size:13px}
+.dot{width:10px;height:10px;border-radius:999px;background:#cbd5e1;display:inline-block}
+.step.active{color:#0b376d}.step.active .dot{background:#ffcc00}
+.sheet-body{overflow:auto;padding:12px 14px 16px}
+.close{position:absolute; right:10px; top:10px; width:40px; height:40px; display:grid; place-items:center; border:1px solid #d7d7d7; border-radius:10px}
+/* Segmented */
+.segmented{display:flex; gap:8px; margin:8px 0 6px}
+.segmented input{display:none}
+.segmented label{flex:1;text-align:center;padding:10px;border:1px solid #cfd3dc;border-radius:12px;cursor:pointer;font-weight:800;background:#fff}
+.segmented input:checked + label{background:#0b376d;color:#ffcc00;border-color:#0b376d;box-shadow:0 6px 16px rgba(0,0,0,.12)}
+/* Inputs */
+.form-row{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+@media(max-width:700px){.form-row{grid-template-columns:1fr}}
+input[type="text"]{width:100%;padding:12px;border:1px solid #cfd3dc;border-radius:12px;font-size:15px}
+input[type="text"]:focus{outline:none;border-color:#7aa2ff;box-shadow:0 0 0 3px var(--ring)}
 /* Resumen */
-#resumen{background:#fff7cc;border:1px solid #ffe08a;border-radius:12px;padding:1rem;margin-top:.6rem}
-.resumen-list{list-style:none;display:grid;gap:.45rem;margin:.5rem 0 1rem;padding:0}
-.resumen-item{display:grid;grid-template-columns:1fr auto auto;gap:.6rem;align-items:center;background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:.5rem .6rem}
-.resumen-name{font-weight:900;color:#0b376d}
-.totales{display:grid;gap:.25rem;margin-top:.5rem}
-.tot-line{display:flex;justify-content:space-between;align-items:center}
-.tot-line.total{font-size:1.1rem;font-weight:900;border-top:1px dashed #d6d6d6;margin-top:.4rem;padding-top:.4rem}
-#resumen .acciones{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.6rem}
-#resumen button{background:#0b315f;color:#ffcc00;border:none;border-radius:8px;padding:.7rem 1rem;font-weight:900;cursor:pointer}
-#btn-vaciar{background:#fff;color:#0f172a;border:1px solid #d6d6d6}
-
-/* Toasts */
-.toast-wrap{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:.5rem;pointer-events:none}
-.toast{pointer-events:auto;background:#0b1f3a;color:#fff;border-left:4px solid #004080;padding:.7rem 1rem;border-radius:8px;box-shadow:0 10px 24px rgba(0,0,0,.25);max-width:calc(100vw - 40px)}
-.toast.ok{border-left-color:#16a34a}.toast.err{border-left-color:#dc2626}.toast.warn{border-left-color:#ffb400}
+.box{background:#fff8d6;border:1px solid #ffe08a;border-radius:14px;padding:10px 12px}
+.box h3{margin:4px 0 8px}
+.line{display:flex;justify-content:space-between;align-items:center;margin:2px 0}
+.tag{display:inline-flex;gap:6px;align-items:center;border:1px dashed #d6d3; border-radius:10px; padding:6px 10px; margin:6px 0}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.btn{border:none;border-radius:12px;padding:10px 14px;font-weight:800;cursor:pointer}
+.btn-primary{background:#0b376d;color:#ffcc00;border:2px solid #ffcc00}
+.btn-ghost{background:#fff;border:1px solid #cfd3dc}
+.small{font-size:13px;color:#64748b}
+.hidden{display:none !important}
 </style>
 </head>
 <body>
-<header>
   <div class="hero">
-    <div class="hero-logo"><img id="storeLogo" src="assets/zonaap-logo.svg" alt=""></div>
-    <div>
-      <h1 id="storeTitle">Nombre del local</h1>
-      <div id="storeSub" class="hero-sub">Subtítulo o lema</div>
-    </div>
-  </div>
-</header>
-<main>
-  <div class="tabs" id="tabs"></div>
-  <div class="cat-wrap"><div id="catNav" class="cat-scroll" aria-label="Categorías"></div></div>
-  <div id="menu-sec1"></div>
-  <div id="menu-sec2" style="display:none"></div>
-</main>
-
-<!-- Toasts -->
-<div id="toastWrap" class="toast-wrap"></div>
-
-<!-- Cart FAB -->
-<button id="cartFab" type="button" class="cart-fab" hidden title="Ver pedido" aria-label="Ver pedido">
-  <span class="cart-icon">🛒</span><span class="cart-total" id="fabTotal">$ 0</span><span class="cart-count" id="fabCount">0</span>
-</button>
-
-<!-- Bottom-sheet (checkout) -->
-<div id="sheetBackdrop" class="sheet-backdrop" aria-hidden="true"></div>
-<div id="cartSheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" aria-hidden="true">
-  <div class="sheet-header">
-    <span class="sheet-handle" aria-hidden="true"></span>
-    <h3 id="sheetTitle" class="sheet-title">Tu pedido</h3>
-    <div class="steps" id="checkoutSteps" aria-label="Progreso">
-      <div class="step" data-step="1"><span class="dot"></span><span>Datos</span></div><span>→</span>
-      <div class="step" data-step="2"><span class="dot"></span><span>Resumen</span></div><span>→</span>
-      <div class="step" data-step="3"><span class="dot"></span><span>WhatsApp</span></div>
-    </div>
-    <button id="sheetClose" type="button" class="sheet-close" aria-label="Cerrar">✕</button>
-  </div>
-  <div id="sheetBody" class="sheet-body" tabindex="0">
-    <section id="checkout">
-      <div class="segmented" role="tablist" aria-label="Entrega">
-        <input id="opt-ret" type="radio" name="envio" value="retiro"><label for="opt-ret">Retiro</label>
-        <input id="opt-env" type="radio" name="envio" value="envio"><label for="opt-env">Envío</label>
+    <div class="wrap">
+      <a class="back" href="index.html">← Volver</a>
+      <div class="header">
+        <img id="logo" src="assets/za-icon.svg" alt="logo">
+        <div>
+          <h1 id="title">Nombre del local</h1>
+          <p id="sub" class="sub">Subtítulo o lema</p>
+        </div>
       </div>
-      <label>Nombre:<input type="text" id="nombre" placeholder="Tu nombre"></label>
-      <label>Dirección:<input type="text" id="direccion" placeholder="Calle, número, piso/depto"></label>
+    </div>
+  </div>
+  <main class="wrap">
+    <nav id="chips" class="chips"></nav>
+    <div id="content"></div>
+  </main>
 
-      <div id="resumen">
+  <button id="fab" class="fab hidden" type="button">🛒 <span id="fabTotal">$ 0</span> <span id="fabCount" style="background:#ffcc00;color:#062247;border-radius:999px;min-width:26px;height:26px;display:grid;place-items:center; padding:0 8px">0</span></button>
+
+  <div id="backdrop" class="sheet-backdrop"></div>
+  <section id="sheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="sTitle">
+    <div class="sheet-header">
+      <h3 id="sTitle" class="sheet-title">Tu pedido</h3>
+      <div class="steps">
+        <div class="step" data-step="1"><span class="dot"></span> Datos</div>→
+        <div class="step" data-step="2"><span class="dot"></span> Resumen</div>→
+        <div class="step" data-step="3"><span class="dot"></span> WhatsApp</div>
+      </div>
+      <button id="close" class="close" aria-label="Cerrar">✕</button>
+    </div>
+    <div class="sheet-body">
+      <div>
+        <div class="segmented">
+          <input id="opt-ret" type="radio" name="envio" value="retiro">
+          <label for="opt-ret">Retiro</label>
+          <input id="opt-env" type="radio" name="envio" value="envio">
+          <label for="opt-env" id="envioLabel">Envío</label>
+        </div>
+        <div class="form-row">
+          <label>Nombre
+            <input id="nombre" type="text" placeholder="Tu nombre">
+          </label>
+          <label id="addrWrap">Dirección
+            <input id="direccion" type="text" placeholder="Calle, número, piso/depto">
+          </label>
+        </div>
+      </div>
+
+      <div class="box" style="margin-top:10px">
         <h3>Resumen del pedido</h3>
-        <p id="emptyMsg" class="resumen-empty">Aún no agregaste productos.</p>
-        <ul id="lista" class="resumen-list"></ul>
-
-        <label>📝 Nota para el pedido (opcional)<input type="text" id="notaGeneral" placeholder="Ej: sin sal, dejar en portería"></label>
-        <label>🎁 Cupón (opcional)<input type="text" id="cupon" placeholder="Código de descuento"></label>
-        <label>💸 Propina (opcional)%<input type="number" id="propina" value="0" min="0" max="100"></label>
-
-        <div class="totales" aria-live="polite">
-          <div class="tot-line"><span>Subtotal</span><span id="subtotal">$ 0</span></div>
-          <div class="tot-line" id="envioLine" hidden><span>Envío</span><span id="envioCosto"></span></div>
-          <div class="tot-line"><span>Descuento</span><span id="descMonto">$ 0</span></div>
-          <div class="tot-line"><span>Propina</span><span id="propMonto">$ 0</span></div>
-          <div class="tot-line total"><span>Total</span><span id="total">$ 0</span></div>
+        <ul id="items" style="list-style:none;padding:0;margin:0;display:grid;gap:6px"></ul>
+        <div class="tag">
+          <span>📝 Nota</span>
+          <input id="nota" type="text" placeholder="Ej: sin sal, timbre roto" style="flex:1">
         </div>
-        <div class="acciones">
-          <button id="btn-whatsapp">Hacer pedido por WhatsApp</button>
-          <button id="btn-vaciar" type="button">Vaciar carrito</button>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div class="tag"><span>🎁 Cupón</span><input id="cupon" type="text" placeholder="Código"/></div>
+          <div class="tag"><span>💸 Propina</span><input id="propina" type="text" placeholder="% opcional"/></div>
+        </div>
+        <div class="line small"><span>Subtotal</span><strong id="subtot">$ 0</strong></div>
+        <div class="line small"><span id="envioLine">Envío</span><strong id="env">$ 0</strong></div>
+        <div class="line small"><span>Descuento</span><strong id="desc">$ 0</strong></div>
+        <div class="line small"><span>Propina</span><strong id="tip">$ 0</strong></div>
+        <div class="line" style="border-top:1px dashed #e2e8f0;margin-top:6px;padding-top:6px">
+          <span style="font-weight:900">Total</span><strong id="total" style="font-size:18px">$ 0</strong>
+        </div>
+        <div class="btn-row">
+          <button id="btnWA" class="btn btn-primary">Hacer pedido por WhatsApp</button>
+          <button id="btnClear" class="btn btn-ghost">Vaciar carrito</button>
         </div>
       </div>
-    </section>
-  </div>
-</div>
+    </div>
+  </section>
 
 <script src="js/store.js"></script>
 </body>

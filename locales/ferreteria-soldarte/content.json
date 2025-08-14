@@ -1,118 +1,80 @@
 {
+  "nombre": "Ferretería Soldarte",
+  "sub": "Todo para tu obra",
+  "logo": "../assets/za-icon.svg",
   "ajustes": {
-    "nombre": "Ferretería Soldarte",
-    "sub": "Todo para tu hogar",
-    "logo": "assets/zonaap-logo.svg",
-    "shipping": 1000,
-    "whatsapp": "3415923882",
-    "secciones": [
-      "Herramientas",
-      "Electricidad & Pintura"
-    ],
-    "horarios": {
-      "sec1": {
-        "dias": [
-          1,
-          2,
-          3,
-          4,
-          5,
-          6
-        ],
-        "rangos": [
-          {
-            "desde": "09:00",
-            "hasta": "19:30"
-          }
-        ]
-      },
-      "sec2": {
-        "dias": [
-          1,
-          2,
-          3,
-          4,
-          5,
-          6
-        ],
-        "rangos": [
-          {
-            "desde": "09:00",
-            "hasta": "19:30"
-          }
-        ]
-      }
-    },
+    "whatsapp": "+54 341 555 3333",
+    "envio_costo": 1500,
     "cupones": [
       {
         "code": "HERRA10",
-        "type": "percent",
-        "value": 10,
-        "desc": "10% OFF herramientas"
+        "type": "amount",
+        "value": 1000
       }
     ]
   },
-  "sec1": {
-    "categorias": [
-      {
-        "categoria": "Herramientas de mano",
-        "productos": [
-          {
-            "nombre": "Martillo carpintero",
-            "precio": 6500,
-            "img": "assets/placeholder.png"
-          },
-          {
-            "nombre": "Llave francesa",
-            "precio": 5400,
-            "img": "assets/placeholder.png"
-          }
-        ]
-      },
-      {
-        "categoria": "Accesorios",
-        "productos": [
-          {
-            "nombre": "Cinta métrica 3m",
-            "precio": 1800,
-            "img": "assets/placeholder.png"
-          }
-        ]
-      }
-    ]
-  },
-  "sec2": {
-    "categorias": [
-      {
-        "categoria": "Electricidad",
-        "productos": [
-          {
-            "nombre": "Lámpara LED 9W",
-            "precio": 1600,
-            "img": "assets/placeholder.png"
-          },
-          {
-            "nombre": "Cinta aisladora",
-            "precio": 700,
-            "img": "assets/placeholder.png"
-          }
-        ]
-      },
-      {
-        "categoria": "Pintura",
-        "productos": [
-          {
-            "nombre": "Pincel 2\"",
-            "precio": 2000,
-            "img": "assets/placeholder.png"
-          },
-          {
-            "nombre": "Rodillo 9\"",
-            "precio": 3700,
-            "img": "assets/placeholder.png"
-          }
-        ]
-      }
-    ]
-  }
+  "secciones": [
+    {
+      "nombre": "Herramientas",
+      "categorias": [
+        {
+          "nombre": "Manuales",
+          "productos": [
+            {
+              "nombre": "Martillo",
+              "precio": 4500
+            },
+            {
+              "nombre": "Destornillador Philips",
+              "precio": 2200
+            }
+          ]
+        },
+        {
+          "nombre": "Eléctricas",
+          "productos": [
+            {
+              "nombre": "Taladro 650W",
+              "precio": 35000
+            },
+            {
+              "nombre": "Amoladora 4½''",
+              "precio": 42000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Electricidad & Pintura",
+      "categorias": [
+        {
+          "nombre": "Electricidad",
+          "productos": [
+            {
+              "nombre": "Lamparita LED 10W",
+              "precio": 1900
+            },
+            {
+              "nombre": "Cinta aisladora",
+              "precio": 900
+            }
+          ]
+        },
+        {
+          "nombre": "Pintura",
+          "productos": [
+            {
+              "nombre": "Latex 4L",
+              "precio": 19000
+            },
+            {
+              "nombre": "Rodillo mediano",
+              "precio": 3800
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

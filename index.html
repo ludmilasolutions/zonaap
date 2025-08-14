@@ -1,74 +1,78 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Zonaap · Pedí online a negocios de tu barrio</title>
-<link rel="icon" href="assets/zonaap-logo.svg">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Zonaap | Pedidos de tu barrio</title>
+<link rel="icon" href="assets/za-icon.svg"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-  :root{--azul:#0b315f;--azul2:#001a33;--amarillo:#ffcc00;--muted:#64748b}
-  *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;background:#f5f7fb;color:#0f172a}
-  header{background:linear-gradient(90deg,var(--azul),var(--azul2));color:#fff;padding:28px 16px 40px;text-align:center}
-  .brand{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:6px}
-  .brand img{width:54px;height:54px;border-radius:12px}
-  h1{margin:0;font-size:clamp(26px,4vw,44px)}
-  .sub{opacity:.9;margin-top:6px}
-  main{max-width:980px;margin:auto;padding:20px 16px 120px}
-  .topbar{display:flex;gap:10px;align-items:center}
-  #q{flex:1;padding:14px 16px;border-radius:12px;border:1px solid #dbe1ec;font-size:1rem}
-  .btn{background:var(--amarillo);color:#0b172a;border:2px solid var(--amarillo);border-radius:12px;padding:12px 16px;font-weight:800;cursor:pointer}
-  .list{margin-top:18px;display:grid;gap:12px}
-  .card{display:grid;grid-template-columns:62px 1fr auto;gap:12px;align-items:center;background:#fff;border:1px solid #e8eef7;border-radius:14px;padding:12px 14px;box-shadow:0 5px 16px rgba(2,6,23,.04)}
-  .card img{width:62px;height:62px;border-radius:12px;border:1px solid #eef2f7;object-fit:cover}
-  .card h3{margin:0 0 4px;font-size:1.1rem}
-  .pill{font-weight:800;color:#0b315f;border:1px solid #bfd3ff;background:#f2f7ff;border-radius:999px;padding:6px 10px;font-size:.85rem;white-space:nowrap}
-  .meta{color:#475569;font-size:.95rem}
-  a{
-    text-decoration:none;color:inherit
-  }
+:root{
+  --bg:#f6f7fb; --text:#0f172a; --muted:#475569; --azul:#0b376d;
+  --azul2:#062247; --amarillo:#ffcc00; --card:#fff; --ring:rgba(122,162,255,.25);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Arial; background:var(--bg); color:var(--text)}
+.hero{background:linear-gradient(135deg,var(--azul),var(--azul2)); color:#fff; padding:48px 16px 56px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 16px}
+.brand{display:flex;justify-content:center}
+.brand img{height:84px}
+h1{margin:16px 0 8px;text-align:center;font-size:28px}
+.sub{margin:0;text-align:center;color:#dbe2f1}
+.header-row{display:flex;gap:12px;margin-top:20px;justify-content:center}
+input[type="search"]{flex:1;padding:14px 16px;border-radius:14px;border:1px solid #d4dae6; font-size:16px; outline:none}
+input[type="search"]:focus{border-color:#7aa2ff; box-shadow:0 0 0 3px var(--ring)}
+.btn{background:var(--amarillo);color:#111827;border:none;padding:12px 16px;font-weight:800;border-radius:12px;cursor:pointer}
+.list{margin-top:22px; display:grid; gap:14px}
+.card{display:flex;gap:14px; align-items:center; background:var(--card); border:1px solid #e5eaf2; border-radius:16px; padding:14px 16px}
+.card img{width:56px;height:56px;border-radius:12px;border:1px solid #e5eaf2;background:#fff}
+.card h3{margin:0 0 2px;font-size:18px}
+.card p{margin:0;color:var(--muted);font-size:14px}
+a.more{color:#1e40af; text-decoration:none; font-weight:700}
+.footer{margin:40px 0 24px; text-align:center; color:#6b7280}
 </style>
 </head>
 <body>
-<header>
-  <div class="brand">
-    <img src="assets/zonaap-logo.svg" alt="Zonaap">
-    <img src="assets/zonaap-wordmark.svg" alt="Zonaap">
-  </div>
-  <h1>Pedí online a negocios de tu barrio</h1>
-  <p class="sub">Buscá un local o registrá el tuyo gratis.</p>
-</header>
-<main>
-  <div class="topbar">
-    <input id="q" placeholder="Buscar por nombre, rubro o barrio…">
-    <a class="btn" href="admin/">+ Registrar mi local</a>
-  </div>
-  <div id="list" class="list" aria-live="polite"></div>
-</main>
-<script>
-async function loadLocales(){
-  const r = await fetch('locales/index.json'); const data = await r.json(); return data.locales||[];
-}
-function row(l){
-  return `<a class="card" href="negocio.html?l=${l.slug}">
-    <img src="${l.logo}" alt="${l.nombre}">
-    <div>
-      <h3>${l.nombre}</h3>
-      <div class="meta">${l.rubro} · ${l.barrio}</div>
+  <header class="hero">
+    <div class="wrap">
+      <div class="brand"><img src="assets/zonaap-wordmark.svg" alt="zonaap"/></div>
+      <h1>Pedí online a negocios de tu barrio</h1>
+      <p class="sub">Buscá un local o registrá el tuyo gratis.</p>
+      <div class="header-row">
+        <input id="q" type="search" placeholder="Buscar por nombre, rubro o barrio…"/>
+        <button class="btn" onclick="location.href='admin/'">+ Registrar mi local</button>
+      </div>
     </div>
-    <span class="pill">Entrar →</span>
-  </a>`;
-}
-function render(list, items){ list.innerHTML = items.map(row).join(''); }
-(async ()=>{
-  const list = document.getElementById('list');
-  const locales = await loadLocales(); render(list, locales);
-  const q = document.getElementById('q');
+  </header>
+  <main class="wrap">
+    <div id="list" class="list" aria-live="polite"></div>
+    <p class="footer">Hecho con ❤️ para emprendedores. Gratis y simple.</p>
+  </main>
+
+<script>
+async function load(){
+  const res = await fetch('locales/index.json'); const data = await res.json();
+  const list = document.getElementById('list'); const q = document.getElementById('q');
+  function paint(items){
+    list.innerHTML = '';
+    items.forEach(it=>{
+      const a = document.createElement('a');
+      a.className='card'; a.href = 'negocio.html?l='+encodeURIComponent(it.slug);
+      a.innerHTML = \`
+        <img src="\${it.logo||'assets/za-icon.svg'}" alt="logo">
+        <div><h3>\${it.nombre}</h3><p>\${it.rubro} • \${it.barrio}</p></div>
+        <div style="margin-left:auto"><span class="more">Ver →</span></div>\`;
+      list.appendChild(a);
+    });
+  }
+  paint(data);
   q.addEventListener('input', ()=>{
-    const t = q.value.toLowerCase();
-    render(list, locales.filter(l=>[l.nombre,l.rubro,l.barrio].join(' ').toLowerCase().includes(t)));
+    const v = q.value.toLowerCase().trim();
+    paint(data.filter(it => (it.nombre+it.rubro+it.barrio).toLowerCase().includes(v)));
   });
-})();
+}
+load();
 </script>
 </body>
 </html>

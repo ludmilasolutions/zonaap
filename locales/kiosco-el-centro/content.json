@@ -1,110 +1,67 @@
 {
+  "nombre": "Kiosco El Centro",
+  "sub": "Abierto todos los días",
+  "logo": "../assets/za-icon.svg",
   "ajustes": {
-    "nombre": "Kiosco El Centro",
-    "sub": "Abierto todos los días",
-    "logo": "assets/zonaap-logo.svg",
-    "shipping": 800,
-    "whatsapp": "3415923882",
-    "secciones": [
-      "Snacks & Dulce",
-      "Bebidas frías"
-    ],
-    "horarios": {
-      "sec1": {
-        "dias": [
-          0,
-          1,
-          2,
-          3,
-          4,
-          5,
-          6
-        ],
-        "rangos": [
-          {
-            "desde": "09:00",
-            "hasta": "23:59"
-          }
-        ]
-      },
-      "sec2": {
-        "dias": [
-          0,
-          1,
-          2,
-          3,
-          4,
-          5,
-          6
-        ],
-        "rangos": [
-          {
-            "desde": "09:00",
-            "hasta": "23:59"
-          }
-        ]
-      }
-    },
+    "whatsapp": "+54 341 555 2222",
+    "envio_costo": 800,
     "cupones": [
       {
         "code": "DULCE5",
         "type": "percent",
-        "value": 5,
-        "desc": "5% OFF en golosinas"
+        "value": 5
       }
     ]
   },
-  "sec1": {
-    "categorias": [
-      {
-        "categoria": "Snacks",
-        "productos": [
-          {
-            "nombre": "Papas clásicas",
-            "precio": 1500,
-            "img": "assets/placeholder.png"
-          },
-          {
-            "nombre": "Maní salado",
-            "precio": 1300,
-            "img": "assets/placeholder.png"
-          }
-        ]
-      },
-      {
-        "categoria": "Dulce",
-        "productos": [
-          {
-            "nombre": "Alfajor triple",
-            "precio": 1200,
-            "img": "assets/placeholder.png"
-          },
-          {
-            "nombre": "Chocolate leche",
-            "precio": 1800,
-            "img": "assets/placeholder.png"
-          }
-        ]
-      }
-    ]
-  },
-  "sec2": {
-    "categorias": [
-      {
-        "categoria": "Bebidas frías",
-        "productos": [
-          {
-            "nombre": "Agua 500ml",
-            "precio": 900,
-            "img": "assets/placeholder.png"
-          },
-          {
-            "nombre": "Gaseosa lata",
-            "precio": 1100,
-            "img": "assets/placeholder.png"
-          }
-        ]
-      }
-    ]
-  }
+  "secciones": [
+    {
+      "nombre": "Snacks & Dulce",
+      "categorias": [
+        {
+          "nombre": "Snacks",
+          "productos": [
+            {
+              "nombre": "Papas clásicas 90g",
+              "precio": 1500
+            },
+            {
+              "nombre": "Doritos 90g",
+              "precio": 1600
+            }
+          ]
+        },
+        {
+          "nombre": "Dulce",
+          "productos": [
+            {
+              "nombre": "Chocolate 90g",
+              "precio": 1900
+            },
+            {
+              "nombre": "Alfajor triple",
+              "precio": 1200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Bebidas frías",
+      "categorias": [
+        {
+          "nombre": "Bebidas frías",
+          "productos": [
+            {
+              "nombre": "Gatorade 500ml",
+              "precio": 1700
+            },
+            {
+              "nombre": "Coca 500ml",
+              "precio": 1500
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

@@ -1,37 +1,26 @@
-{
-  "locales": [
-    {
-      "slug": "pizzeria-don-napo",
-      "nombre": "Pizzería Don Napo",
-      "rubro": "Pizzería",
-      "barrio": "Rosario Centro",
-      "logo": "assets/zonaap-logo.svg",
-      "secciones": [
-        "Pizzas",
-        "Bebidas"
-      ]
-    },
-    {
-      "slug": "kiosco-el-centro",
-      "nombre": "Kiosco El Centro",
-      "rubro": "Kiosco",
-      "barrio": "Echesortu",
-      "logo": "assets/zonaap-logo.svg",
-      "secciones": [
-        "Snacks & Dulce",
-        "Bebidas frías"
-      ]
-    },
-    {
-      "slug": "ferreteria-soldarte",
-      "nombre": "Ferretería Soldarte",
-      "rubro": "Ferretería",
-      "barrio": "Fisherton",
-      "logo": "assets/zonaap-logo.svg",
-      "secciones": [
-        "Herramientas",
-        "Electricidad & Pintura"
-      ]
-    }
-  ]
-}
+[
+  {
+    "slug": "pizzeria-don-napo",
+    "nombre": "Pizzería Don Napo",
+    "rubro": "Pizzería",
+    "barrio": "Rosario Centro",
+    "logo": "assets/za-icon.svg",
+    "hero": "Hecha como en casa"
+  },
+  {
+    "slug": "kiosco-el-centro",
+    "nombre": "Kiosco El Centro",
+    "rubro": "Kiosco",
+    "barrio": "Echesortu",
+    "logo": "assets/za-icon.svg",
+    "hero": "Abierto todos los días"
+  },
+  {
+    "slug": "ferreteria-soldarte",
+    "nombre": "Ferretería Soldarte",
+    "rubro": "Ferretería",
+    "barrio": "Fisherton",
+    "logo": "assets/za-icon.svg",
+    "hero": "Todo para tu obra"
+  }
+]

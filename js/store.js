@@ -1,215 +1,202 @@
 
-/* ===== Helpers ===== */
-const Q = sel => document.querySelector(sel);
-const QA = sel => Array.from(document.querySelectorAll(sel));
-const fmt = n => new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(n||0);
-const params = new URLSearchParams(location.search);
-const SLUG = params.get('l') || '';
+(function(){
+  const $ = s=>document.querySelector(s);
+  const fmt = n => new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(n||0);
+  const params = new URLSearchParams(location.search);
+  const slug = params.get('l') || '';
 
-let LOCALE = null;
-let SHIPPING = 0;
-let WHATS = '';
-let CART = {}; // id -> qty
-let COUPONS = [];
-let CUPON_APLICADO = null;
+  const state = {
+    items: {}, // id -> qty
+    catalog: {}, // id -> {nombre, precio}
+    ajustes: { whatsapp:'', envio_costo: 0, cupones:[] }
+  };
 
-function toast(msg,type='ok',t=2200){
-  const wrap=Q('#toastWrap'); if(!wrap) return;
-  const el=document.createElement('div'); el.className='toast '+(type==='error'?'err':type==='warn'?'warn':'ok'); el.textContent=msg;
-  wrap.appendChild(el); setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .2s'},t); setTimeout(()=>wrap.removeChild(el),t+240);
-}
+  const TTL_MS = 2*60*60*1000;
+  function setWithTTL(k,v,ttl){ localStorage.setItem(k, JSON.stringify({v, exp: Date.now()+ttl})); }
+  function getWithTTL(k, fallback){ try{ const raw = JSON.parse(localStorage.getItem(k)); if(!raw) return fallback; if(raw.exp && Date.now()>raw.exp){ localStorage.removeItem(k); return fallback; } return raw.v ?? fallback; }catch{return fallback} }
 
-async function loadStore(){
-  if(!SLUG){ document.body.innerHTML = '<p style="padding:2rem">Falta parámetro ?l=</p>'; return; }
-  const r = await fetch(`locales/${SLUG}/content.json`);
-  LOCALE = await r.json();
-  const aj = LOCALE.ajustes || {};
-  Q('#storeTitle').textContent = aj.nombre || '—';
-  Q('#storeSub').textContent = aj.sub || '';
-  if(aj.logo) Q('#storeLogo').src = aj.logo;
-  document.title = (aj.nombre || 'Tienda')+' | Zonaap';
-  SHIPPING = Number(aj.shipping||0);
-  WHATS = (aj.whatsapp||'').toString().replace(/\D/g,'');
-  COUPONS = Array.isArray(aj.cupones)?aj.cupones:[];
-  buildTabs(aj.secciones||['Sección 1','Sección 2']);
-  renderMenus();
-  buildCatNav('sec1'); buildCatNav('sec2');
-  bindCart();
-}
+  const CART_KEY = 'za_cart_'+slug;
+  const CLIENT_KEY = 'za_client';
 
-function buildTabs(names){
-  const tabs = Q('#tabs'); tabs.innerHTML='';
-  const b1 = document.createElement('button'); b1.textContent = names[0] || 'Sección 1'; b1.className='active'; b1.onclick = ()=>showSec('sec1');
-  const b2 = document.createElement('button'); b2.textContent = names[1] || 'Sección 2'; b2.onclick = ()=>showSec('sec2');
-  tabs.appendChild(b1); tabs.appendChild(b2);
-}
-function showSec(sec){
-  Q('#menu-sec1').style.display = sec==='sec1'?'block':'none';
-  Q('#menu-sec2').style.display = sec==='sec2'?'block':'none';
-  const [b1,b2] = QA('#tabs button'); b1.classList.toggle('active',sec==='sec1'); b2.classList.toggle('active',sec==='sec2');
-}
+  function saveCart(){ setWithTTL(CART_KEY, state.items, TTL_MS); }
+  function loadCart(){ state.items = getWithTTL(CART_KEY, {}); }
+  function saveClient(){ const c={name:$('#nombre')?.value||'', addr:$('#direccion')?.value||'', entrega:document.querySelector('input[name=envio]:checked')?.value||''}; setWithTTL(CLIENT_KEY,c,TTL_MS); }
+  function loadClient(){ const c = getWithTTL(CLIENT_KEY, {}); if(c.name) $('#nombre').value=c.name; if(c.addr) $('#direccion').value=c.addr; if(c.entrega){ document.getElementById('opt-'+(c.entrega==='envio'?'env':'ret')).checked=true; } }
 
-function normalizar(d){ return Array.isArray(d?.categorias)?Object.fromEntries(d.categorias.map(c=>[c.categoria,c.productos||[]])):{}; }
+  async function loadData(){
+    const res = await fetch('locales/'+slug+'/content.json'); const data = await res.json();
+    // Header
+    $('#title').textContent = data.nombre || 'Local';
+    $('#sub').textContent = data.sub || '';
+    $('#logo').src = data.logo || 'assets/za-icon.svg';
 
-function renderProductos(contId, data){
-  const cont = Q('#'+contId); cont.innerHTML='';
-  const norm = normalizar(data);
-  Object.keys(norm).forEach(cat=>{
-    const items = norm[cat]||[];
-    const det = document.createElement('details');
-    det.id = 'cat-'+contId+'-'+cat.replace(/\s+/g,'-').toLowerCase();
-    const sum = document.createElement('summary'); sum.textContent=cat; det.appendChild(sum);
-    items.forEach((p,i)=>{
-      const id = `${contId}-${cat}-${i}`;
-      const div = document.createElement('div'); div.className='producto';
-      const img = p.img || 'assets/placeholder.png';
-      div.dataset.nombre = p.nombre; div.dataset.precio = p.precio;
-      div.innerHTML = `
-        <div class="prod-thumb"><img src="${img}" alt="${p.nombre}"></div>
-        <div class="producto-info">
-          <h3>${p.nombre}</h3>
-          ${p.desc?`<p>${p.desc}</p>`:''}
-          <div class="price-wrap"><span class="price-new">${fmt(p.precio)}</span></div>
-        </div>
-        <div class="contador">
-          <button aria-label="Quitar" data-id="${id}" data-d="-1">−</button>
-          <span id="cantidad-${id}">0</span>
-          <button aria-label="Agregar" data-id="${id}" data-d="1">+</button>
-        </div>`;
-      cont.appendChild(det); det.appendChild(div);
-      if(!(id in CART)) CART[id]=0;
+    state.ajustes.whatsapp = (data.ajustes?.whatsapp||'').replace(/\D/g,'');
+    state.ajustes.envio_costo = Number(data.ajustes?.envio_costo||0);
+    state.ajustes.cupones = Array.isArray(data.ajustes?.cupones)?data.ajustes.cupones:[];
+    $('#envioLabel').textContent = 'Envío (+'+fmt(state.ajustes.envio_costo)+')';
+
+    // Categories collected from all sections (no section tabs)
+    const chips = $('#chips'); chips.innerHTML='';
+    const content = $('#content'); content.innerHTML='';
+
+    const sections = Array.isArray(data.secciones)?data.secciones:[];
+    let anchorIndex = 0;
+    sections.forEach(sec => {
+      const categorias = Array.isArray(sec.categorias)?sec.categorias:[];
+      categorias.forEach(cat => {
+        anchorIndex++;
+        const anchor = 'cat-'+anchorIndex;
+        // chip
+        const a = document.createElement('a');
+        a.href = '#'+anchor; a.textContent = `${cat.nombre} (${(cat.productos||[]).length})`;
+        chips.appendChild(a);
+        // section block
+        const box = document.createElement('div'); box.className='section'; box.id = anchor;
+        box.innerHTML = `<h2>${cat.nombre}</h2>`;
+        (cat.productos||[]).forEach((p,i)=>{
+          // id
+          const id = `${anchor}-${i}`;
+          state.catalog[id] = {nombre:p.nombre, precio:Number(p.precio||0)};
+          const row = document.createElement('div'); row.className='prod';
+          const img = p.img || 'assets/za-icon.svg';
+          row.innerHTML = `
+            <div class="thumb"><img src="${img}" alt="${p.nombre}"></div>
+            <div>
+              <h3>${p.nombre}</h3>
+              ${p.desc?`<p>${p.desc}</p>`:''}
+              <div class="price">${fmt(p.precio)}</div>
+            </div>
+            <div class="qty">
+              <button aria-label="Quitar" data-id="${id}" data-d="-1">−</button>
+              <span id="q-${id}">${state.items[id]||0}</span>
+              <button aria-label="Agregar" data-id="${id}" data-d="1">+</button>
+            </div>`;
+          content.appendChild(box); box.appendChild(row);
+        });
+      });
     });
-    cont.appendChild(det);
-  });
-}
-
-function renderMenus(){
-  renderProductos('menu-sec1', LOCALE.sec1 || {categorias:[]});
-  renderProductos('menu-sec2', LOCALE.sec2 || {categorias:[]});
-  showSec('sec1');
-}
-
-function buildCatNav(sec){
-  const cont = Q('#catNav'); cont.innerHTML='';
-  const details = QA(`#menu-${sec} details`);
-  details.forEach(d=>{
-    const id = d.id || ('cat-'+Math.random().toString(36).slice(2));
-    d.id = id;
-    const title = d.querySelector('summary')?.textContent || 'Cat';
-    const a = document.createElement('a'); const count = d.querySelectorAll('.producto').length;
-    a.innerHTML = `${title} <small>(${count})</small>`; a.href = '#'+id; a.className='cat-chip';
-    cont.appendChild(a);
-  });
-  // Active chip on scroll
-  const io=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ QA('#catNav .cat-chip').forEach(a=>a.classList.toggle('active', a.hash==='#'+e.target.id)); } });
-  },{rootMargin:'-60% 0px -35% 0px',threshold:0.01});
-  details.forEach(d=>io.observe(d));
-}
-
-/* ===== Cart mechanics ===== */
-function bindCart(){
-  document.body.addEventListener('click',e=>{
-    const btn = e.target.closest('button[data-id]'); if(!btn) return;
-    const id = btn.dataset.id; const d = Number(btn.dataset.d||0);
-    if(!(id in CART)) CART[id]=0; CART[id]=Math.max(0, CART[id]+d);
-    const span = Q('#cantidad-'+id); if(span) span.textContent = CART[id];
-    updateSummary();
-  });
-  Q('#btn-vaciar').addEventListener('click',()=>{ Object.keys(CART).forEach(k=>CART[k]=0); QA('[id^="cantidad-"]').forEach(el=>el.textContent='0'); updateSummary(); });
-  Q('#btn-whatsapp').addEventListener('click',sendWhatsApp);
-}
-
-function countItems(){ return Object.values(CART).reduce((a,b)=>a+(b||0),0); }
-function setFabVisible(v){
-  const fab = Q('#cartFab'); if(!fab) return;
-  if(v){ fab.removeAttribute('hidden'); requestAnimationFrame(()=>fab.classList.remove('hide')); }
-  else{ fab.classList.add('hide'); setTimeout(()=>fab.setAttribute('hidden',''),180); }
-}
-
-function updateSummary(){
-  const lista = Q('#lista'); lista.innerHTML='';
-  let subtotal=0; let count=0;
-  Object.entries(CART).forEach(([id,qty])=>{
-    if(qty<=0) return;
-    const span=Q('#'+`cantidad-${id}`); if(!span) return;
-    const row=span.closest('.producto'); const name=row?.dataset?.nombre||''; const price=parseInt(row?.dataset?.precio||0,10);
-    const li=document.createElement('li'); li.className='resumen-item';
-    li.innerHTML=`<span class="resumen-name">${name}</span><span>x${qty}</span><span>${fmt(price*qty)}</span>`;
-    lista.appendChild(li); subtotal+=price*qty; count+=qty;
-  });
-  const envioSel = Q('input[name=envio]:checked')?.value || '';
-  const shipping = envioSel==='envio' ? SHIPPING : 0;
-  const cuponTxt = Q('#cupon').value.trim().toUpperCase();
-  const propPct = Math.max(0, Math.min(100, Number(Q('#propina').value||0)));
-
-  // Cupon
-  let descuento = 0;
-  CUPON_APLICADO = null;
-  if(cuponTxt){
-    const found = COUPONS.find(c=>c.code.toUpperCase()===cuponTxt);
-    if(found){
-      CUPON_APLICADO = found;
-      if(found.type==='percent'){ descuento = Math.round(subtotal * (Number(found.value||0)/100)); }
-      if(found.type==='amount'){ descuento = Number(found.value||0); }
-      if(found.type==='shipping_free'){ /* handled by shipping = 0 */ }
-    }
+    // qty handlers
+    content.addEventListener('click', ev=>{
+      const b = ev.target.closest('button[data-id]'); if(!b) return;
+      const id = b.getAttribute('data-id'); const d = Number(b.getAttribute('data-d'));
+      const q = Math.max(0, (state.items[id]||0)+d); state.items[id]=q; saveCart();
+      $('#q-'+id).textContent=q; refresh();
+    });
   }
-  const envioFinal = (CUPON_APLICADO && CUPON_APLICADO.type==='shipping_free') ? 0 : shipping;
-  const propina = Math.round(subtotal * (propPct/100));
-  const total = Math.max(0, subtotal - descuento) + envioFinal + propina;
 
-  Q('#subtotal').textContent = fmt(subtotal);
-  Q('#envioLine').hidden = envioFinal<=0; Q('#envioCosto').textContent = fmt(envioFinal);
-  Q('#descMonto').textContent = fmt(descuento);
-  Q('#propMonto').textContent = fmt(propina);
-  Q('#total').textContent = fmt(total);
-  Q('#emptyMsg').hidden = count>0;
-  Q('#fabCount').textContent = count;
-  Q('#fabTotal').textContent = fmt(total);
-  setFabVisible(count>0 && !window.sheetOpen);
-  Q('#btn-whatsapp').disabled = !(count>0 && Q('#nombre').value.trim());
-}
+  function refresh(){
+    // FAB
+    const count = Object.values(state.items).reduce((a,b)=>a+(b||0),0);
+    const subtotal = Object.entries(state.items).reduce((s,[id,q])=> s + (state.catalog[id]?.precio||0)*q, 0);
+    $('#fabCount').textContent = count; $('#fabTotal').textContent = fmt(subtotal);
+    $('#fab').classList.toggle('hidden', count<=0);
 
-window.sheetOpen=false;
-function openSheet(){ if(window.sheetOpen) return; window.sheetOpen=true; Q('#cartSheet').classList.add('open'); Q('#sheetBackdrop').classList.add('open'); document.body.style.overflow='hidden'; setFabVisible(false); }
-function closeSheet(){ if(!window.sheetOpen) return; window.sheetOpen=false; Q('#cartSheet').classList.remove('open'); Q('#sheetBackdrop').classList.remove('open'); document.body.style.overflow=''; updateSummary(); }
-Q('#cartFab').addEventListener('click', e=>{e.preventDefault(); openSheet();});
-Q('#sheetClose').addEventListener('click', closeSheet);
-Q('#sheetBackdrop').addEventListener('click', closeSheet);
-['#nombre','#direccion','#cupon','#propina'].forEach(sel=>{ const el=Q(sel); el&&el.addEventListener('input', updateSummary); });
-QA('input[name=envio]').forEach(r=>r.addEventListener('change', updateSummary));
+    // Sheet summary
+    const ul = $('#items'); ul.innerHTML='';
+    Object.entries(state.items).forEach(([id,q])=>{
+      if(q<=0) return;
+      const p = state.catalog[id]; if(!p) return;
+      const li = document.createElement('li');
+      li.className='line'; li.innerHTML = `<span>${p.nombre} <span class="small">x${q}</span></span><strong>${fmt(p.precio*q)}</strong>`;
+      ul.appendChild(li);
+    });
 
-function sendWhatsApp(){
-  const name = Q('#nombre').value.trim();
-  const addr = Q('#direccion').value.trim();
-  const envioSel = Q('input[name=envio]:checked')?.value || 'retiro';
-  if(!name){ toast('Ingresá tu nombre','error'); return; }
-  if(countItems()===0){ toast('Seleccioná al menos un producto','error'); return; }
-  if(envioSel==='envio' && !addr){ toast('Ingresá tu dirección para el envío','error'); return; }
-  let msg=`Hola, soy ${name}. Quiero hacer un pedido:\\n`;
-  Object.entries(CART).forEach(([id,qty])=>{
-    if(qty<=0) return; const span=Q('#cantidad-'+id); if(!span) return; 
-    const row=span.closest('.producto'); const n=row?.dataset?.nombre||''; const p=parseInt(row?.dataset?.precio||0,10); const line=p*qty;
-    msg+=`- ${n} x${qty} - ${fmt(line)}\\n`;
+    // envio
+    const entrega = document.querySelector('input[name=envio]:checked')?.value||'';
+    const envio = entrega==='envio' ? state.ajustes.envio_costo : 0;
+    $('#env').textContent = fmt(envio);
+    $('#envioLine').textContent = entrega==='envio' ? 'Envío' : 'Entrega';
+    // descuento por cupón
+    const code = ($('#cupon')?.value||'').trim().toUpperCase();
+    let desc = 0;
+    const c = state.ajustes.cupones.find(x => x.code?.toUpperCase()===code);
+    if(c){
+      if(c.type==='percent') desc = Math.round(subtotal * (Number(c.value||0)/100));
+      if(c.type==='amount') desc = Number(c.value||0);
+      if(c.type==='shipping_free') desc = envio;
+    }
+    const propPct = parseFloat(($('#propina')?.value||'').replace(',','.'))||0;
+    const tip = Math.round(subtotal * Math.max(0, Math.min(propPct, 99))/100);
+    $('#subtot').textContent = fmt(subtotal);
+    $('#desc').textContent = '- '+fmt(desc);
+    $('#tip').textContent = fmt(tip);
+    const total = Math.max(0, subtotal - desc) + envio + tip;
+    $('#total').textContent = fmt(total);
+
+    // steps active
+    const datosOk = ($('#nombre')?.value.trim().length>0) && (!!entrega) && (entrega==='retiro' || $('#direccion')?.value.trim().length>0);
+    document.querySelectorAll('.step').forEach(s=>{
+      const n = Number(s.getAttribute('data-step'));
+      s.classList.toggle('active', (n===1 && !datosOk) || (n===2 && datosOk && count>0) || (n===3 && datosOk && count>0));
+    });
+  }
+
+  function openSheet(){ $('#backdrop').classList.add('open'); $('#sheet').classList.add('open'); refresh(); }
+  function closeSheet(){ $('#backdrop').classList.remove('open'); $('#sheet').classList.remove('open'); }
+
+  // Events
+  document.addEventListener('click', e=>{
+    if(e.target.id==='fab'){ openSheet(); }
+    if(e.target.id==='close' || e.target.id==='backdrop'){ closeSheet(); }
+    if(e.target.id==='btnClear'){ state.items={}; saveCart(); document.querySelectorAll('[id^="q-"]').forEach(el=>el.textContent='0'); refresh(); }
+    if(e.target.id==='btnWA'){ sendWA(); }
   });
-  const tSub = Q('#subtotal').textContent;
-  const tEnv = !Q('#envioLine').hidden ? Q('#envioCosto').textContent : fmt(0);
-  const tDesc = Q('#descMonto').textContent;
-  const tProp = Q('#propMonto').textContent;
-  const tTot = Q('#total').textContent;
-  const nota = Q('#notaGeneral').value.trim();
-  if(envioSel==='envio'){ msg+=`Envío a: ${addr}\\n`; } else { msg+='Retiro por el local\\n'; }
-  if(nota) msg+=`Nota: ${nota}\\n`;
-  const cup = Q('#cupon').value.trim().toUpperCase(); if(cup) msg+=`Cupón: ${cup}\\n`;
-  msg+=`Subtotal: ${tSub}\\n`; if(!Q('#envioLine').hidden) msg+=`Envío: ${tEnv}\\n`; if(tDesc!==fmt(0)) msg+=`Descuento: ${tDesc}\\n`; if(tProp!==fmt(0)) msg+=`Propina: ${tProp}\\n`; msg+=`Total: ${tTot}`;
-  const phone = WHATS || '0000000000';
-  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');
-  // Clean cart
-  Object.keys(CART).forEach(k=>CART[k]=0); QA('[id^="cantidad-"]').forEach(el=>el.textContent='0'); updateSummary(); closeSheet();
-  toast('Pedido enviado. Carrito vaciado ✅','ok',2200);
-}
+  ['nombre','direccion','cupon','propina','nota'].forEach(id=>{
+    document.addEventListener('input', e=>{ if(e.target.id===id){ if(id==='nombre'||id==='direccion') saveClient(); refresh(); } });
+  });
+  document.addEventListener('change', e=>{
+    if(e.target.name==='envio'){ const entrega = e.target.value; saveClient();
+      document.getElementById('addrWrap').classList.toggle('hidden', entrega!=='envio'); refresh(); }
+  });
 
-document.addEventListener('DOMContentLoaded', ()=>{
-  loadStore().then(()=>updateSummary());
-});
+  function sendWA(){
+    const entrega = document.querySelector('input[name=envio]:checked')?.value||'';
+    const name = $('#nombre')?.value.trim()||'';
+    const addr = $('#direccion')?.value.trim()||'';
+    const count = Object.values(state.items).reduce((a,b)=>a+(b||0),0);
+    if(!entrega){ alert('Elegí Retiro o Envío'); return; }
+    if(!name){ alert('Ingresá tu nombre'); return; }
+    if(count<=0){ alert('Agregá al menos un producto'); return; }
+    if(entrega==='envio' && !addr){ alert('Ingresá tu dirección'); return; }
+
+    const subtotal = Object.entries(state.items).reduce((s,[id,q])=> s + (state.catalog[id]?.precio||0)*q, 0);
+    const envio = entrega==='envio' ? state.ajustes.envio_costo : 0;
+    const code = ($('#cupon')?.value||'').trim().toUpperCase();
+    let desc = 0; const c = state.ajustes.cupones.find(x => x.code?.toUpperCase()===code);
+    if(c){ if(c.type==='percent') desc = Math.round(subtotal * (Number(c.value||0)/100));
+      if(c.type==='amount') desc = Number(c.value||0); if(c.type==='shipping_free') desc = envio; }
+    const propPct = parseFloat(($('#propina')?.value||'').replace(',','.'))||0;
+    const tip = Math.round(subtotal * Math.max(0, Math.min(propPct, 99))/100);
+    const total = Math.max(0, subtotal - desc) + envio + tip;
+
+    let msg = `Hola, soy ${name}. Quiero hacer un pedido:\\n`;
+    Object.entries(state.items).forEach(([id,q])=>{
+      if(q>0){ const p = state.catalog[id]; msg+=`- ${p.nombre} x${q} - ${fmt(p.precio*q)}\\n`; }
+    });
+    if($('#nota')?.value.trim()) msg+=`Nota: ${$('#nota').value.trim()}\\n`;
+    if(code) msg+=`Cupón: ${code}\\n`;
+    msg+= entrega==='envio' ? `Envío a: ${addr} (+${fmt(state.ajustes.envio_costo)})\\n` : 'Retiro en el local\\n';
+    msg+= `Subtotal: ${fmt(subtotal)}\\n`;
+    if(desc) msg+= `Descuento: -${fmt(desc)}\\n`;
+    if(tip) msg+= `Propina: ${fmt(tip)}\\n`;
+    msg+= `Total: ${fmt(total)}`;
+
+    const wsp = state.ajustes.whatsapp || '';
+    const url = `https://wa.me/${wsp}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+
+    // reset cart
+    state.items={}; saveCart(); closeSheet(); refresh();
+  }
+
+  // Init
+  (async function(){
+    if(!slug){ document.body.innerHTML = '<div class="wrap" style="padding:40px">Falta el parámetro ?l=</div>'; return; }
+    loadCart(); await loadData(); loadClient(); refresh();
+
+    // defaults for entrega
+    const entrega = document.querySelector('input[name=envio]:checked')?.value || '';
+    if(!entrega){ document.getElementById('opt-ret').checked = true; }
+    document.getElementById('addrWrap').classList.toggle('hidden', document.getElementById('opt-env').checked!==true);
+  })();
+})();
