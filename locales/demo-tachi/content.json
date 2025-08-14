@@ -1,0 +1,95 @@
+{
+  "ajustes": {
+    "nombre": "Rotisería El Tachi (Demo)",
+    "sub": "Hacé tu pedido desde la web",
+    "logo": "assets/logo.png",
+    "whatsapp": "3415923882",
+    "shipping": 1000,
+    "analytics_webhook": "",
+    "horarios": {
+      "rotiseria": {
+        "dias": [
+          4,
+          5,
+          6,
+          0
+        ],
+        "rangos": [
+          {
+            "desde": "19:30",
+            "hasta": "22:30"
+          }
+        ]
+      },
+      "bebidas": {
+        "dias": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "rangos": [
+          {
+            "desde": "09:00",
+            "hasta": "23:59"
+          }
+        ]
+      }
+    },
+    "theme": {
+      "azul": "#003366",
+      "amarillo": "#ffcc00",
+      "bg": "#f8f9fa",
+      "text": "#333333"
+    }
+  },
+  "productos": {
+    "rotiseria": {
+      "categorias": [
+        {
+          "categoria": "PIZZAS",
+          "productos": [
+            {
+              "nombre": "Muzza",
+              "precio": 3500,
+              "desc": "Salsa, muzzarella y aceitunas"
+            },
+            {
+              "nombre": "Napolitana",
+              "precio": 4500,
+              "desc": "Tomate en rodajas y ajo"
+            }
+          ]
+        }
+      ]
+    },
+    "bebidas": {
+      "categorias": [
+        {
+          "categoria": "GASEOSAS",
+          "productos": [
+            {
+              "nombre": "Coca 1.5L",
+              "precio": 3200
+            },
+            {
+              "nombre": "Sprite 1.5L",
+              "precio": 3000
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "promos": {
+    "rotiseria": {
+      "promos": []
+    },
+    "bebidas": {
+      "promos": []
+    }
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "ajustes": {
+    "nombre": "Ferretería Soldarte",
+    "sub": "Demo de Zonaap",
+    "logo": "assets/logo-ferreteria.png",
+    "whatsapp": "3415000000",
+    "shipping": 1000,
+    "horarios": {
+      "rotiseria": {
+        "dias": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "rangos": [
+          {
+            "desde": "09:00",
+            "hasta": "23:59"
+          }
+        ]
+      },
+      "bebidas": {
+        "dias": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "rangos": [
+          {
+            "desde": "09:00",
+            "hasta": "23:59"
+          }
+        ]
+      }
+    },
+    "tab_rotiseria": "🍕 Herramientas",
+    "tab_bebidas": "🥤 Accesorios"
+  },
+  "productos": {
+    "rotiseria": {
+      "categorias": [
+        {
+          "categoria": "CAT 1",
+          "productos": [
+            {
+              "nombre": "Producto A",
+              "precio": 2000,
+              "desc": "Descripción corta"
+            },
+            {
+              "nombre": "Producto B",
+              "precio": 3200
+            }
+          ]
+        }
+      ]
+    },
+    "bebidas": {
+      "categorias": [
+        {
+          "categoria": "BEBIDAS",
+          "productos": [
+            {
+              "nombre": "Agua 500ml",
+              "precio": 900
+            },
+            {
+              "nombre": "Gaseosa 1.5L",
+              "precio": 3200
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "promos": {
+    "rotiseria": {
+      "promos": []
+    },
+    "bebidas": {
+      "promos": []
+    }
+  }
+}

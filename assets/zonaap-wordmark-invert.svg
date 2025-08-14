@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 240">
+  <defs>
+    <style>
+      .txt { fill: #ffffff; font-family: 'Segoe UI', Roboto, Arial, sans-serif; font-weight: 900; font-size: 160px; letter-spacing: .5px; }
+    </style>
+  </defs>
+  <text class="txt" x="10" y="170">zonaap</text>
+</svg>

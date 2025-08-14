@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Zonaap | Pedidos de tu barrio</title>
+  <link rel="icon" href="assets/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --azul:#003366; --azul-2:#001122; --azul-3:#004080; --amarillo:#ffcc00;
+      --bg:#f7f8fb; --card:#fff; --text:#1f2937; --muted:#6b7280; --borde:#e5e7eb;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--text)}
+    header{background:linear-gradient(90deg,var(--azul),var(--azul-2));color:#fff;padding:2rem 1rem;text-align:center}
+    header h1{font-size:1.8rem;margin:.3rem 0 0}
+    main{max-width:1100px;margin:auto;padding:1rem}
+    .topbar{display:grid;grid-template-columns:1fr auto;gap:.8rem;align-items:center;margin:1rem 0}
+    .search{display:flex;gap:.5rem}
+    .search input{
+      flex:1;padding:.9rem 1rem;border:1px solid var(--borde);border-radius:12px;font-size:1rem;outline:none;
+    }
+    .btn{display:inline-flex;gap:.5rem;align-items:center;padding:.8rem 1rem;border-radius:12px;font-weight:800;
+      background:var(--azul);color:var(--amarillo);border:2px solid var(--amarillo);text-decoration:none;cursor:pointer}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1rem 0 2rem}
+    .card{
+      background:var(--card);border:1px solid var(--borde);border-radius:16px;padding:1rem;display:grid;gap:.6rem;
+      transition:.15s;box-shadow:0 6px 18px rgba(0,0,0,.06);
+    }
+    .card:hover{transform:translateY(-2px)}
+    .logo{width:80px;height:80px;border-radius:12px;border:1px solid var(--borde);object-fit:cover;background:#eef2f7}
+    .name{font-weight:900;font-size:1.1rem;color:#0b376d}
+    .meta{font-size:.95rem;color:var(--muted)}
+    .pill{display:inline-flex;align-items:center;border:1px dashed var(--borde);padding:.2rem .5rem;border-radius:999px;font-size:.8rem}
+    .actions{display:flex;justify-content:space-between;align-items:center;margin-top:.3rem}
+    .link{font-weight:900;color:#0b376d;text-decoration:none}
+    footer{max-width:1100px;margin:2rem auto;padding:1rem;text-align:center;color:var(--muted)}
+  </style>
+
+  <style>
+    .brand-header{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+    .brand-logo{max-height:140px;width:auto;display:block;margin:0 auto 0.5rem}
+    @media (min-width:900px){ .brand-logo{max-height:160px} }
+  </style>
+
+  <style>
+    .brand-header{display:grid;place-items:center;text-align:center}
+    .brand-lockup{width:min(90vw, 680px);}
+    .brand-svg{width:100%;height:auto;display:block;margin:0 auto .5rem}
+    @media (min-width:1200px){ .brand-lockup{width:680px} }
+  </style>
+
+
+  <!-- Netlify Identity widget (necesario para aceptar invitaciones y login del CMS) -->
+  
+
+
+  <!-- Netlify Identity widget -->
+  
+
+</head>
+<body>
+  <header class="brand-header"><div class="brand-lockup" aria-label="zonaap">
+  <svg class="brand-svg" viewBox="0 0 1000 240" preserveAspectRatio="xMidYMid meet" role="img" aria-label="zonaap">
+    <defs>
+      <style>
+        .txt { font-family: 'Segoe UI', Roboto, Arial, sans-serif; font-weight:900; font-size:164px; letter-spacing:-0.8px; text-anchor:middle; }
+        .w { fill: #ffffff; }
+        .y { fill: #ffc400; }
+        .shadow { fill: none; stroke: #00000033; stroke-width: 10; stroke-linejoin: round; }
+      </style>
+    </defs>
+    <text class="txt shadow" x="500" y="172">zonaap</text>
+    <text class="txt" x="500" y="172"><tspan class="w">zon</tspan><tspan class="y">aa</tspan><tspan class="w">p</tspan></text>
+  </svg>
+</div>
+    <h1>Pedí online a negocios de tu barrio</h1>
+    <p>Buscá un local o registrá el tuyo gratis.</p>
+  </header>
+
+  <main>
+    <div class="topbar">
+      <div class="search">
+        <input id="q" type="search" placeholder="Buscar por nombre, rubro o barrio…">
+      </div>
+      <a class="btn" href="registro.html">➕ Registrar mi local</a>
+    </div>
+
+    <div id="grid" class="grid"></div>
+  </main>
+
+  <footer>Hecho con ❤ para emprendedores. Gratis y simple.</footer>
+
+  <script>
+    const fmt = v => (v||'').toString().toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'');
+    let LOCALES = [];
+    async function load(){
+      try{
+        const r = await fetch('data/locales.json'); LOCALES = await r.json();
+      }catch{ LOCALES = []; }
+      render(LOCALES);
+    }
+    function render(list){
+      const g = document.getElementById('grid'); if(!g) return;
+      g.innerHTML = '';
+      list.forEach(l => {
+        const a = document.createElement('article'); a.className='card';
+        a.innerHTML = \`
+          <div style="display:flex;gap:.8rem;align-items:center">
+            <img class="brand-logo" class="logo" src="\${l.logo||'assets/logo.png'}" alt="\${l.nombre}">
+            <div>
+              <div class="name">\${l.nombre}</div>
+              <div class="meta">\${l.rubro||'-'} • \${l.barrio||''}</div>
+              <div class="pill">\${l.abierto===false?'Cerrado por ahora':'Abierto hoy'}</div>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="link" href="negocio.html?l=\${encodeURIComponent(l.slug)}">Ver tienda →</a>
+            <span style="font-weight:800">\${l.envio?'Envío disponible':'Retiro'}</span>
+          </div>\`;
+        g.appendChild(a);
+      });
+    }
+    document.getElementById('q').addEventListener('input', e => {
+      const q = fmt(e.target.value);
+      render(LOCALES.filter(l => [l.nombre,l.slug,l.rubro,l.barrio].some(x => fmt(x).includes(q))));
+    });
+    load();
+  </script>
+
+  <!-- Netlify Identity widget -->
+  <script defer src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    (function(){
+      function ready(fn){ if(document.readyState!=='loading'){ fn(); } else { document.addEventListener('DOMContentLoaded', fn); } }
+      ready(function(){
+        var ni = window.netlifyIdentity;
+        // Si venís de invitación, abrí el modal de signup apenas inicializa
+        if (window.location.hash && window.location.hash.indexOf('invite_token') !== -1 && ni) {
+          ni.on('init', function(){ ni.open('signup'); });
+        }
+        // Link manual al panel (no redirige solo)
+        var links = document.querySelectorAll('[data-admin-link]');
+        links.forEach(function(a){
+          a.addEventListener('click', function(e){
+            e.preventDefault();
+            if (!ni) { window.location.href = '/admin/'; return; }
+            if (ni.currentUser()) { window.location.href = '/admin/'; }
+            else { ni.open('login'); ni.once('login', function(){ window.location.href = '/admin/'; }); }
+          });
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>

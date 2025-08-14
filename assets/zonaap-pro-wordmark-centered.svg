@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 240" role="img" aria-label="zonaap">
+  <defs>
+    <style>
+      .txt { font-family: 'Segoe UI', Roboto, Arial, sans-serif; font-weight: 900; font-size: 164px; letter-spacing: -0.8px; text-anchor: middle; }
+      .w { fill: #FFFFFF; }
+      .y { fill: #FFC400; }
+      .shadow { fill: none; stroke: #00000033; stroke-width: 10; stroke-linejoin: round; }
+    </style>
+  </defs>
+  <!-- baseline y=172; centered at x=50% -->
+  <text class="txt shadow" x="50%" y="172">zonaap</text>
+  <text class="txt" x="50%" y="172">
+    <tspan class="w">zon</tspan><tspan class="y">aa</tspan><tspan class="w">p</tspan>
+  </text>
+</svg>
