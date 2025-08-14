@@ -1,9 +1,0 @@
-{
-  "whatsapp": "3415923882",
-  "shipping": 1000,
-  "brand": {
-    "nombre": "Demo",
-    "slogan": "¡Hacé tu pedido desde la web!",
-    "logo": "/uploads/logo.png"
-  }
-}
