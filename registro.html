@@ -33,6 +33,26 @@
     @media (min-width:1200px){ .brand-lockup{width:680px} }
   </style>
 
+
+  <!-- Netlify Identity widget (necesario para aceptar invitaciones y login del CMS) -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    (function ensureIdentity(){
+      function ready(){
+        var ni = window.netlifyIdentity;
+        if(!ni){ return setTimeout(ready, 50); }
+        // Si venís de un mail de invitación (#invite_token=...),
+        // abrimos el modal de "Sign up" automáticamente.
+        if (window.location.hash && window.location.hash.indexOf('invite_token') !== -1) {
+          ni.on('init', function(){ ni.open('signup'); });
+        }
+        // Después de loguearte, te llevo al CMS (/admin/)
+        ni.on('login', function(){ document.location.href = '/admin/'; });
+      }
+      ready();
+    })();
+  </script>
+
 </head>
 <body>
   <main>
