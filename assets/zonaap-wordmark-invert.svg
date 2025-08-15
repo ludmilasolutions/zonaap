@@ -1,9 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 240">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 180" width="720" height="180">
   <defs>
-    <style>
-      .txt { fill: #ffffff; font-family: 'Segoe UI', Roboto, Arial, sans-serif; font-weight: 900; font-size: 160px; letter-spacing: .5px; }
-    </style>
+    <linearGradient id="bg" x1="0" x2="1">
+      <stop offset="0" stop-color="#003366"/>
+      <stop offset="1" stop-color="#001122"/>
+    </linearGradient>
   </defs>
-  <text class="txt" x="10" y="170">zonaap</text>
+  <rect width="720" height="180" rx="22" fill="url(#bg)"/>
+  <g font-family="Inter, system-ui, -apple-system, Roboto, Arial" font-weight="900" font-size="98" fill="#ffffff">
+    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" letter-spacing="2">zonaap</text>
+  </g>
 </svg>
