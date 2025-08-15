@@ -1,19 +1,13 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zonaap CMS</title>
+  <link rel="icon" href="../assets/logo.svg">
 </head>
 <body>
-  <!-- Netlify Identity (Git Gateway) -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <!-- Decap CMS - pin 3.8.3 -->
-  <script src="https://unpkg.com/decap-cms@3.8.3/dist/decap-cms.js"></script>
-  <script>
-    // Pro tip: evitar previews sobre JSON; ya está desactivado en config.yml
-    // También podés forzar esto globalmente:
-    CMS.registerPreviewStyle('', { raw: true });
-  </script>
+  <!-- Decap CMS -->
+  <script src="https://unpkg.com/decap-cms@^3.8.3/dist/decap-cms.js"></script>
 </body>
 </html>

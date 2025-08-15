@@ -1,0 +1,41 @@
+{
+  "slug": "kiosco-el-centro",
+  "nombre": "Kiosco El Centro",
+  "subtitulo": "Abierto todos los días",
+  "categorias": [
+    {
+      "categoria": "Snacks y Dulce",
+      "productos": [
+        {
+          "nombre": "Papas clásicas 95g",
+          "precio": 1500
+        },
+        {
+          "nombre": "Chocolate tabletón",
+          "precio": 2300
+        },
+        {
+          "nombre": "Galletitas surtidas",
+          "precio": 1600
+        }
+      ]
+    },
+    {
+      "categoria": "Bebidas frías",
+      "productos": [
+        {
+          "nombre": "Gaseosa 500ml",
+          "precio": 1200
+        },
+        {
+          "nombre": "Agua 500ml",
+          "precio": 900
+        },
+        {
+          "nombre": "Cerveza lata",
+          "precio": 1800
+        }
+      ]
+    }
+  ]
+}

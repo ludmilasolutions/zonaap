@@ -1,0 +1,33 @@
+{
+  "slug": "ferreteria-soldarte",
+  "nombre": "Ferretería Soldarte",
+  "subtitulo": "Todo para el hogar",
+  "categorias": [
+    {
+      "categoria": "Electricidad",
+      "productos": [
+        {
+          "nombre": "Lamparita LED 9W",
+          "precio": 2500
+        },
+        {
+          "nombre": "Cable 2x1 10m",
+          "precio": 5900
+        }
+      ]
+    },
+    {
+      "categoria": "Herramientas",
+      "productos": [
+        {
+          "nombre": "Cinta métrica 5m",
+          "precio": 3500
+        },
+        {
+          "nombre": "Destornillador Phillips",
+          "precio": 1800
+        }
+      ]
+    }
+  ]
+}

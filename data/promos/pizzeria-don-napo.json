@@ -2,19 +2,11 @@
   "slug_local": "pizzeria-don-napo",
   "promos": [
     {
-      "nombre": "2x1 Muzza",
-      "desc": "Solo miércoles",
-      "precio": 4200,
-      "precio_original": 8400,
-      "tag": "2x1",
-      "vigencia_hasta": ""
-    },
-    {
-      "nombre": "Combo Pizza + Gaseosa",
-      "desc": "Muzza + Coca 1.5L",
-      "precio": 5800,
-      "precio_original": 6500,
-      "tag": "Combo"
+      "nombre": "Promo 2 Muzzas",
+      "desc": "2 muzzas a precio amigo",
+      "precio": 8400,
+      "precio_original": 9600,
+      "tag": "-13%"
     }
   ]
 }

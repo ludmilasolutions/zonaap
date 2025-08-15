@@ -1,0 +1,109 @@
+
+:root{
+  --azul:#0b2a4a;
+  --azul-2:#071c34;
+  --azul-3:#143e6b;
+  --amarillo:#ffd11a;
+  --bg:#f6f7fb;
+  --text:#1f2a37;
+  --muted:#5b6b7e;
+  --card:#ffffff;
+  --card-2:#f1f5f9;
+  --borde:#e5e7eb;
+  --shadow:0 10px 24px rgba(0,0,0,.12);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji"; background:var(--bg); color:var(--text)}
+
+.header{
+  background:linear-gradient(90deg, var(--azul) 0%, var(--azul-2) 100%);
+  color:#fff;
+  padding:22px 18px;
+}
+.header .container{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:16px}
+.brand-badge{width:64px;height:64px;border-radius:14px;overflow:hidden;background:#0f2742;display:grid;place-items:center;border:1px solid rgba(255,255,255,.15)}
+.brand-title{font-size:28px;font-weight:900;margin:0;letter-spacing:.2px}
+.brand-sub{opacity:.9;margin:4px 0 0}
+
+.container{max-width:1100px;margin:0 auto;padding:16px}
+
+.search-row{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0 8px}
+.search{flex:1;min-width:240px;border:1px solid var(--borde);background:#fff;border-radius:12px;padding:14px 14px;font-size:16px;outline:none}
+.btn{display:inline-flex;align-items:center;gap:8px;border:none;border-radius:12px;padding:12px 16px;font-weight:800;cursor:pointer;background:var(--azul-3);color:var(--amarillo);box-shadow:0 4px 10px rgba(0,0,0,.12)}
+.btn-outline{background:#fff;color:var(--azul);border:1px solid var(--borde)}
+
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:8px}
+.card{grid-column:span 12;background:var(--card);border:1px solid var(--borde);border-radius:14px;padding:14px;display:flex;align-items:center;gap:14px;box-shadow:0 4px 12px rgba(0,0,0,.04)}
+@media(min-width:620px){.card{grid-column:span 6}}
+@media(min-width:980px){.card{grid-column:span 4}}
+
+.card-logo{width:56px;height:56px;border-radius:12px;overflow:hidden;background:#eef2f7;border:1px solid var(--borde);display:grid;place-items:center}
+.card h3{margin:0 0 2px 0;font-size:18px}
+.card p{margin:0;color:var(--muted);font-size:14px}
+.card a{margin-left:auto;text-decoration:none;font-weight:800;color:var(--azul)}
+.card:hover{transform:translateY(-2px);transition:.15s}
+
+.section{margin-top:16px}
+
+/* negocio */
+.page{padding-bottom:120px}
+.neg-header{display:flex;align-items:center;gap:14px}
+.neg-logo{width:72px;height:72px;border-radius:16px;overflow:hidden;background:#0f2742;border:1px solid rgba(255,255,255,.18);display:grid;place-items:center}
+.neg-title{font-size:32px;font-weight:900;margin:0}
+.neg-sub{margin:2px 0 0;opacity:.9}
+
+/* categoria acordeon */
+.accordion{background:var(--card);border:1px solid var(--borde);border-radius:14px;margin:14px 0;box-shadow:0 8px 18px rgba(0,0,0,.05);overflow:hidden}
+.accordion summary{list-style:none;cursor:pointer;padding:14px 16px;background:var(--azul);color:#fff;font-weight:900;display:flex;align-items:center;justify-content:space-between}
+.accordion[open] summary{border-bottom:1px solid rgba(255,255,255,.15)}
+.acc-body{padding:8px 10px 14px;background:#f8fafc}
+
+/* producto row */
+.row{display:grid;grid-template-columns:62px 1fr auto;gap:12px;align-items:center;background:#fff;border:1px solid var(--borde);border-radius:12px;padding:10px 12px;margin:10px 6px}
+.thumb{width:62px;height:62px;border-radius:10px;overflow:hidden;background:#eef2f7;border:1px solid var(--borde);display:grid;place-items:center}
+.row h4{margin:0 0 4px 0;font-size:16px}
+.row p{margin:0;color:var(--muted);font-size:14px}
+.price{font-weight:900;margin-top:4px}
+.counter{display:flex;align-items:center;gap:8px}
+.counter button{width:36px;height:36px;border-radius:10px;border:1px solid var(--azul);background:#fff;font-size:18px;font-weight:900;color:var(--azul);cursor:pointer}
+.counter span{min-width:20px;text-align:center}
+
+/* FAB */
+.cart-fab{position:fixed;right:18px;bottom:18px;background:var(--azul);color:var(--amarillo);border-radius:999px;border:2px solid var(--amarillo);padding:12px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 14px 30px rgba(0,0,0,.28);cursor:pointer;z-index:60}
+.cart-fab[hidden]{display:none}
+.cart-count{background:var(--amarillo);color:#001;min-width:24px;height:24px;border-radius:999px;display:grid;place-items:center;font-weight:900}
+
+/* Sheet */
+.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:70}
+.backdrop.open{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;transform:translateY(100%);background:#fff;border-top-left-radius:16px;border-top-right-radius:16px;box-shadow:var(--shadow);max-height:92vh;display:grid;grid-template-rows:auto 1fr;z-index:80;transition:transform .24s ease}
+.sheet.open{transform:translateY(0)}
+.sheet-header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--borde);padding:10px 12px 6px;z-index:2}
+.sheet-title{margin:0;font-size:18px;font-weight:900;color:#0b376d}
+.sheet-close{position:absolute;right:10px;top:6px;width:40px;height:40px;border-radius:12px;border:1px solid var(--borde);background:#fff;font-size:22px;cursor:pointer}
+.sheet-body{overflow:auto;padding:10px 12px 16px}
+
+/* Steps */
+.steps{display:flex;gap:8px;align-items:center;font-weight:800;font-size:13px;color:#64748b}
+.step{display:flex;gap:6px;align-items:center}
+.step .dot{width:10px;height:10px;border-radius:999px;background:#cbd5e1}
+.step.active{color:#0b376d}
+.step.active .dot{background:var(--amarillo)}
+
+/* Segmented */
+.segmented{display:flex;gap:8px;margin:8px 0}
+.segmented input{display:none}
+.segmented label{flex:1;text-align:center;padding:10px 12px;border:1px solid #cfd3dc;border-radius:12px;cursor:pointer;font-weight:800;background:#fff}
+.segmented input:checked + label{background:var(--azul);color:var(--amarillo);border-color:var(--azul)}
+
+/* Resumen */
+.resume{background:#fffbe6;border:1px solid #ffe58f;padding:12px;border-radius:12px;margin-top:8px}
+.resume-row{display:grid;grid-template-columns:1fr auto auto;gap:8px;background:#fff;border:1px solid var(--borde);border-radius:10px;padding:8px 10px;margin:6px 0}
+.resume-line{display:flex;justify-content:space-between;margin-top:6px}
+.inputs label{display:block;margin-top:8px;font-weight:800}
+.inputs input{width:100%;padding:12px 12px;border-radius:12px;border:1px solid var(--borde);outline:none}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.actions .btn{border-radius:10px}
+.small{font-size:12px;color:#6b7280}

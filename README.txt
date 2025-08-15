@@ -1,39 +1,27 @@
-Zonaap — Fix de CMS (Decap) y estructura de datos
-=================================================
 
-Qué contiene este zip
----------------------
-- admin/config.yml  → Config válida: colecciones 'listado', 'catalogo', 'promos' y 'ajustes', con preview desactivado.
-- admin/index.html  → Carga Decap 3.8.3 + Identity.
+Zonaap – Build estático listo
+=============================
 
-Pasos
------
-1. Subí la carpeta 'admin' para reemplazar la existente.
-2. Crea estas carpetas si aún no existen:
-   - data/negocios/       (catálogos por local, ej: data/negocios/pizzeria-don-napo.json)
-   - data/promos/         (promociones por local, ej: data/promos/pizzeria-don-napo.json)
-3. Mové tus catálogos actuales a 'data/negocios'.
-4. En tu negocio.html, al cargar el JSON del local, usá esta función:
-   (intenta 'data/negocios/slug.json' y si no existe, prueba 'data/slug.json')
+Abrí `index.html` para ver la home. Entrá a un negocio con `negocio.html?l=<slug>`.
 
-   async function loadCatalog(slug){
-     const candidates = [`data/negocios/${slug}.json`, `data/${slug}.json`];
-     for(const p of candidates){
-       try{
-         const r = await fetch(p);
-         if(r.ok) { console.log('Catálogo desde', p); return await r.json(); }
-       }catch(e){}
-     }
-     throw new Error('Catálogo no encontrado para '+slug);
-   }
+Datos (JSON)
+------------
+- `data/locales.json`: tarjetas de la home.
+- `data/ajustes.json`: whatsapp y costo de envío por defecto.
+- `data/negocios/<slug>.json`: catálogo por local.
+- `data/promos/<slug>.json` (opcional): promos para insertar arriba.
 
-5. Hard reload del panel (/admin): Ctrl+F5. Si persiste algún error,
-   limpia el localStorage del dominio y recargá.
+CMS (Decap)
+-----------
+Panel en `/admin/` (Netlify Identity). Collections:
+- Listado (Home)  → `data/locales.json`
+- Catálogo por local → `data/negocios`
+- Promos → `data/promos`
+- Ajustes → `data/ajustes.json`
 
-Notas
------
-- El error 'removeChild' es un bug de los previews sobre JSON; ya está
-  mitigado desactivando los previews en las colecciones de datos.
-- Si querés mantener tus JSON en otra ruta, cambia 'folder' en la colección
-  'catalogo' para que apunte a esa carpeta y asegurate de no mezclar otros JSON
-  con distinto schema en esa misma ruta.
+UI
+--
+- Categorías en acordeón (todas cerradas al inicio; al abrir una, se cierra la anterior).
+- FAB de carrito con total y cantidad; sheet de 3 pasos.
+- WhatsApp: respeta Retiro/Envío, nombre y dirección (si aplica).
+
