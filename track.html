@@ -3,18 +3,19 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Consultá el estado de tu pedido en Zonaap y conocé cuándo estará listo.">
   <title>Seguimiento de pedido | Zonaap</title>
   <link rel="icon" href="assets/logo.png">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles/base.css"/>
   <style>
     :root{--card:#fff;--b:#e5e7eb;--ok:#047857;--muted:#64748b}
-    body{font-family:Roboto,sans-serif;background:#f8fafc;color:#111}
     main{max-width:720px;margin:2rem auto;padding:1rem}
     .card{background:var(--card);border:1px solid var(--b);border-radius:16px;padding:1rem;box-shadow:0 10px 24px rgba(0,0,0,.06)}
     label{display:block;margin:.6rem 0 .25rem;font-weight:800}
     input{width:100%;padding:.9rem 1rem;border:1px solid var(--b);border-radius:12px}
     .row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
-    .btn{margin-top:1rem;padding:.9rem 1.2rem;border-radius:12px;border:2px solid #ffcc00;background:#003366;color:#ffcc00;font-weight:900;cursor:pointer}
+    .btn{margin-top:1rem}
     .badge{display:inline-flex;gap:.4rem;align-items:center;border-radius:999px;padding:.2rem .6rem;border:1px solid var(--b)}
   </style>
 
@@ -52,6 +53,15 @@
 
 </head>
 <body>
+  <nav class="site-nav">
+    <div class="nav-wrap">
+      <a href="index.html" class="logo">Zonaap</a>
+      <div class="links">
+        <a href="registro.html">Registrar</a>
+        <a href="track.html">Seguimiento</a>
+      </div>
+    </div>
+  </nav>
   <main>
     <h1>Seguimiento de tu pedido</h1>
     <div class="card">

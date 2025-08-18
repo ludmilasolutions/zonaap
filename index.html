@@ -3,18 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Pedí online a negocios de tu barrio. Encontrá locales y registrá el tuyo gratis.">
   <title>Zonaap | Pedidos de tu barrio</title>
   <link rel="icon" href="assets/logo.png">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles/base.css"/>
   <style>
-    :root{
-      --azul:#003366; --azul-2:#001122; --azul-3:#004080; --amarillo:#ffcc00;
-      --bg:#f7f8fb; --card:#fff; --text:#1f2937; --muted:#6b7280; --borde:#e5e7eb;
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--text)}
-    header{background:linear-gradient(90deg,var(--azul),var(--azul-2));color:#fff;padding:2rem 1rem;text-align:center}
-    header h1{font-size:1.8rem;margin:.3rem 0 0}
     main{max-width:1100px;margin:auto;padding:1rem}
     .topbar{display:grid;grid-template-columns:1fr auto;gap:.8rem;align-items:center;margin:1rem 0}
     .search{display:flex;gap:.5rem}
@@ -22,8 +16,6 @@
       flex:1;padding:.9rem 1rem;border:1px solid var(--borde);border-radius:12px;font-size:1rem;outline:none;
       background:#fff;
     }
-    .btn{display:inline-flex;gap:.5rem;align-items:center;padding:.8rem 1rem;border-radius:12px;font-weight:800;
-      background:var(--azul);color:var(--amarillo);border:2px solid var(--amarillo);text-decoration:none;cursor:pointer}
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1rem 0 2rem}
     .card{
       background:var(--card);border:1px solid var(--borde);border-radius:16px;padding:1rem;display:grid;gap:.6rem;
@@ -36,13 +28,24 @@
     .pill{display:inline-flex;align-items:center;border:1px dashed var(--borde);padding:.2rem .5rem;border-radius:999px;font-size:.8rem}
     .actions{display:flex;justify-content:space-between;align-items:center;margin-top:.3rem}
     .link{font-weight:900;color:#0b376d;text-decoration:none}
+    .no-results{text-align:center;color:var(--muted);margin-top:2rem}
     footer{max-width:1100px;margin:2rem auto;padding:1rem;text-align:center;color:var(--muted)}
-    .brand-header{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+    .brand-header{background:linear-gradient(90deg,var(--azul),var(--azul-2));color:#fff;padding:2rem 1rem;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .brand-header h1{font-size:1.8rem;margin:.3rem 0 0}
     .brand-logo{max-height:140px;width:auto;display:block;margin:0 auto 0.5rem}
     @media (min-width:900px){ .brand-logo{max-height:160px} }
   </style>
 </head>
 <body>
+  <nav class="site-nav">
+    <div class="nav-wrap">
+      <a href="index.html" class="logo">Zonaap</a>
+      <div class="links">
+        <a href="registro.html">Registrar</a>
+        <a href="track.html">Seguimiento</a>
+      </div>
+    </div>
+  </nav>
   <header class="brand-header">
     <img class="brand-logo" src="assets/zonaap-wordmark-invert.svg" alt="Zonaap"/>
     <h1>Pedí online a negocios de tu barrio</h1>
@@ -76,6 +79,10 @@
     function render(list){
       const g = document.getElementById('grid'); if(!g) return;
       g.innerHTML = '';
+      if(list.length===0){
+        g.innerHTML = '<p class="no-results">No encontramos locales que coincidan.</p>';
+        return;
+      }
       list.forEach(l => {
         const a = document.createElement('article'); a.className='card';
         a.innerHTML = `
