@@ -1,34 +1,43 @@
 
 <!doctype html>
 <html lang="es">
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Zonaap – Panel de pedidos</title>
-  <style>
-    body{font-family:system-ui,Arial,sans-serif;margin:0;background:#f8fafc;color:#0f172a}
-    main{max-width:800px;margin:0 auto;padding:16px}
-    h1{font-size:22px}
-    .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-    input,select,button{padding:.7rem 1rem;border:1px solid #cbd5e1;border-radius:10px}
-    button{background:#0b315f;color:#fff;border-color:#ffc400;font-weight:800}
-    .card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;margin-top:10px}
-  </style>
-</head>
-<body>
-  <main>
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="description" content="Actualizá rápidamente el estado de los pedidos de tu local en Zonaap.">
+    <title>Zonaap – Panel de pedidos</title>
+    <link rel="stylesheet" href="styles/base.css"/>
+    <style>
+      main{max-width:800px;margin:0 auto;padding:16px}
+      h1{font-size:22px}
+      .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+      input,select,button{padding:.7rem 1rem;border:1px solid #cbd5e1;border-radius:10px}
+      .card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;margin-top:10px}
+    </style>
+  </head>
+  <body>
+    <nav class="site-nav">
+      <div class="nav-wrap">
+        <a href="index.html" class="logo">Zonaap</a>
+        <div class="links">
+          <a href="registro.html">Registrar</a>
+          <a href="track.html">Seguimiento</a>
+        </div>
+      </div>
+    </nav>
+    <main>
     <h1>Panel rápido de pedidos</h1>
     <p>Actualizá el estado de un pedido usando la URL de tu <strong>Apps Script (analytics_webhook)</strong>.</p>
     <div class="row">
       <input id="hook" placeholder="https://script.google.com/.../exec" style="flex:1">
       <input id="oid" placeholder="ID de pedido (W2024...)">
-      <select id="st">
-        <option>recibido</option>
-        <option>en preparación</option>
-        <option>listo</option>
-        <option>entregado</option>
-      </select>
-      <button id="go">Actualizar</button>
+        <select id="st">
+          <option>recibido</option>
+          <option>en preparación</option>
+          <option>listo</option>
+          <option>entregado</option>
+        </select>
+        <button id="go" class="btn">Actualizar</button>
     </div>
     <div id="out" class="card" hidden></div>
   </main>
